@@ -1,6 +1,6 @@
 import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
-import { contactSection, footer, navLinks, services } from "../data/content";
+import { contactSection, footer, navLinks, serviceGroups } from "../data/content";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -35,10 +35,10 @@ export function Footer() {
           <nav aria-label="Footer services">
             <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-white/40">{footer.servicesHeading}</h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {services.map((service) => (
-                <li key={service.id}>
+              {serviceGroups.map((group) => (
+                <li key={group.id}>
                   <a href="#services" className="text-sm text-white/65 transition-colors hover:text-(--color-accent)">
-                    {service.name}
+                    {group.name}
                   </a>
                 </li>
               ))}

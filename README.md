@@ -1,11 +1,17 @@
-# One-Page Technology Solutions Portfolio
+# CIDUS — One-Page Corporate Website
 
-A premium, parallax, scroll-driven one-page website for a technology solutions
-company (IT Infrastructure · Network Solutions · Data Solutions). Built with
-**React, TypeScript, Vite, Tailwind CSS v4, and Framer Motion**.
+A premium, parallax, scroll-driven one-page corporate website for **CIDUS**, an
+integrated solutions and professional services provider spanning technology,
+infrastructure, operations, logistics, engineering, procurement, and related
+support services. Built with **React, TypeScript, Vite, Tailwind CSS v4, and
+Framer Motion**.
 
-All copy on the site is intentionally generic and placeholder-based so it can
-be replaced with real company content without a redesign.
+Tagline: **"Integrated Solutions. Trusted Service. Reliable Results."**
+
+Copy that hasn't been officially confirmed by the client (contact details,
+client logo artwork, etc.) is kept as an explicit bracketed placeholder
+(`[Email Address]`, `[U.S. Embassy in the Philippines Logo]`, ...) so it can be
+replaced without a redesign. See `src/data/content.ts` for the full list.
 
 ## Tech stack
 
@@ -32,19 +38,35 @@ src/
   index.css                # Design tokens (colors, radii, shadows) + base styles
 ```
 
+## One-page structure
+
+Home/Hero → About Us → Our Services → Our Clients → Why CIDUS → Contact → Footer.
+
+- **Hero** leads with the tagline, a short company introduction, and a
+  4-category capability preview (Technology & Infrastructure, Operations &
+  Sustainment, Supply & Logistics, Engineering & Technical Services).
+- **About** covers company background, qualitative capabilities, a Mission /
+  Vision panel, and an editorial (non-card) Core Values list.
+- **Services** organizes CIDUS's nine official service areas into four
+  connected groups (`src/data/content.ts` → `serviceGroups`), visualized as a
+  vertical spine converging on "Integrated Solutions."
+- **Clients** presents named organizations as clearly labeled logo
+  placeholders pending approved artwork (`clientsSection.organizations`).
+- **Why CIDUS** is the visual and narrative climax: four capability groups
+  converge into "Integrated Solutions," chaining down to "Trusted Service"
+  and "Reliable Results" — directly echoing the site tagline.
+
 ## Customizing content
 
 Almost everything a client will want to change lives in **`src/data/content.ts`**:
 
-- `siteMeta.companyName` — replaces the `[Company Name]` placeholder used in
-  the nav, footer, and browser tab title.
-- `hero`, `about`, `services`, `servicesSection`, `clientsSection`,
-  `whyUsItems`, `whyUsSection`, `contactSection`, `footer` — every heading,
-  paragraph, and label shown on the page.
+- `siteMeta.companyName` — company name used in the nav, footer, and tab title.
+- `hero`, `capabilityPreview`, `about`, `missionVision`, `coreValues`,
+  `serviceGroups`, `servicesSection`, `clientsSection`, `whyUsItems`,
+  `whyUsSection`, `contactSection`, `footer` — every heading, paragraph, and
+  label shown on the page.
 
-No component code needs to change for a copy update. Bracketed placeholders
-(`[Company Name]`, `[Client Logo]`, `[Email Address]`, etc.) are intentional
-and should be swapped for real values before launch.
+No component code needs to change for a copy update.
 
 ### Replacing the logo
 
@@ -54,9 +76,10 @@ asset when it's available; the surrounding layout will keep working.
 
 ### Replacing client logos
 
-`src/components/ClientLogoPlaceholder.tsx` renders a fixed-size tile
-(`h-24`) designed so a real logo image can be dropped in without touching the
-grid in `src/sections/Clients.tsx`.
+`src/components/ClientLogoPlaceholder.tsx` renders a fixed-size tile designed
+so a real, approved logo image can be dropped in without touching the layout
+in `src/sections/Clients.tsx`. Organization names live in
+`clientsSection.organizations` in `src/data/content.ts`.
 
 ## Design system
 

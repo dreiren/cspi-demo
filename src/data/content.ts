@@ -1,10 +1,10 @@
 /**
  * ---------------------------------------------------------------------------
- * CENTRALIZED SITE CONTENT
+ * CENTRALIZED SITE CONTENT — CIDUS
  * ---------------------------------------------------------------------------
  * Every piece of copy, label, and placeholder rendered on the site is
- * declared here. Replace the values below with real company content —
- * no component code needs to change.
+ * declared here. Replace the values below with the official company
+ * profile / brand materials — no component code needs to change.
  *
  * Anything wrapped in [ ] / [Brackets] is an intentional placeholder and
  * should be swapped for real, client-supplied information before launch.
@@ -12,9 +12,9 @@
  */
 
 export const siteMeta = {
-  companyName: "[Company Name]",
-  shortName: "[Company]",
-  tagline: "Connecting Technology. Enabling Better Operations.",
+  companyName: "CIDUS",
+  shortName: "CIDUS",
+  tagline: "Integrated Solutions. Trusted Service. Reliable Results.",
 };
 
 export const navLinks = [
@@ -22,83 +22,245 @@ export const navLinks = [
   { id: "about", label: "About" },
   { id: "services", label: "Services" },
   { id: "clients", label: "Clients" },
-  { id: "why-us", label: "Why Us" },
+  { id: "why-us", label: "Why CIDUS" },
   { id: "contact", label: "Contact" },
 ];
 
 export const hero = {
-  eyebrow: "IT Infrastructure · Network Solutions · Data Solutions",
-  headline: "Technology That Connects Possibilities",
+  eyebrow: "Technology · Infrastructure · Operations · Logistics · Engineering",
+  headline: "Integrated Solutions. Trusted Service. Reliable Results.",
+  headlineParts: ["Integrated Solutions.", "Trusted Service.", "Reliable Results."],
   subheadline:
-    "We provide technology solutions that help organizations build reliable infrastructure, improve connectivity, and manage their technology environment more effectively.",
+    "CIDUS provides integrated solutions and professional services designed to support organizations across technology, infrastructure, operations, logistics, engineering, procurement, and beyond.",
+  intro:
+    "CIDUS brings together diverse capabilities and professional services to help organizations address complex operational and support requirements through a streamlined, one-stop approach.",
   primaryCta: { label: "Explore Our Services", href: "#services" },
-  secondaryCta: { label: "Contact Us", href: "#contact" },
-  journey: ["Infrastructure", "Connectivity", "Network", "Data", "Operations"],
+  secondaryCta: { label: "Contact CIDUS", href: "#contact" },
+  journey: ["Technology", "Infrastructure", "Operations", "Supply", "Engineering", "Integrated Solutions"],
 };
+
+export type CapabilityPreview = {
+  id: string;
+  name: string;
+  description: string;
+  icon: "infrastructure" | "operations" | "supply" | "engineering";
+};
+
+export const capabilityPreview: CapabilityPreview[] = [
+  {
+    id: "technology-infrastructure",
+    name: "Technology & Infrastructure",
+    description: "IT, data, infrastructure, and supporting technology.",
+    icon: "infrastructure",
+  },
+  {
+    id: "operations-sustainment",
+    name: "Operations & Sustainment",
+    description: "Force sustainment, operations, maintenance, and operational support.",
+    icon: "operations",
+  },
+  {
+    id: "supply-logistics",
+    name: "Supply & Logistics",
+    description: "Procurement, logistics, warehousing, and general trading.",
+    icon: "supply",
+  },
+  {
+    id: "engineering-technical",
+    name: "Engineering & Technical Services",
+    description: "Engineering and related technical capabilities.",
+    icon: "engineering",
+  },
+];
 
 export const about = {
   eyebrow: "About Us",
-  heading: "Technology Built Around Your Organization",
+  heading: "One Trusted Partner for Integrated Solutions",
   paragraphs: [
-    "We provide technology solutions designed to help organizations build, connect, and manage their technology environments. Our approach focuses on practical solutions that support infrastructure, connectivity, data, and day-to-day operations.",
-    "From foundational infrastructure to connected technology environments, we help bring the right components together to support organizational needs.",
+    "CIDUS is a professional solutions and services provider delivering integrated capabilities across technology, infrastructure, operations, logistics, engineering, procurement, and related support services.",
+    "With a focus on professionalism, reliability, responsibility, and service excellence, CIDUS works to provide practical solutions aligned with the needs of its clients and partners.",
   ],
-  highlights: [
-    { label: "Infrastructure", description: "A dependable technical foundation." },
-    { label: "Connectivity", description: "Systems and locations, connected." },
-    { label: "Data", description: "Managed, structured, and accessible." },
+  capabilities: [
+    "Diverse service capabilities",
+    "Multi-sector experience",
+    "Integrated service delivery",
+    "Professional execution",
+    "Operational support",
+    "End-to-end coordination",
   ],
 };
+
+export const missionVision = {
+  mission: {
+    label: "Mission",
+    statement:
+      "To provide professional, reliable, and integrated solutions that support the evolving needs of our clients and partners.",
+  },
+  vision: {
+    label: "Vision",
+    statement:
+      "To be a trusted solutions and services partner recognized for professionalism, reliability, integrity, and dependable execution.",
+  },
+};
+
+export type CoreValue = {
+  id: string;
+  title: string;
+  description: string;
+};
+
+export const coreValues: CoreValue[] = [
+  {
+    id: "professionalism",
+    title: "Professionalism",
+    description: "We approach every engagement with discipline and professionalism.",
+  },
+  {
+    id: "reliability",
+    title: "Reliability",
+    description: "We focus on dependable service and consistent execution.",
+  },
+  {
+    id: "responsibility",
+    title: "Responsibility",
+    description: "We take ownership of our commitments and responsibilities.",
+  },
+  {
+    id: "honesty",
+    title: "Honesty",
+    description: "We value transparency and straightforward relationships.",
+  },
+  {
+    id: "trust",
+    title: "Trust",
+    description: "We build long-term relationships through integrity and accountability.",
+  },
+  {
+    id: "one-stop-service",
+    title: "One-Stop Service",
+    description: "We bring multiple capabilities together to simplify the client's experience.",
+  },
+];
 
 export type ServiceArea = {
   id: string;
-  index: string;
   name: string;
   description: string;
-  supportingAreas: string[];
 };
 
-export const services: ServiceArea[] = [
+export type ServiceGroup = {
+  id: string;
+  name: string;
+  icon: "infrastructure" | "operations" | "supply" | "engineering";
+  services: ServiceArea[];
+};
+
+export const serviceGroups: ServiceGroup[] = [
   {
-    id: "it-infrastructure",
-    index: "01",
-    name: "IT Infrastructure",
-    description:
-      "Technology infrastructure that provides a reliable foundation for modern organizational environments.",
-    supportingAreas: ["Servers", "Structured Cabling", "Connectivity", "Supporting Technology Systems"],
+    id: "technology-infrastructure",
+    name: "Technology & Infrastructure",
+    icon: "infrastructure",
+    services: [
+      {
+        id: "information-technology",
+        name: "Information Technology",
+        description:
+          "Technology solutions and services designed to support organizational systems, connectivity, and digital operations.",
+      },
+      {
+        id: "data-infrastructure",
+        name: "Data and Infrastructure",
+        description:
+          "Infrastructure and data-related capabilities supporting reliable and effective technology environments.",
+      },
+    ],
   },
   {
-    id: "network-solutions",
-    index: "02",
-    name: "Network Solutions",
-    description:
-      "Network solutions designed to help organizations connect people, systems, locations, and technology.",
-    supportingAreas: ["Network Infrastructure", "Connectivity", "Network Management", "Network Optimization"],
+    id: "operations-support",
+    name: "Operations & Support",
+    icon: "operations",
+    services: [
+      {
+        id: "force-sustainment",
+        name: "Force Sustainment",
+        description:
+          "Support capabilities designed to help organizations maintain operational readiness and continuity.",
+      },
+      {
+        id: "operations-maintenance",
+        name: "Operations & Maintenance",
+        description:
+          "Professional support services focused on maintaining operational environments and supporting ongoing requirements.",
+      },
+    ],
   },
   {
-    id: "data-solutions",
-    index: "03",
-    name: "Data Solutions",
-    description:
-      "Technology solutions that help organizations manage, connect, and utilize their data more effectively.",
-    supportingAreas: ["Data Infrastructure", "Data Management", "Data Connectivity", "Data Support"],
+    id: "supply-logistics",
+    name: "Supply & Logistics",
+    icon: "supply",
+    services: [
+      {
+        id: "procurement",
+        name: "Procurement",
+        description:
+          "Procurement support designed to help organizations source and coordinate required goods and services.",
+      },
+      {
+        id: "logistics",
+        name: "Logistics",
+        description:
+          "Logistics capabilities supporting the movement, coordination, and delivery of required resources.",
+      },
+      {
+        id: "warehousing",
+        name: "Warehousing",
+        description:
+          "Warehousing support for organized storage, handling, and management of materials and resources.",
+      },
+    ],
+  },
+  {
+    id: "technical-commercial",
+    name: "Technical & Commercial",
+    icon: "engineering",
+    services: [
+      {
+        id: "engineering",
+        name: "Engineering",
+        description:
+          "Engineering capabilities supporting technical requirements, planning, implementation, and related services.",
+      },
+      {
+        id: "general-trading",
+        name: "General Trading",
+        description: "Commercial sourcing and trading support across a range of organizational requirements.",
+      },
+    ],
   },
 ];
 
 export const servicesSection = {
-  eyebrow: "Services",
-  heading: "A Connected Technology Ecosystem",
+  eyebrow: "Our Services",
+  heading: "An Integrated Service Ecosystem",
   description:
-    "Our core capabilities work together as a single system — infrastructure supports the network, the network carries the data, and the data drives better operations.",
-  outcome: "Connected Technology Environment",
+    "Nine service areas, organized into four connected capabilities — technology feeds infrastructure, infrastructure supports operations, operations rely on supply and logistics, and engineering ties the system together into one integrated solution.",
+  outcome: "Integrated Solutions",
+};
+
+export type ClientOrganization = {
+  id: string;
+  name: string;
 };
 
 export const clientsSection = {
   eyebrow: "Clients",
-  heading: "Trusted by Organizations",
-  description:
-    "We work with organizations that rely on technology to support their operations, connectivity, and business needs.",
-  placeholderCount: 6,
+  heading: "Selected Clients",
+  description: "Supporting organizations across diverse operational and service requirements.",
+  organizations: [
+    { id: "us-embassy-ph", name: "U.S. Embassy in the Philippines" },
+    { id: "un-agencies", name: "United Nations Agencies" },
+    { id: "vectrus", name: "Vectrus Systems Corporation" },
+  ] as ClientOrganization[],
 };
 
 export type WhyUsItem = {
@@ -109,41 +271,53 @@ export type WhyUsItem = {
 
 export const whyUsItems: WhyUsItem[] = [
   {
-    id: "practical-approach",
-    title: "Practical Approach",
-    description: "We focus on solutions aligned with real organizational needs.",
+    id: "integrated-solutions",
+    title: "Integrated Solutions",
+    description: "Multiple capabilities brought together to address diverse organizational requirements.",
   },
   {
-    id: "connected-solutions",
-    title: "Connected Solutions",
-    description: "We consider how infrastructure, networks, and data work together.",
+    id: "professional-service",
+    title: "Professional Service",
+    description: "A professional approach focused on quality, accountability, and client needs.",
   },
   {
-    id: "technology-focus",
-    title: "Technology Focus",
-    description: "We provide solutions designed around modern technology environments.",
+    id: "reliable-execution",
+    title: "Reliable Execution",
+    description: "Dependable coordination and execution throughout the service process.",
   },
   {
-    id: "reliable-support",
-    title: "Reliable Support",
-    description: "We aim to provide dependable technology solutions and professional support.",
+    id: "multi-sector-capabilities",
+    title: "Multi-Sector Capabilities",
+    description: "A broad range of services designed to support different operational environments.",
+  },
+  {
+    id: "nationwide-experience",
+    title: "Nationwide Experience",
+    description: "Experience supporting requirements across different locations and operational contexts.",
+  },
+  {
+    id: "one-stop-service",
+    title: "One-Stop Service",
+    description:
+      "A streamlined approach that brings multiple services together, helping simplify coordination and reduce unnecessary complexity.",
   },
 ];
 
 export const whyUsSection = {
-  eyebrow: "Why Us",
-  heading: "One Connected Technology Environment",
+  eyebrow: "Why CIDUS",
+  heading: "One Integrated Solutions Partner",
   description:
-    "Infrastructure, network, and data are not separate projects — they are one connected environment that supports better operations.",
-  convergence: ["Infrastructure", "Network", "Data"],
-  outcome: "Better Operations",
+    "Instead of coordinating multiple disconnected service providers, CIDUS brings complementary capabilities together through one integrated service approach.",
+  convergence: ["Technology & Infrastructure", "Operations & Support", "Supply & Logistics", "Technical & Commercial"],
+  outcomeChain: ["Integrated Solutions", "Trusted Service", "Reliable Results"],
 };
 
 export const contactSection = {
   eyebrow: "Contact",
-  heading: "Let's Connect",
-  description: "Tell us about your technology needs and let's explore how we can help.",
-  cta: "Send Inquiry",
+  heading: "Let's Work Together",
+  description:
+    "Tell us about your requirements and explore how CIDUS can support your organization through integrated solutions and professional services.",
+  cta: "Send an Inquiry",
   formFields: {
     name: "Name",
     company: "Company",
@@ -165,10 +339,10 @@ export const contactSection = {
 
 export const footer = {
   description:
-    "[Company Description] — a short, replaceable summary of what the company does and the value it provides to clients.",
+    "CIDUS is a professional solutions and services provider delivering integrated capabilities across technology, infrastructure, operations, logistics, engineering, and procurement.",
   navHeading: "Navigation",
   servicesHeading: "Services",
   contactHeading: "Contact",
   socialHeading: "Social",
-  copyright: (year: number) => `© ${year} [Company Name]. All rights reserved.`,
+  copyright: (year: number) => `© ${year} CIDUS. All rights reserved.`,
 };

@@ -65,7 +65,7 @@ export function Navbar() {
 
         <div className="hidden lg:block">
           <Button href="#contact" variant="primary" size="md">
-            Contact Us
+            Contact CIDUS
           </Button>
         </div>
 
@@ -115,7 +115,7 @@ export function Navbar() {
               </a>
             ))}
             <Button href="#contact" variant="primary" size="md" className="mt-3 w-full" onClick={() => setMenuOpen(false)}>
-              Contact Us
+              Contact CIDUS
             </Button>
           </Container>
         </div>
