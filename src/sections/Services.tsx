@@ -4,13 +4,7 @@ import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
-import { services, servicesSection } from "../data/content";
-
-const icons: Record<string, "infrastructure" | "network" | "data"> = {
-  "it-infrastructure": "infrastructure",
-  "network-solutions": "network",
-  "data-solutions": "data",
-};
+import { serviceGroups, servicesSection } from "../data/content";
 
 export function Services() {
   return (
@@ -36,18 +30,18 @@ export function Services() {
         />
 
         <div className="relative mt-16 flex flex-col">
-          {/* connecting spine */}
+          {/* connecting spine — each capability group feeds into the next */}
           <div
             aria-hidden="true"
             className="absolute left-7 top-10 bottom-24 hidden w-px bg-gradient-to-b from-(--color-accent)/60 via-(--color-secondary)/40 to-(--color-accent)/60 sm:block"
           />
 
-          {services.map((service, i) => (
-            <Reveal key={service.id} delay={i * 0.12} className="relative mb-10 last:mb-0">
+          {serviceGroups.map((group, i) => (
+            <Reveal key={group.id} delay={i * 0.12} className="relative mb-10 last:mb-0">
               <div className="grid gap-5 sm:grid-cols-[3.5rem_1fr] sm:gap-8">
                 <div className="hidden sm:flex sm:justify-center">
                   <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border border-(--color-accent)/50 bg-(--color-primary) text-(--color-accent) shadow-[var(--shadow-glow)]">
-                    <ServiceIcon name={icons[service.id]} />
+                    <ServiceIcon name={group.icon} />
                   </span>
                 </div>
 
@@ -55,36 +49,30 @@ export function Services() {
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <div className="flex items-center gap-3">
                       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/40 text-(--color-accent) sm:hidden">
-                        <ServiceIcon name={icons[service.id]} className="h-5 w-5" />
+                        <ServiceIcon name={group.icon} className="h-5 w-5" />
                       </span>
-                      <h3 className="text-xl font-bold text-white sm:text-2xl">{service.name}</h3>
+                      <h3 className="text-xl font-bold text-white sm:text-2xl">{group.name}</h3>
                     </div>
                     <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-accent)/70">
-                      {service.index}
+                      {`0${i + 1}`}
                     </span>
                   </div>
 
-                  <p className="mt-3 max-w-2xl text-balance text-sm leading-relaxed text-white/65 sm:text-base">
-                    {service.description}
-                  </p>
-
-                  <ul className="mt-5 flex flex-wrap gap-2" aria-label={`${service.name} supporting areas`}>
-                    {service.supportingAreas.map((area) => (
-                      <li
-                        key={area}
-                        className="rounded-full border border-white/12 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-white/70"
-                      >
-                        {area}
-                      </li>
+                  <dl className="mt-5 grid gap-5 sm:grid-cols-2">
+                    {group.services.map((service) => (
+                      <div key={service.id} className="border-l-2 border-(--color-accent)/40 pl-4">
+                        <dt className="text-sm font-bold text-white">{service.name}</dt>
+                        <dd className="mt-1.5 text-sm leading-relaxed text-white/60">{service.description}</dd>
+                      </div>
                     ))}
-                  </ul>
+                  </dl>
                 </div>
               </div>
             </Reveal>
           ))}
         </div>
 
-        {/* Outcome banner: services converge into one connected environment */}
+        {/* Outcome banner: every group converges into one integrated solution */}
         <Reveal delay={0.3}>
           <div className="relative mx-auto mt-4 flex max-w-2xl flex-col items-center gap-3 rounded-[var(--radius-lg)] border border-(--color-accent)/30 bg-gradient-to-b from-(--color-accent)/12 to-transparent px-8 py-8 text-center">
             <svg width="20" height="28" viewBox="0 0 20 28" aria-hidden="true" className="text-(--color-accent)/70">

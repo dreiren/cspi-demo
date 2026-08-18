@@ -6,9 +6,10 @@ type LogoMarkProps = {
 };
 
 /**
- * Placeholder brand lockup: [LOGO] mark + [Company Name]. Swap the mark
- * (currently an abstract node glyph) for the real logo and update
- * `siteMeta.companyName` in `src/data/content.ts` once available.
+ * Placeholder brand lockup: [LOGO] mark + company name. Swap the mark
+ * (currently an abstract node glyph) for the real CIDUS logo asset once
+ * available; the company name itself is set via `siteMeta.companyName`
+ * in `src/data/content.ts`.
  */
 export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
   const isLight = tone === "light";

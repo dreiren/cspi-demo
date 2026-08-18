@@ -4,7 +4,7 @@ import { GlowNode } from "../components/graphics/GlowNode";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
-import { about } from "../data/content";
+import { about, coreValues, missionVision } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 
 const structuredNodes = [
@@ -41,18 +41,27 @@ export function About() {
           </div>
 
           <Reveal delay={0.3}>
-            <dl className="mt-10 grid gap-6 sm:grid-cols-3">
-              {about.highlights.map((item) => (
-                <div key={item.label} className="border-l-2 border-(--color-accent)/60 pl-4">
-                  <dt className="text-sm font-bold text-(--color-primary)">{item.label}</dt>
-                  <dd className="mt-1 text-sm text-(--color-ink-faint)">{item.description}</dd>
-                </div>
+            <ul className="mt-10 grid gap-3 sm:grid-cols-2" aria-label="Experience and capabilities">
+              {about.capabilities.map((capability) => (
+                <li key={capability} className="flex items-start gap-2.5 text-sm text-(--color-ink-soft)">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                    className="mt-0.5 shrink-0 text-(--color-secondary)"
+                  >
+                    <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span>{capability}</span>
+                </li>
               ))}
-            </dl>
+            </ul>
           </Reveal>
         </div>
 
-        {/* Infrastructure elements resolving into a connected structure */}
+        {/* Diverse capabilities resolving into one integrated structure */}
         <Reveal delay={0.15} className="relative">
           <ParallaxLayer speed={16}>
             <div className="relative mx-auto aspect-[4/3] w-full max-w-md rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)]">
@@ -78,7 +87,7 @@ export function About() {
                     width={1.4}
                   />
                 ))}
-                {/* structured "rack" outlines housing the left-hand infrastructure nodes */}
+                {/* structured "rack" outlines housing the left-hand capability nodes */}
                 {[structuredNodes[1], structuredNodes[0], structuredNodes[2]].map((node) => (
                   <rect
                     key={node.y}
@@ -100,9 +109,49 @@ export function About() {
             </div>
           </ParallaxLayer>
           <p className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.14em] text-(--color-ink-faint)">
-            Infrastructure → Connected Structure
+            Diverse Capabilities → One Integrated Approach
           </p>
         </Reveal>
+      </Container>
+
+      {/* Mission & Vision */}
+      <Container className="relative mt-20 sm:mt-28">
+        <div className="grid gap-10 rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-8 sm:grid-cols-2 sm:p-12">
+          {[missionVision.mission, missionVision.vision].map((block, i) => (
+            <Reveal key={block.label} delay={i * 0.1} className={i === 1 ? "sm:border-l sm:border-(--color-line) sm:pl-10" : ""}>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
+                {block.label}
+              </span>
+              <p className="mt-4 text-balance text-xl font-semibold leading-snug text-(--color-primary) sm:text-2xl">
+                {block.statement}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      </Container>
+
+      {/* Core values — editorial list rather than a repeated card grid */}
+      <Container className="relative mt-20 sm:mt-28">
+        <Reveal>
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
+            Core Values
+          </span>
+        </Reveal>
+        <div className="mt-6 divide-y divide-(--color-line) border-t border-(--color-line)">
+          {coreValues.map((value, i) => (
+            <Reveal key={value.id} delay={i * 0.05}>
+              <div className="group grid gap-2 py-5 transition-colors sm:grid-cols-[1fr_2fr] sm:items-baseline sm:gap-8 sm:py-6">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-xs font-semibold text-(--color-ink-faint)">{`0${i + 1}`}</span>
+                  <h3 className="text-lg font-bold text-(--color-primary) transition-colors group-hover:text-(--color-secondary-dark)">
+                    {value.title}
+                  </h3>
+                </div>
+                <p className="text-sm leading-relaxed text-(--color-ink-soft) sm:text-base">{value.description}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </Container>
     </section>
   );
