@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---------------------------------------------------------------- */
+  /* Brand color system                                                */
+  /* ---------------------------------------------------------------- */
+  --color-primary: #0c2d54; /* Primary dark blue - dominant background */
+  --color-primary-light: #163a68;
+  --color-primary-dark: #081d38;
+
+  --color-accent: #69cddf; /* Primary cyan - CTAs, highlights */
+  --color-accent-dark: #4fb6c9;
+
+  --color-secondary: #46a0b9; /* Secondary blue - supporting accent */
+  --color-secondary-dark: #33869d;
+
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5f8fb;
+  --color-surface-muted: #eef2f6;
+
+  --color-ink: #0b1b2b; /* near-black navy for body copy on light bg */
+  --color-ink-soft: #4a5a6a;
+  --color-ink-faint: #7c8b99;
+
+  --color-line: #dee6ec;
+  --color-line-dark: rgba(255, 255, 255, 0.12);
+
+  /* ---------------------------------------------------------------- */
+  /* Typography                                                        */
+  /* ---------------------------------------------------------------- */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Manrope", "Inter", system-ui, -apple-system, sans-serif;
+
+  /* ---------------------------------------------------------------- */
+  /* Shape & elevation                                                  */
+  /* ---------------------------------------------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 30px -12px rgba(12, 45, 84, 0.25);
+  --shadow-card: 0 20px 60px -20px rgba(12, 45, 84, 0.35);
+  --shadow-glow: 0 0 0 1px rgba(105, 205, 223, 0.25), 0 0 40px -8px rgba(105, 205, 223, 0.45);
+
+  --animate-node-pulse: node-pulse 3.2s ease-in-out infinite;
+  --animate-dash: dash-flow 18s linear infinite;
+  --animate-float-slow: float-slow 9s ease-in-out infinite;
+  --animate-float-slower: float-slow 14s ease-in-out infinite;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-surface);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-primary-dark);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  img, svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@layer utilities {
+  .container-shell {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100px;
+    z-index: 100;
+    background: var(--color-primary);
+    color: var(--color-surface);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-sm);
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes node-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -400;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
