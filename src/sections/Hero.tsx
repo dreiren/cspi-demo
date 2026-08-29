@@ -102,7 +102,7 @@ export function Hero() {
 
         <Container className="relative z-10 py-24">
           <div className="max-w-3xl">
-            <Reveal preset="fadeIn" once>
+            <Reveal preset="fadeIn">
               <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
                 {hero.eyebrow}
               </span>
@@ -110,7 +110,7 @@ export function Hero() {
 
             <h1 className="mt-6 text-balance text-4xl text-white sm:text-5xl lg:text-[3.4rem]">
               {hero.headlineParts.map((part, i) => (
-                <Reveal key={part} delay={0.08 + i * STAGGER_FAST} preset={i === 2 ? "riseSoft" : "fadeUp"} once>
+                <Reveal key={part} delay={0.08 + i * STAGGER_FAST} preset={i === 2 ? "riseSoft" : "fadeUp"}>
                   <span className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}>
                     {part}
                   </span>
@@ -118,11 +118,11 @@ export function Hero() {
               ))}
             </h1>
 
-            <Reveal delay={0.28} preset="fadeUp" once>
+            <Reveal delay={0.28} preset="fadeUp">
               <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-white/70">{hero.subheadline}</p>
             </Reveal>
 
-            <Reveal delay={0.38} preset="fadeUp" once>
+            <Reveal delay={0.38} preset="fadeUp">
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button href={hero.primaryCta.href} variant="primary" size="lg">
                   {hero.primaryCta.label}
@@ -137,7 +137,7 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <RevealGroup stagger={STAGGER} delay={0.2} once className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <RevealGroup stagger={STAGGER} delay={0.2} className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {capabilityPreview.map((capability) => (
               <RevealItem key={capability.id} preset="scaleIn">
                 <a

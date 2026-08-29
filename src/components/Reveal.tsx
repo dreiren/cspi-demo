@@ -2,16 +2,9 @@
 
 import { m } from "framer-motion";
 import type { ReactNode } from "react";
+import { useInViewState } from "../hooks/useInViewState";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import {
-  DURATION_IN,
-  DURATION_OUT,
-  EASE_PREMIUM,
-  STAGGER,
-  presets,
-  viewportReplay,
-  type MotionPreset,
-} from "../lib/motion";
+import { STAGGER, createGroupVariants, revealVariants, viewportReplay, type MotionPreset } from "../lib/motion";
 
 type RevealProps = {
   children: ReactNode;
@@ -23,7 +16,7 @@ type RevealProps = {
 };
 
 /**
- * Fades content in when it enters the viewport and plays the reverse
+ * Fades content in when it enters the inset viewport and plays the reverse
  * (exit) when it leaves, so every scroll past a section feels like a
  * considered transition. Falls back to a static render under reduced motion.
  */
@@ -36,6 +29,7 @@ export function Reveal({
   preset = "fadeUp",
 }: RevealProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [ref, isInView] = useInViewState({ once, margin: viewportReplay.margin });
   const MotionTag = m[as];
 
   if (prefersReducedMotion) {
@@ -45,17 +39,11 @@ export function Reveal({
 
   return (
     <MotionTag
+      ref={ref}
       className={className}
-      variants={presets[preset]}
+      variants={revealVariants(preset, delay)}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ ...viewportReplay, once }}
-      transition={{
-        duration: DURATION_IN,
-        ease: EASE_PREMIUM,
-        delay,
-        opacity: { duration: DURATION_OUT, ease: EASE_PREMIUM, delay },
-      }}
+      animate={isInView ? "visible" : "hidden"}
     >
       {children}
     </MotionTag>
@@ -76,6 +64,7 @@ type RevealGroupProps = {
  */
 export function RevealGroup({ children, className, stagger = STAGGER, delay = 0.06, once = false }: RevealGroupProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [ref, isInView] = useInViewState({ once, margin: viewportReplay.margin });
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;
@@ -83,16 +72,11 @@ export function RevealGroup({ children, className, stagger = STAGGER, delay = 0.
 
   return (
     <m.div
+      ref={ref}
       className={className}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ ...viewportReplay, once }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: { staggerChildren: stagger, delayChildren: delay },
-        },
-      }}
+      animate={isInView ? "visible" : "hidden"}
+      variants={createGroupVariants(stagger, delay)}
     >
       {children}
     </m.div>
@@ -113,7 +97,7 @@ export function RevealItem({ children, className, preset = "fadeUp" }: RevealIte
   }
 
   return (
-    <m.div className={className} variants={presets[preset]}>
+    <m.div className={className} variants={revealVariants(preset)}>
       {children}
     </m.div>
   );
