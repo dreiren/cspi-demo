@@ -27,7 +27,7 @@ export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps)
       <Reveal preset="fadeIn">
         <p
           className={`text-xs font-semibold uppercase tracking-[0.14em] ${
-            isLight ? "text-white/45" : "text-(--color-ink-faint)"
+            isLight ? "text-(--color-on-band-faint)" : "text-(--color-ink-faint)"
           }`}
         >
           {caption}
@@ -44,7 +44,7 @@ export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps)
                       ? "border-(--color-accent)/50 bg-(--color-accent)/10"
                       : "border-(--color-accent)/40 bg-(--color-accent)/8"
                     : isLight
-                      ? "border-white/12 bg-white/[0.03]"
+                      ? "border-(--color-glass-border) bg-(--color-glass)"
                       : "border-(--color-line) bg-white"
                 }`}
               >
@@ -53,13 +53,13 @@ export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps)
                     i === steps.length - 1
                       ? "text-(--color-accent)"
                       : isLight
-                        ? "text-white"
+                        ? "text-(--color-on-band)"
                         : "text-(--color-primary)"
                   }`}
                 >
                   {`${String(i + 1).padStart(2, "0")}  ${step.label}`}
                 </span>
-                <span className={`text-sm leading-relaxed ${isLight ? "text-white/65" : "text-(--color-ink-soft)"}`}>
+                <span className={`text-sm leading-relaxed ${isLight ? "text-(--color-on-band-soft)" : "text-(--color-ink-soft)"}`}>
                   {step.plain}
                 </span>
               </div>

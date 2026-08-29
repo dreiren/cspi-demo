@@ -40,14 +40,14 @@ export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
       <span className="flex flex-col leading-none">
         <span
           className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${
-            isLight ? "text-white/45" : "text-(--color-ink-faint)"
+            isLight ? "text-(--color-on-band-faint)" : "text-(--color-ink-faint)"
           }`}
         >
           [Logo]
         </span>
         <span
           className={`mt-1 text-base font-bold tracking-tight ${
-            isLight ? "text-white" : "text-(--color-primary)"
+            isLight ? "text-(--color-on-band)" : "text-(--color-primary)"
           }`}
         >
           {siteMeta.companyName}

@@ -46,12 +46,9 @@ export function Hero() {
       <section
         id="hero"
         aria-label="Introduction"
-        className="relative flex min-h-[100svh] items-center overflow-hidden bg-(--color-primary-dark) pt-20"
+        className="relative flex min-h-[100svh] items-center overflow-hidden bg-(--color-band-deep) pt-20"
       >
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-10%,rgba(70,160,185,0.35),transparent_60%),linear-gradient(180deg,#081d38_0%,#0c2d54_55%,#0a2444_100%)]"
-        />
+        <div aria-hidden="true" className="theme-hero-wash absolute inset-0" />
 
         <ParallaxLayer speed={12} className="absolute inset-0">
           <GridOverlay opacity={0.28} />
@@ -83,19 +80,19 @@ export function Hero() {
         <ParallaxLayer speed={-30} className="absolute inset-0 hidden md:block">
           <div
             aria-hidden="true"
-            className="absolute right-[6%] top-[18%] h-40 w-28 rounded-[var(--radius-md)] border border-(--color-accent)/25 bg-white/[0.02] backdrop-blur-[1px] animate-(--animate-float-slow)"
+            className="absolute right-[6%] top-[18%] h-40 w-28 rounded-[var(--radius-md)] border border-(--color-accent)/25 bg-(--color-float) backdrop-blur-[1px] animate-(--animate-float-slow)"
           />
           <div
             aria-hidden="true"
-            className="absolute left-[8%] bottom-[16%] h-24 w-24 rounded-full border border-(--color-secondary)/30 bg-white/[0.02] animate-(--animate-float-slower)"
+            className="absolute left-[8%] bottom-[16%] h-24 w-24 rounded-full border border-(--color-secondary)/30 bg-(--color-float) animate-(--animate-float-slower)"
           />
           <div
             aria-hidden="true"
-            className="absolute right-[18%] bottom-[10%] h-16 w-40 rounded-[var(--radius-md)] border border-white/10 bg-white/[0.02] animate-(--animate-float-slow)"
+            className="absolute right-[18%] bottom-[10%] h-16 w-40 rounded-[var(--radius-md)] border border-(--color-glass-border) bg-(--color-float) animate-(--animate-float-slow)"
           />
           <div
             aria-hidden="true"
-            className="absolute left-[26%] top-[10%] h-20 w-20 border border-(--color-secondary)/25 bg-white/[0.02] animate-(--animate-float-slower)"
+            className="absolute left-[26%] top-[10%] h-20 w-20 border border-(--color-secondary)/25 bg-(--color-float) animate-(--animate-float-slower)"
             style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
           />
         </ParallaxLayer>
@@ -103,12 +100,12 @@ export function Hero() {
         <Container className="relative z-10 py-24">
           <div className="max-w-3xl">
             <Reveal preset="fadeIn">
-              <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
+              <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-(--color-glass-border-mid) bg-(--color-glass-mid) px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
                 {hero.eyebrow}
               </span>
             </Reveal>
 
-            <h1 className="mt-6 text-balance text-4xl text-white sm:text-5xl lg:text-[3.4rem]">
+            <h1 className="mt-6 text-balance text-4xl text-(--color-on-band) sm:text-5xl lg:text-[3.4rem]">
               {hero.headlineParts.map((part, i) => (
                 <Reveal key={part} delay={0.08 + i * STAGGER_FAST} preset={i === 2 ? "riseSoft" : "fadeUp"}>
                   <span className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}>
@@ -119,7 +116,7 @@ export function Hero() {
             </h1>
 
             <Reveal delay={0.28} preset="fadeUp">
-              <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-white/70">{hero.subheadline}</p>
+              <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-(--color-on-band-muted)">{hero.subheadline}</p>
             </Reveal>
 
             <Reveal delay={0.38} preset="fadeUp">
@@ -142,13 +139,13 @@ export function Hero() {
               <RevealItem key={capability.id} preset="scaleIn">
                 <a
                   href="#services"
-                  className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
+                  className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
                     <ServiceIcon name={capability.icon} className="h-5 w-5" />
                   </span>
-                  <span className="text-sm font-bold text-white">{capability.name}</span>
-                  <span className="text-xs leading-relaxed text-white/55">{capability.description}</span>
+                  <span className="text-sm font-bold text-(--color-on-band)">{capability.name}</span>
+                  <span className="text-xs leading-relaxed text-(--color-on-band-dim)">{capability.description}</span>
                 </a>
               </RevealItem>
             ))}
@@ -158,23 +155,23 @@ export function Hero() {
         {!prefersReducedMotion && (
           <m.div
             aria-hidden="true"
-            className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/40 sm:flex"
+            className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-(--color-on-band-faint) sm:flex"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
           >
             <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">Scroll</span>
-            <span className="h-9 w-5 rounded-full border border-white/25 p-1">
+            <span className="h-9 w-5 rounded-full border border-(--color-glass-border-strong) p-1">
               <span className="block h-1.5 w-1.5 rounded-full bg-(--color-accent)" />
             </span>
           </m.div>
         )}
       </section>
 
-      <section aria-label="Company introduction" className="relative overflow-hidden bg-(--color-primary) py-16 sm:py-20">
-        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,#0a2444_0%,#0c2d54_100%)]" />
+      <section aria-label="Company introduction" className="relative overflow-hidden bg-(--color-band) py-16 sm:py-20">
+        <div aria-hidden="true" className="theme-hero-intro-wash absolute inset-0" />
         <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <Reveal preset="fadeUp">
-            <p className="max-w-xl text-balance text-lg font-medium leading-relaxed text-white/85 sm:text-xl">
+            <p className="max-w-xl text-balance text-lg font-medium leading-relaxed text-(--color-on-band) sm:text-xl">
               {hero.intro}
             </p>
           </Reveal>

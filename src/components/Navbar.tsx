@@ -7,6 +7,7 @@ import { useScrolled } from "../hooks/useScrolled";
 import { Button } from "./Button";
 import { Container } from "./Container";
 import { LogoMark } from "./LogoMark";
+import { ThemeToggle } from "./ThemeToggle";
 
 const sectionIds = navLinks.map((link) => link.id);
 
@@ -34,7 +35,7 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         isSolid
-          ? "bg-(--color-primary-dark)/85 backdrop-blur-md shadow-[0_10px_30px_-15px_rgba(0,0,0,0.5)]"
+          ? "bg-(--color-nav-scrim) backdrop-blur-md shadow-[var(--shadow-nav)]"
           : "bg-transparent"
       }`}
     >
@@ -50,7 +51,7 @@ export function Navbar() {
                 href={`#${link.id}`}
                 aria-current={isActive ? "true" : undefined}
                 className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                  isActive ? "text-white" : "text-white/65 hover:text-white"
+                  isActive ? "text-(--color-on-band)" : "text-(--color-on-band-soft) hover:text-(--color-on-band)"
                 }`}
               >
                 {link.label}
@@ -65,40 +66,44 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle />
           <Button href="#contact" variant="primary" size="md">
             Contact CIDUS
           </Button>
         </div>
 
-        <button
-          type="button"
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white lg:hidden"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {menuOpen ? (
-              <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            ) : (
-              <path
-                d="M4 7H20M4 12H20M4 17H20"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            )}
-          </svg>
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle showLabel={false} />
+          <button
+            type="button"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-(--color-glass-border-strong) text-(--color-on-band)"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              {menuOpen ? (
+                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              ) : (
+                <path
+                  d="M4 7H20M4 12H20M4 17H20"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </Container>
 
       <div
         id="mobile-menu"
         inert={!menuOpen}
         aria-hidden={!menuOpen}
-        className={`grid overflow-hidden bg-(--color-primary-dark)/97 backdrop-blur-md transition-[grid-template-rows] duration-300 ease-out lg:hidden ${
+        className={`grid overflow-hidden bg-(--color-nav-menu) backdrop-blur-md transition-[grid-template-rows] duration-300 ease-out lg:hidden ${
           menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         }`}
       >
@@ -110,12 +115,18 @@ export function Navbar() {
                 href={`#${link.id}`}
                 onClick={() => setMenuOpen(false)}
                 className={`rounded-lg px-4 py-3 text-base font-medium ${
-                  activeSection === link.id ? "bg-white/10 text-white" : "text-white/70"
+                  activeSection === link.id
+                    ? "bg-(--color-glass-strong) text-(--color-on-band)"
+                    : "text-(--color-on-band-muted)"
                 }`}
               >
                 {link.label}
               </a>
             ))}
+            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-(--color-glass-border) px-4 py-3">
+              <span className="text-sm font-medium text-(--color-on-band-muted)">Appearance</span>
+              <ThemeToggle />
+            </div>
             <Button href="#contact" variant="primary" size="md" className="mt-3 w-full" onClick={() => setMenuOpen(false)}>
               Contact CIDUS
             </Button>

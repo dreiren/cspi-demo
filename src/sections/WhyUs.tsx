@@ -24,11 +24,8 @@ export function WhyUs() {
   const [hubLabel, ...chainLabels] = whyUsSection.outcomeChain;
 
   return (
-    <section id="why-us" aria-label="Why choose CIDUS" className="relative overflow-hidden bg-(--color-primary-dark) py-24 sm:py-32">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_20%,rgba(105,205,223,0.14),transparent_65%)]"
-      />
+    <section id="why-us" aria-label="Why choose CIDUS" className="relative overflow-hidden bg-(--color-band-deep) py-24 sm:py-32">
+      <div aria-hidden="true" className="theme-whyus-wash absolute inset-0" />
       <ParallaxLayer speed={10} className="absolute inset-0">
         <GridOverlay opacity={0.2} />
       </ParallaxLayer>
@@ -78,7 +75,7 @@ export function WhyUs() {
               <span
                 key={label}
                 style={{ left: `${(topXs[i] / VIEW_W) * 100}%`, top: `${(TOP_Y / VIEW_H) * 100}%` }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[74px] rounded-2xl border border-white/15 bg-(--color-primary) px-1.5 py-1.5 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.02em] text-white sm:max-w-[120px] sm:px-3 sm:text-[10px]"
+                className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[74px] rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-1.5 py-1.5 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.02em] text-white sm:max-w-[120px] sm:px-3 sm:text-[10px]"
               >
                 {label}
               </span>
@@ -100,8 +97,8 @@ export function WhyUs() {
                   style={{ left: `${(HUB_X / VIEW_W) * 100}%`, top: `${(y / VIEW_H) * 100}%` }}
                   className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.14em] sm:text-xs ${
                     isLast
-                      ? "rounded-full border border-white/20 bg-white/10 px-4 py-2 text-white"
-                      : "text-white/70"
+                      ? "rounded-full border border-(--color-glass-border-strong) bg-(--color-glass-strong) px-4 py-2 text-(--color-on-band)"
+                      : "text-(--color-on-band-muted)"
                   }`}
                 >
                   {label}
@@ -114,15 +111,15 @@ export function WhyUs() {
         <div className="mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {whyUsItems.map((item, i) => (
             <Reveal key={item.id} delay={i * STAGGER_FAST} preset="fadeUp">
-              <div className="h-full rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.04] p-6 transition-colors duration-300 hover:border-(--color-accent)/40">
+              <div className="h-full rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-6 transition-colors duration-300 hover:border-(--color-accent)/40">
                 <span
                   aria-hidden="true"
                   className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/40 text-xs font-bold text-(--color-accent)"
                 >
                   {i + 1}
                 </span>
-                <h3 className="text-base font-bold text-white">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/65">{item.description}</p>
+                <h3 className="text-base font-bold text-(--color-on-band)">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-(--color-on-band-soft)">{item.description}</p>
               </div>
             </Reveal>
           ))}

@@ -12,12 +12,9 @@ export function Services() {
     <section
       id="services"
       aria-label="Services"
-      className="relative overflow-hidden bg-(--color-primary) py-24 sm:py-32"
+      className="relative overflow-hidden bg-(--color-band) py-24 sm:py-32"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,#0a2444_0%,#0c2d54_45%,#0e3563_100%)]"
-      />
+      <div aria-hidden="true" className="theme-services-wash absolute inset-0" />
       <ParallaxLayer speed={14} className="absolute inset-0">
         <GridOverlay opacity={0.22} />
       </ParallaxLayer>
@@ -50,13 +47,13 @@ export function Services() {
                   </span>
                 </div>
 
-                <div className="rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-8">
+                <div className="rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-6 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-8">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <div className="flex items-center gap-3">
                       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/40 text-(--color-accent) sm:hidden">
                         <ServiceIcon name={group.icon} className="h-5 w-5" />
                       </span>
-                      <h3 className="text-xl font-bold text-white sm:text-2xl">{group.name}</h3>
+                      <h3 className="text-xl font-bold text-(--color-on-band) sm:text-2xl">{group.name}</h3>
                     </div>
                     <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-accent)/70">
                       {`0${i + 1}`}
@@ -66,8 +63,8 @@ export function Services() {
                   <dl className="mt-5 grid gap-5 sm:grid-cols-2">
                     {group.services.map((service) => (
                       <div key={service.id} className="border-l-2 border-(--color-accent)/40 pl-4">
-                        <dt className="text-sm font-bold text-white">{service.name}</dt>
-                        <dd className="mt-1.5 text-sm leading-relaxed text-white/60">{service.description}</dd>
+                        <dt className="text-sm font-bold text-(--color-on-band)">{service.name}</dt>
+                        <dd className="mt-1.5 text-sm leading-relaxed text-(--color-on-band-dim)">{service.description}</dd>
                       </div>
                     ))}
                   </dl>
@@ -85,7 +82,7 @@ export function Services() {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--color-accent)">
               {servicesSection.outcome}
             </p>
-            <p className="max-w-md text-sm leading-relaxed text-white/60">
+            <p className="max-w-md text-sm leading-relaxed text-(--color-on-band-dim)">
               Each capability above supports the next. Together they become one coordinated way of working.
             </p>
           </div>

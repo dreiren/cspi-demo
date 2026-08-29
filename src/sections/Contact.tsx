@@ -23,7 +23,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" aria-label="Contact us" className="relative overflow-hidden bg-white py-24 sm:py-32">
+    <section id="contact" aria-label="Contact us" className="relative overflow-hidden bg-(--color-surface) py-24 sm:py-32">
       {/* calmer, simplified visual — the network settles as the story concludes */}
       <div
         aria-hidden="true"

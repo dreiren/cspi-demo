@@ -23,10 +23,10 @@ export function About() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <section id="about" aria-label="About us" className="relative overflow-hidden bg-white py-24 sm:py-32">
+    <section id="about" aria-label="About us" className="relative overflow-hidden bg-(--color-surface) py-24 sm:py-32">
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f5f8fb_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,var(--color-surface)_0%,var(--color-surface-soft)_100%)]"
       />
 
       <Container className="relative grid gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">

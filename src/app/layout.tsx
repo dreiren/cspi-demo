@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "../components/MotionProvider";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { buildOrganizationJsonLd, buildWebPageJsonLd, seoDescription, seoKeywords, seoTitle, SITE_URL } from "../lib/seo";
+import { themeBootstrapScript } from "../lib/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -56,8 +57,9 @@ export default function RootLayout({
   const webPageJsonLd = buildWebPageJsonLd();
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
