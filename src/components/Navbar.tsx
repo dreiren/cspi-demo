@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { navLinks } from "../data/content";
 import { useActiveSection } from "../hooks/useActiveSection";

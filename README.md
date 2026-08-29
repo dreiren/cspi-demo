@@ -3,8 +3,8 @@
 A premium, parallax, scroll-driven one-page corporate website for **CIDUS**, an
 integrated solutions and professional services provider spanning technology,
 infrastructure, operations, logistics, engineering, procurement, and related
-support services. Built with **React, TypeScript, Vite, Tailwind CSS v4, and
-Framer Motion**.
+support services. Built with **Next.js (App Router), React, TypeScript,
+Tailwind CSS v4, and Framer Motion**.
 
 Tagline: **"Integrated Solutions. Trusted Service. Reliable Results."**
 
@@ -15,9 +15,12 @@ replaced without a redesign. See `src/data/content.ts` for the full list.
 
 ## Tech stack
 
-- **Vite + React + TypeScript** — fast dev server, typed components.
+- **Next.js (App Router) + React + TypeScript** — the page is statically
+  prerendered at build time (`next build` outputs it as static HTML/JS, no
+  server-side data fetching is involved).
 - **Tailwind CSS v4** — utility-first styling driven by design tokens declared
-  once in `src/index.css` (`@theme` block).
+  once in `src/app/globals.css` (`@theme` block), wired in via the
+  `@tailwindcss/postcss` plugin (`postcss.config.mjs`).
 - **Framer Motion** — scroll-linked parallax (`useScroll`/`useTransform`) and
   reveal-on-scroll animations, all GPU-accelerated (`transform`/`opacity`
   only) and automatically disabled when the user has
@@ -27,16 +30,25 @@ replaced without a redesign. See `src/data/content.ts` for the full list.
 
 ```
 src/
-  data/content.ts        # ALL site copy lives here — edit this file first
-  hooks/                  # usePrefersReducedMotion, useActiveSection, useScrolled
-  components/             # Reusable UI: Button, Container, Navbar, LogoMark,
-                           # SectionHeading, Reveal (scroll fade-in), ParallaxLayer,
-                           # ClientLogoPlaceholder, graphics/ (Node, FlowLine, Grid, icons)
-  sections/                # One file per page section: Hero, About, Services,
-                           # Clients, WhyUs, Contact, Footer
-  App.tsx                 # Section order / page assembly
-  index.css                # Design tokens (colors, radii, shadows) + base styles
+  app/
+    layout.tsx            # <html>/<body> shell, metadata, globals.css import
+    page.tsx               # Assembles the sections into the one-page layout
+    globals.css             # Design tokens (colors, radii, shadows) + base styles
+  data/content.ts          # ALL site copy lives here — edit this file first
+  hooks/                    # usePrefersReducedMotion, useActiveSection, useScrolled
+  components/               # Reusable UI: Button, Container, Navbar, LogoMark,
+                             # SectionHeading, Reveal (scroll fade-in), ParallaxLayer,
+                             # ClientLogoPlaceholder, graphics/ (Node, FlowLine, Grid, icons)
+  sections/                  # One file per page section: Hero, About, Services,
+                             # Clients, WhyUs, Contact, Footer
 ```
+
+Only the files that actually use React hooks or Framer Motion (`ParallaxLayer`,
+`Reveal`, `Navbar`, and the `Hero`/`About`/`WhyUs`/`Contact` sections) are
+marked `"use client"`. Everything else (`Services`, `Clients`, `Footer`, and
+the small presentational primitives) renders as a React Server Component —
+Next.js still statically prerenders all of it, this only affects which
+modules ship JS for hydration.
 
 ## One-page structure
 
@@ -84,8 +96,8 @@ in `src/sections/Clients.tsx`. Organization names live in
 ## Design system
 
 Brand colors, typography, radii, and shadows are defined once as CSS custom
-properties in `src/index.css` under `@theme`, then consumed via Tailwind's
-`bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
+properties in `src/app/globals.css` under `@theme`, then consumed via
+Tailwind's `bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
 
 | Token | Value | Usage |
 | --- | --- | --- |
@@ -107,8 +119,8 @@ properties in `src/index.css` under `@theme`, then consumed via Tailwind's
 
 ```bash
 npm install
-npm run dev       # start local dev server
-npm run build     # type-check + production build
+npm run dev       # start the Next.js dev server (Turbopack)
+npm run build     # type-check + static production build
+npm run start      # serve the production build
 npm run lint       # oxlint
-npm run preview    # preview the production build
 ```
