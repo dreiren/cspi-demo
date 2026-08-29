@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { Fragment } from "react";
 import { Button } from "../components/Button";

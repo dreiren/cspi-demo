@@ -1,3 +1,5 @@
+"use client";
+
 import { Container } from "../components/Container";
 import { FlowLine } from "../components/graphics/FlowLine";
 import { GlowNode } from "../components/graphics/GlowNode";
