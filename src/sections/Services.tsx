@@ -5,6 +5,7 @@ import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { serviceGroups, servicesSection } from "../data/content";
+import { STAGGER_SLOW } from "../lib/motion";
 
 export function Services() {
   return (
@@ -30,14 +31,18 @@ export function Services() {
         />
 
         <div className="relative mt-16 flex flex-col">
-          {/* connecting spine — each capability group feeds into the next */}
           <div
             aria-hidden="true"
             className="absolute left-7 top-10 bottom-24 hidden w-px bg-gradient-to-b from-(--color-accent)/60 via-(--color-secondary)/40 to-(--color-accent)/60 sm:block"
           />
 
           {serviceGroups.map((group, i) => (
-            <Reveal key={group.id} delay={i * 0.12} className="relative mb-10 last:mb-0">
+            <Reveal
+              key={group.id}
+              delay={i * STAGGER_SLOW}
+              preset={i % 2 === 0 ? "fadeLeft" : "fadeRight"}
+              className="relative mb-10 last:mb-0"
+            >
               <div className="grid gap-5 sm:grid-cols-[3.5rem_1fr] sm:gap-8">
                 <div className="hidden sm:flex sm:justify-center">
                   <span className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border border-(--color-accent)/50 bg-(--color-primary) text-(--color-accent) shadow-[var(--shadow-glow)]">
@@ -72,14 +77,16 @@ export function Services() {
           ))}
         </div>
 
-        {/* Outcome banner: every group converges into one integrated solution */}
-        <Reveal delay={0.3}>
+        <Reveal delay={0.12} preset="scaleIn">
           <div className="relative mx-auto mt-4 flex max-w-2xl flex-col items-center gap-3 rounded-[var(--radius-lg)] border border-(--color-accent)/30 bg-gradient-to-b from-(--color-accent)/12 to-transparent px-8 py-8 text-center">
             <svg width="20" height="28" viewBox="0 0 20 28" aria-hidden="true" className="text-(--color-accent)/70">
               <path d="M10 0V22M10 22L4 16M10 22L16 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--color-accent)">
               {servicesSection.outcome}
+            </p>
+            <p className="max-w-md text-sm leading-relaxed text-white/60">
+              Each capability above supports the next. Together they become one coordinated way of working.
             </p>
           </div>
         </Reveal>

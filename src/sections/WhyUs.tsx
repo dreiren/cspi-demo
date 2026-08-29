@@ -9,6 +9,7 @@ import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { whyUsItems, whyUsSection } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { STAGGER_FAST } from "../lib/motion";
 
 const VIEW_W = 500;
 const VIEW_H = 280;
@@ -44,7 +45,7 @@ export function WhyUs() {
 
         {/* Convergence diagram: four capability groups converge into Integrated Solutions,
             which carries through to Trusted Service and Reliable Results — the site's tagline. */}
-        <Reveal delay={0.15}>
+        <Reveal delay={0.12} preset="scaleIn">
           <div className="relative mx-auto mt-16 aspect-[500/280] w-full max-w-3xl">
             <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
               {topXs.map((x, i) => (
@@ -112,7 +113,7 @@ export function WhyUs() {
 
         <div className="mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {whyUsItems.map((item, i) => (
-            <Reveal key={item.id} delay={i * 0.06}>
+            <Reveal key={item.id} delay={i * STAGGER_FAST} preset="fadeUp">
               <div className="h-full rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.04] p-6 transition-colors duration-300 hover:border-(--color-accent)/40">
                 <span
                   aria-hidden="true"

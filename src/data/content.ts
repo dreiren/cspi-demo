@@ -37,6 +37,33 @@ export const hero = {
   primaryCta: { label: "Explore Our Services", href: "#services" },
   secondaryCta: { label: "Contact CIDUS", href: "#contact" },
   journey: ["Technology", "Infrastructure", "Operations", "Supply", "Engineering", "Integrated Solutions"],
+  journeyCaption: "How CIDUS works, in plain language",
+  journeySteps: [
+    {
+      label: "Technology",
+      plain: "The systems people use every day.",
+    },
+    {
+      label: "Infrastructure",
+      plain: "The foundation that keeps those systems running.",
+    },
+    {
+      label: "Operations",
+      plain: "The day-to-day work that keeps an organization moving.",
+    },
+    {
+      label: "Supply",
+      plain: "Getting materials and services where they need to go.",
+    },
+    {
+      label: "Engineering",
+      plain: "Technical planning and support when work gets specialized.",
+    },
+    {
+      label: "Integrated Solutions",
+      plain: "One partner coordinating the pieces, so you don't have to.",
+    },
+  ],
 };
 
 export type CapabilityPreview = {
@@ -243,7 +270,7 @@ export const servicesSection = {
   eyebrow: "Our Services",
   heading: "An Integrated Service Ecosystem",
   description:
-    "Nine service areas, organized into four connected capabilities — technology feeds infrastructure, infrastructure supports operations, operations rely on supply and logistics, and engineering ties the system together into one integrated solution.",
+    "Nine service areas, organized into four connected capabilities. In simple terms: we help with systems, facilities, day-to-day operations, moving and storing supplies, and technical work — then bring those pieces together so you work with one coordinated partner.",
   outcome: "Integrated Solutions",
 };
 

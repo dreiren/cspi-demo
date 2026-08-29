@@ -108,12 +108,26 @@ Tailwind's `bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
 
 ## Motion & accessibility
 
-- Parallax and reveal animations respect `prefers-reduced-motion` (see
-  `usePrefersReducedMotion`) — both via a global CSS fallback and per-component
-  checks that disable transforms entirely.
+- A shared motion system in `src/lib/motion.ts` defines stagger intervals
+  (0.06 / 0.10 / 0.14s) and entry/exit durations. `Reveal` / `RevealGroup`
+  play content in as it enters the viewport and reverse as it leaves.
+- Framer Motion is loaded through `LazyMotion` (`domAnimation` only) plus
+  GPU-friendly `transform` / `opacity` parallax.
+- Below-the-fold sections are code-split with `next/dynamic` so the first
+  paint stays focused on the Hero.
+- Animations respect `prefers-reduced-motion` (global CSS, MotionConfig, and
+  `usePrefersReducedMotion`).
 - All interactive elements are keyboard accessible with visible focus states,
   the mobile menu closes on <kbd>Escape</kbd>, and a "Skip to main content"
   link is included for screen-reader/keyboard users.
+
+## SEO
+
+- Title, description, keywords, Open Graph, and Twitter cards live in
+  `src/app/layout.tsx` / `src/lib/seo.ts`.
+- Organization + ProfessionalService JSON-LD lists the nine official services.
+- `src/app/robots.ts` and `src/app/sitemap.ts` are generated at build time.
+- Set `NEXT_PUBLIC_SITE_URL` to the real production origin before launch.
 
 ## Development
 
@@ -123,4 +137,5 @@ npm run dev       # start the Next.js dev server (Turbopack)
 npm run build     # type-check + static production build
 npm run start      # serve the production build
 npm run lint       # oxlint
+npm test           # unit tests (motion intervals, content structure, SEO)
 ```

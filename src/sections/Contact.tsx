@@ -51,7 +51,7 @@ export function Contact() {
             tone="dark"
           />
 
-          <Reveal delay={0.15}>
+          <Reveal delay={0.12} preset="fadeUp">
             <dl className="mt-10 flex flex-col gap-5">
               {contactSection.details.map((detail) => (
                 <div key={detail.label} className="flex items-center gap-4">
@@ -74,7 +74,7 @@ export function Contact() {
             </dl>
           </Reveal>
 
-          <Reveal delay={0.25}>
+          <Reveal delay={0.22} preset="fadeUp">
             <div className="mt-10">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-ink-faint)">
                 [Social Links]
@@ -95,7 +95,7 @@ export function Contact() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.1}>
+        <Reveal delay={0.08} preset="fadeRight">
           <form
             onSubmit={handleSubmit}
             className="rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)] sm:p-8"

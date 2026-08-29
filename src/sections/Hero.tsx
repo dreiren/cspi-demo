@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Fragment } from "react";
+import { m } from "framer-motion";
 import { Button } from "../components/Button";
 import { Container } from "../components/Container";
 import { FlowLine } from "../components/graphics/FlowLine";
@@ -9,9 +8,11 @@ import { GlowNode } from "../components/graphics/GlowNode";
 import { GridOverlay } from "../components/graphics/GridOverlay";
 import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
-import { Reveal } from "../components/Reveal";
+import { ProcessFlow } from "../components/ProcessFlow";
+import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
 import { capabilityPreview, hero } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { STAGGER, STAGGER_FAST } from "../lib/motion";
 
 const nodes = [
   { x: 90, y: 120, tone: "accent" as const, size: 4 },
@@ -47,18 +48,15 @@ export function Hero() {
         aria-label="Introduction"
         className="relative flex min-h-[100svh] items-center overflow-hidden bg-(--color-primary-dark) pt-20"
       >
-        {/* Base gradient wash */}
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-10%,rgba(70,160,185,0.35),transparent_60%),linear-gradient(180deg,#081d38_0%,#0c2d54_55%,#0a2444_100%)]"
         />
 
-        {/* Layer 1 — background grid, slowest */}
         <ParallaxLayer speed={12} className="absolute inset-0">
           <GridOverlay opacity={0.28} />
         </ParallaxLayer>
 
-        {/* Layer 2 — mid-depth constellation representing connected capabilities */}
         <ParallaxLayer speed={26} className="absolute inset-0 opacity-70">
           <svg
             className="h-full w-full"
@@ -82,7 +80,6 @@ export function Hero() {
           </svg>
         </ParallaxLayer>
 
-        {/* Layer 3 — foreground abstract shapes: infrastructure, engineering, and supply movement */}
         <ParallaxLayer speed={-30} className="absolute inset-0 hidden md:block">
           <div
             aria-hidden="true"
@@ -105,32 +102,27 @@ export function Hero() {
 
         <Container className="relative z-10 py-24">
           <div className="max-w-3xl">
-            <Reveal>
+            <Reveal preset="fadeIn" once>
               <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
                 {hero.eyebrow}
               </span>
             </Reveal>
 
-            <Reveal delay={0.1}>
-              <h1 className="mt-6 text-balance text-4xl text-white sm:text-5xl lg:text-[3.4rem]">
-                {hero.headlineParts.map((part, i) => (
-                  <span
-                    key={part}
-                    className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}
-                  >
+            <h1 className="mt-6 text-balance text-4xl text-white sm:text-5xl lg:text-[3.4rem]">
+              {hero.headlineParts.map((part, i) => (
+                <Reveal key={part} delay={0.08 + i * STAGGER_FAST} preset={i === 2 ? "riseSoft" : "fadeUp"} once>
+                  <span className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}>
                     {part}
                   </span>
-                ))}
-              </h1>
+                </Reveal>
+              ))}
+            </h1>
+
+            <Reveal delay={0.28} preset="fadeUp" once>
+              <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-white/70">{hero.subheadline}</p>
             </Reveal>
 
-            <Reveal delay={0.2}>
-              <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-white/70">
-                {hero.subheadline}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.3}>
+            <Reveal delay={0.38} preset="fadeUp" once>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <Button href={hero.primaryCta.href} variant="primary" size="lg">
                   {hero.primaryCta.label}
@@ -143,41 +135,14 @@ export function Hero() {
                 </Button>
               </div>
             </Reveal>
-
-            <Reveal delay={0.4}>
-              <div
-                className="mt-14 flex flex-wrap items-center gap-x-2 gap-y-3 text-xs font-semibold uppercase tracking-[0.1em] text-white/45"
-                aria-label={`How CIDUS connects capabilities: ${hero.journey.join(" to ")}`}
-              >
-                {hero.journey.map((step, i) => (
-                  <Fragment key={step}>
-                    <span
-                      className={`rounded-full border px-3 py-1.5 ${
-                        i === hero.journey.length - 1
-                          ? "border-(--color-accent)/50 text-(--color-accent) bg-(--color-accent)/10"
-                          : "border-white/15"
-                      }`}
-                    >
-                      {step}
-                    </span>
-                    {i < hero.journey.length - 1 && (
-                      <span aria-hidden="true" className="text-white/25">
-                        →
-                      </span>
-                    )}
-                  </Fragment>
-                ))}
-              </div>
-            </Reveal>
           </div>
 
-          <Reveal delay={0.5}>
-            <div className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-              {capabilityPreview.map((capability) => (
+          <RevealGroup stagger={STAGGER} delay={0.2} once className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {capabilityPreview.map((capability) => (
+              <RevealItem key={capability.id} preset="scaleIn">
                 <a
-                  key={capability.id}
                   href="#services"
-                  className="group flex flex-col gap-3 rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
+                  className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
                     <ServiceIcon name={capability.icon} className="h-5 w-5" />
@@ -185,13 +150,13 @@ export function Hero() {
                   <span className="text-sm font-bold text-white">{capability.name}</span>
                   <span className="text-xs leading-relaxed text-white/55">{capability.description}</span>
                 </a>
-              ))}
-            </div>
-          </Reveal>
+              </RevealItem>
+            ))}
+          </RevealGroup>
         </Container>
 
         {!prefersReducedMotion && (
-          <motion.div
+          <m.div
             aria-hidden="true"
             className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-white/40 sm:flex"
             animate={{ y: [0, 8, 0] }}
@@ -201,22 +166,19 @@ export function Hero() {
             <span className="h-9 w-5 rounded-full border border-white/25 p-1">
               <span className="block h-1.5 w-1.5 rounded-full bg-(--color-accent)" />
             </span>
-          </motion.div>
+          </m.div>
         )}
       </section>
 
-      {/* Bridge statement: introduces CIDUS before the About section expands on it */}
-      <section aria-label="Company introduction" className="relative overflow-hidden bg-(--color-primary) py-14 sm:py-16">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(180deg,#0a2444_0%,#0c2d54_100%)]"
-        />
-        <Container className="relative">
-          <Reveal>
-            <p className="mx-auto max-w-3xl text-balance text-center text-lg font-medium leading-relaxed text-white/85 sm:text-xl">
+      <section aria-label="Company introduction" className="relative overflow-hidden bg-(--color-primary) py-16 sm:py-20">
+        <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,#0a2444_0%,#0c2d54_100%)]" />
+        <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <Reveal preset="fadeUp">
+            <p className="max-w-xl text-balance text-lg font-medium leading-relaxed text-white/85 sm:text-xl">
               {hero.intro}
             </p>
           </Reveal>
+          <ProcessFlow caption={hero.journeyCaption} steps={hero.journeySteps} tone="light" />
         </Container>
       </section>
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
@@ -40,8 +40,8 @@ export function ParallaxLayer({ children, speed = 20, className = "" }: Parallax
   }
 
   return (
-    <motion.div ref={ref} style={{ y, willChange: "transform" }} className={className}>
+    <m.div ref={ref} style={{ y, willChange: "transform" }} className={className}>
       {children}
-    </motion.div>
+    </m.div>
   );
 }

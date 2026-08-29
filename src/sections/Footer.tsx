@@ -1,5 +1,6 @@
 import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
+import { Reveal } from "../components/Reveal";
 import { contactSection, footer, navLinks, serviceGroups } from "../data/content";
 
 export function Footer() {
@@ -13,6 +14,7 @@ export function Footer() {
       />
 
       <Container>
+        <Reveal preset="fadeUp">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
             <LogoMark tone="light" />
@@ -71,11 +73,14 @@ export function Footer() {
             </ul>
           </div>
         </div>
+        </Reveal>
 
+        <Reveal delay={0.12} preset="fadeIn">
         <div className="mt-16 flex flex-col-reverse items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row">
           <p>{footer.copyright(year)}</p>
           <p className="text-white/30">Design system built for easy content replacement.</p>
         </div>
+        </Reveal>
       </Container>
     </footer>
   );
