@@ -45,7 +45,6 @@ export type ContactValidationResult =
   | { ok: true; honeypot: false; value: SanitizedContact }
   | { ok: false; errors: ContactFieldErrors };
 
-const CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
 const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const PHONE_COMPACT = /^\+?[0-9]{7,15}$/;
 
@@ -68,7 +67,14 @@ export function isValidPhone(value: string): boolean {
 }
 
 function stripControls(value: string): string {
-  return value.replace(CONTROL_CHARS, "");
+  let result = "";
+  for (const char of value) {
+    const code = char.charCodeAt(0);
+    const allowWhitespace = code === 9 || code === 10 || code === 13;
+    if (!allowWhitespace && (code < 32 || code === 127)) continue;
+    result += char;
+  }
+  return result;
 }
 
 function asString(value: unknown): string {

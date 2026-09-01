@@ -165,6 +165,19 @@ describe("validateContactPayload", () => {
     }
   });
 
+  it("strips control characters without changing visible copy", () => {
+    const result = validateContactPayload({
+      ...validBase,
+      name: "Jane\u0000 Doe",
+      message: "Please call us about cabling.\u0007",
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok && !result.honeypot) {
+      expect(result.value.name).toBe("Jane Doe");
+      expect(result.value.message).toBe("Please call us about cabling.");
+    }
+  });
+
   it("does not echo HTML from the message into errors", () => {
     const result = validateContactPayload({
       ...validBase,
