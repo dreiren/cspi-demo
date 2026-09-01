@@ -12,10 +12,13 @@ const About = dynamic(() => import("../sections/About").then((mod) => mod.About)
 const Services = dynamic(() => import("../sections/Services").then((mod) => mod.Services), {
   loading: () => sectionFallback,
 });
-const Clients = dynamic(() => import("../sections/Clients").then((mod) => mod.Clients), {
+const Values = dynamic(() => import("../sections/Values").then((mod) => mod.Values), {
   loading: () => sectionFallback,
 });
 const WhyUs = dynamic(() => import("../sections/WhyUs").then((mod) => mod.WhyUs), {
+  loading: () => sectionFallback,
+});
+const Clients = dynamic(() => import("../sections/Clients").then((mod) => mod.Clients), {
   loading: () => sectionFallback,
 });
 const Contact = dynamic(() => import("../sections/Contact").then((mod) => mod.Contact), {
@@ -36,8 +39,9 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
-        <Clients />
+        <Values />
         <WhyUs />
+        <Clients />
         <Contact />
       </main>
       <Footer />

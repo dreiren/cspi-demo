@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "../components/MotionProvider";
 import { ScrollProgress } from "../components/ScrollProgress";
+import { siteMeta } from "../data/content";
 import { buildOrganizationJsonLd, buildWebPageJsonLd, seoDescription, seoKeywords, seoTitle, SITE_URL } from "../lib/seo";
 import { themeBootstrapScript } from "../lib/theme";
 import "./globals.css";
@@ -9,15 +10,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: seoTitle,
-    template: "%s | CIDUS",
+    template: `%s | ${siteMeta.shortName}`,
   },
   description: seoDescription,
   keywords: seoKeywords,
-  applicationName: "CIDUS",
-  authors: [{ name: "CIDUS" }],
-  creator: "CIDUS",
-  publisher: "CIDUS",
-  category: "Professional Services",
+  applicationName: siteMeta.legalName,
+  authors: [{ name: siteMeta.legalName }],
+  creator: siteMeta.legalName,
+  publisher: siteMeta.legalName,
+  category: "Information Technology",
   robots: {
     index: true,
     follow: true,
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: SITE_URL,
-    siteName: "CIDUS",
+    siteName: siteMeta.legalName,
     title: seoTitle,
     description: seoDescription,
   },

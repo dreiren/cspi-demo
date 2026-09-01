@@ -40,9 +40,9 @@ export function WhyUs() {
           className="mx-auto"
         />
 
-        {/* Convergence diagram: four capability groups converge into Integrated Solutions,
-            which carries through to Trusted Service and Reliable Results — the site's tagline. */}
+        {/* Four IT pillars converge into Integrated Solutions, then Trusted Service and Reliable Results. */}
         <Reveal delay={0.12} preset="scaleIn">
+          <ParallaxLayer speed={18}>
           <div className="relative mx-auto mt-16 aspect-[500/280] w-full max-w-3xl">
             <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
               {topXs.map((x, i) => (
@@ -106,21 +106,24 @@ export function WhyUs() {
               );
             })}
           </div>
+          </ParallaxLayer>
         </Reveal>
 
         <div className="mt-20 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {whyUsItems.map((item, i) => (
             <Reveal key={item.id} delay={i * STAGGER_FAST} preset="fadeUp">
-              <div className="h-full rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-6 transition-colors duration-300 hover:border-(--color-accent)/40">
-                <span
-                  aria-hidden="true"
-                  className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/40 text-xs font-bold text-(--color-accent)"
-                >
-                  {i + 1}
-                </span>
-                <h3 className="text-base font-bold text-(--color-on-band)">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-(--color-on-band-soft)">{item.description}</p>
-              </div>
+              <ParallaxLayer speed={i % 2 === 0 ? 12 : -10}>
+                <div className="h-full rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-6 transition-colors duration-300 hover:border-(--color-accent)/40">
+                  <span
+                    aria-hidden="true"
+                    className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/40 text-xs font-bold text-(--color-accent)"
+                  >
+                    {i + 1}
+                  </span>
+                  <h3 className="text-base font-bold text-(--color-on-band)">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-(--color-on-band-soft)">{item.description}</p>
+                </div>
+              </ParallaxLayer>
             </Reveal>
           ))}
         </div>

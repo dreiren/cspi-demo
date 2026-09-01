@@ -1,6 +1,7 @@
 "use client";
 
 import { STAGGER_FAST } from "../lib/motion";
+import { ParallaxLayer } from "./ParallaxLayer";
 import { Reveal, RevealGroup, RevealItem } from "./Reveal";
 
 export type JourneyStep = {
@@ -15,9 +16,9 @@ type ProcessFlowProps = {
 };
 
 /**
- * Explains CIDUS's connected-capability story in plain language so
- * non-technical visitors can follow the same path as the visual system:
- * many kinds of work, brought together as one partner.
+ * Explains a CIDUS story in plain language so non-technical visitors
+ * can follow official terms (IT infrastructure, data, networks) next
+ * to an everyday restatement.
  */
 export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps) {
   const isLight = tone === "light";
@@ -37,6 +38,7 @@ export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps)
       <RevealGroup stagger={STAGGER_FAST} delay={0.08} className="mt-5 flex flex-col gap-3">
         {steps.map((step, i) => (
           <RevealItem key={step.label} preset={i === steps.length - 1 ? "scaleIn" : "fadeUp"}>
+              <ParallaxLayer speed={i % 2 === 0 ? 10 : -8}>
               <div
                 className={`flex flex-col gap-1 rounded-[var(--radius-md)] border px-4 py-3 sm:flex-row sm:items-baseline sm:gap-6 ${
                   i === steps.length - 1
@@ -63,6 +65,7 @@ export function ProcessFlow({ caption, steps, tone = "dark" }: ProcessFlowProps)
                   {step.plain}
                 </span>
               </div>
+              </ParallaxLayer>
             </RevealItem>
         ))}
       </RevealGroup>

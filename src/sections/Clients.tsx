@@ -1,5 +1,6 @@
 import { ClientLogoPlaceholder } from "../components/ClientLogoPlaceholder";
 import { Container } from "../components/Container";
+import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { clientsSection } from "../data/content";
@@ -32,7 +33,9 @@ export function Clients() {
         <RevealGroup stagger={STAGGER} delay={0.1} className="mx-auto mt-8 grid max-w-3xl gap-4 sm:mt-4 sm:grid-cols-3">
           {organizations.map((org) => (
             <RevealItem key={org.id} preset="scaleIn">
-              <ClientLogoPlaceholder name={org.name} />
+              <ParallaxLayer speed={org.id === "un-agencies" ? -12 : 10}>
+                <ClientLogoPlaceholder name={org.name} />
+              </ParallaxLayer>
             </RevealItem>
           ))}
         </RevealGroup>

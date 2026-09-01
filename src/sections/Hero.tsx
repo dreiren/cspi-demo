@@ -10,7 +10,7 @@ import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { ProcessFlow } from "../components/ProcessFlow";
 import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
-import { capabilityPreview, hero } from "../data/content";
+import { expertisePillars, hero, siteMeta } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { STAGGER, STAGGER_FAST } from "../lib/motion";
 
@@ -37,6 +37,8 @@ const links: [number, number][] = [
   [1, 5],
   [3, 6],
 ];
+
+const chipParallax = [10, -14, 16, -10];
 
 export function Hero() {
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -100,23 +102,29 @@ export function Hero() {
         <Container className="relative z-10 py-24">
           <div className="max-w-3xl">
             <Reveal preset="fadeIn">
-              <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-(--color-glass-border-mid) bg-(--color-glass-mid) px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
-                {hero.eyebrow}
-              </span>
+              <ParallaxLayer speed={8}>
+                <span className="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-(--color-glass-border-mid) bg-(--color-glass-mid) px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-accent)">
+                  {hero.eyebrow}
+                </span>
+              </ParallaxLayer>
             </Reveal>
 
             <h1 className="mt-6 text-balance text-4xl text-(--color-on-band) sm:text-5xl lg:text-[3.4rem]">
               {hero.headlineParts.map((part, i) => (
                 <Reveal key={part} delay={0.08 + i * STAGGER_FAST} preset={i === 2 ? "riseSoft" : "fadeUp"}>
-                  <span className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}>
-                    {part}
-                  </span>
+                  <ParallaxLayer speed={12 - i * 4}>
+                    <span className={`block ${i === hero.headlineParts.length - 1 ? "text-(--color-accent)" : ""}`}>
+                      {part}
+                    </span>
+                  </ParallaxLayer>
                 </Reveal>
               ))}
             </h1>
 
             <Reveal delay={0.28} preset="fadeUp">
-              <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-(--color-on-band-muted)">{hero.subheadline}</p>
+              <ParallaxLayer speed={-8}>
+                <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-(--color-on-band-muted)">{hero.subheadline}</p>
+              </ParallaxLayer>
             </Reveal>
 
             <Reveal delay={0.38} preset="fadeUp">
@@ -135,18 +143,20 @@ export function Hero() {
           </div>
 
           <RevealGroup stagger={STAGGER} delay={0.2} className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {capabilityPreview.map((capability) => (
-              <RevealItem key={capability.id} preset="scaleIn">
-                <a
-                  href="#services"
-                  className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
-                >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
-                    <ServiceIcon name={capability.icon} className="h-5 w-5" />
-                  </span>
-                  <span className="text-sm font-bold text-(--color-on-band)">{capability.name}</span>
-                  <span className="text-xs leading-relaxed text-(--color-on-band-dim)">{capability.description}</span>
-                </a>
+            {expertisePillars.map((pillar, i) => (
+              <RevealItem key={pillar.id} preset="scaleIn">
+                <ParallaxLayer speed={chipParallax[i] ?? 10}>
+                  <a
+                    href="#expertise"
+                    className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
+                      <ServiceIcon name={pillar.icon} className="h-5 w-5" />
+                    </span>
+                    <span className="text-sm font-bold text-(--color-on-band)">{pillar.shortName}</span>
+                    <span className="text-xs leading-relaxed text-(--color-on-band-dim)">{pillar.plain}</span>
+                  </a>
+                </ParallaxLayer>
               </RevealItem>
             ))}
           </RevealGroup>
@@ -167,13 +177,15 @@ export function Hero() {
         )}
       </section>
 
-      <section aria-label="Company introduction" className="relative overflow-hidden bg-(--color-band) py-16 sm:py-20">
+      <section aria-label={`${siteMeta.legalName} introduction`} className="relative overflow-hidden bg-(--color-band) py-16 sm:py-20">
         <div aria-hidden="true" className="theme-hero-intro-wash absolute inset-0" />
         <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <Reveal preset="fadeUp">
-            <p className="max-w-xl text-balance text-lg font-medium leading-relaxed text-(--color-on-band) sm:text-xl">
-              {hero.intro}
-            </p>
+            <ParallaxLayer speed={14}>
+              <p className="max-w-xl text-balance text-lg font-medium leading-relaxed text-(--color-on-band) sm:text-xl">
+                {hero.intro}
+              </p>
+            </ParallaxLayer>
           </Reveal>
           <ProcessFlow caption={hero.journeyCaption} steps={hero.journeySteps} tone="light" />
         </Container>

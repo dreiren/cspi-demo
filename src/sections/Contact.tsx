@@ -5,6 +5,7 @@ import type { FormEvent } from "react";
 import { Button } from "../components/Button";
 import { Container } from "../components/Container";
 import { GlowNode } from "../components/graphics/GlowNode";
+import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { contactSection } from "../data/content";
@@ -96,6 +97,7 @@ export function Contact() {
         </div>
 
         <Reveal delay={0.08} preset="fadeRight">
+          <ParallaxLayer speed={-12}>
           <form
             onSubmit={handleSubmit}
             className="rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)] sm:p-8"
@@ -154,6 +156,7 @@ export function Contact() {
               </div>
             )}
           </form>
+          </ParallaxLayer>
         </Reveal>
       </Container>
     </section>

@@ -1,5 +1,5 @@
 type ServiceIconProps = {
-  name: "infrastructure" | "network" | "data" | "operations" | "supply" | "engineering";
+  name: "solutions" | "infrastructure" | "network" | "data" | "operations" | "supply" | "engineering";
   className?: string;
 };
 
@@ -15,6 +15,16 @@ export function ServiceIcon({ name, className = "h-6 w-6" }: ServiceIconProps) {
     strokeLinejoin: "round" as const,
     fill: "none",
   };
+
+  if (name === "solutions") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <rect x="3.5" y="4.5" width="11" height="8" rx="1.4" {...common} />
+        <rect x="9.5" y="11.5" width="11" height="8" rx="1.4" {...common} />
+        <path d="M6.5 8H11.5M12.5 15H17.5" {...common} />
+      </svg>
+    );
+  }
 
   if (name === "infrastructure") {
     return (

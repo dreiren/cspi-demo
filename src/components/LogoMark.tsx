@@ -3,22 +3,21 @@ import { siteMeta } from "../data/content";
 type LogoMarkProps = {
   tone?: "dark" | "light";
   className?: string;
+  showLegalName?: boolean;
 };
 
 /**
- * Placeholder brand lockup: [LOGO] mark + company name. Swap the mark
- * (currently an abstract node glyph) for the real CIDUS logo asset once
- * available; the company name itself is set via `siteMeta.companyName`
- * in `src/data/content.ts`.
+ * Placeholder brand lockup: [LOGO] mark + CIDUS short name.
+ * The legal name sits nearby in the footer and about copy.
  */
-export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
+export function LogoMark({ tone = "light", className = "", showLegalName = false }: LogoMarkProps) {
   const isLight = tone === "light";
 
   return (
     <a
       href="#hero"
       className={`group flex items-center gap-3 ${className}`}
-      aria-label={`${siteMeta.companyName} — home`}
+      aria-label={`${siteMeta.legalName} — home`}
     >
       <span
         className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-(--color-accent)/40 bg-(--color-primary-dark) text-(--color-accent)"
@@ -37,7 +36,7 @@ export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
           />
         </svg>
       </span>
-      <span className="flex flex-col leading-none">
+      <span className="flex min-w-0 flex-col leading-none">
         <span
           className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${
             isLight ? "text-(--color-on-band-faint)" : "text-(--color-ink-faint)"
@@ -50,8 +49,17 @@ export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
             isLight ? "text-(--color-on-band)" : "text-(--color-primary)"
           }`}
         >
-          {siteMeta.companyName}
+          {siteMeta.shortName}
         </span>
+        {showLegalName ? (
+          <span
+            className={`mt-1 truncate text-[11px] font-medium ${
+              isLight ? "text-(--color-on-band-muted)" : "text-(--color-ink-soft)"
+            }`}
+          >
+            {siteMeta.legalName}
+          </span>
+        ) : null}
       </span>
     </a>
   );

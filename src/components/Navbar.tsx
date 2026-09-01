@@ -42,7 +42,7 @@ export function Navbar() {
       <Container className="flex h-20 items-center justify-between">
         <LogoMark tone="light" />
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-0 lg:flex">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -50,7 +50,7 @@ export function Navbar() {
                 key={link.id}
                 href={`#${link.id}`}
                 aria-current={isActive ? "true" : undefined}
-                className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`relative rounded-full px-2.5 py-2 text-[13px] font-medium transition-colors duration-200 ${
                   isActive ? "text-(--color-on-band)" : "text-(--color-on-band-soft) hover:text-(--color-on-band)"
                 }`}
               >

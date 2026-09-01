@@ -1,36 +1,33 @@
-import { siteMeta, serviceGroups, hero, contactSection } from "../data/content";
+import { siteMeta, expertisePillars, hero, contactSection } from "../data/content";
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.cidus.example";
 
 /**
- * Primary search phrases for CIDUS as an integrated solutions provider.
- * Used in metadata and to keep on-page copy aligned with how people search.
+ * Search phrases for CIDUS Solution Phils. Inc. as an IT infrastructure,
+ * data, and network company. Kept in sync with on-page copy.
  */
 export const seoKeywords = [
   "CIDUS",
-  "integrated solutions",
-  "professional services",
-  "one-stop service provider",
+  "CIDUS Solution Phils. Inc.",
+  "IT company Philippines",
   "IT infrastructure",
-  "information technology services",
-  "data and infrastructure",
-  "operations and maintenance",
-  "force sustainment",
-  "procurement services",
-  "logistics and warehousing",
-  "engineering services",
-  "general trading",
-  "technology infrastructure operations logistics",
-  "trusted professional partner",
+  "network solutions",
+  "data solutions",
+  "information technology solutions",
+  "structured cabling",
+  "servers and connectivity",
+  "technology solutions partner",
+  "IT infrastructure Philippines",
+  "network design and support",
 ];
 
-export const seoTitle = "CIDUS | Integrated Solutions & Professional Services";
+export const seoTitle = "CIDUS Solution Phils. Inc. | IT Infrastructure & Networks";
 
 export const seoDescription =
-  "CIDUS brings technology, infrastructure, operations, logistics, engineering, and procurement together as one trusted partner for professional services.";
+  "CIDUS Solution Phils. Inc. is a Philippines IT company for infrastructure, data, and network solutions that keep operations reliable and connected.";
 
 export function buildOrganizationJsonLd() {
-  const serviceNames = serviceGroups.flatMap((group) => group.services.map((service) => service.name));
+  const serviceNames = expertisePillars.map((pillar) => pillar.name);
   const email = contactSection.details.find((item) => item.label === "Email")?.value;
   const telephone = contactSection.details.find((item) => item.label === "Phone")?.value;
   const isPlaceholder = (value?: string) => !value || value.startsWith("[");
@@ -38,29 +35,33 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": ["Organization", "ProfessionalService"],
-    name: siteMeta.companyName,
+    name: siteMeta.legalName,
+    alternateName: siteMeta.shortName,
     slogan: siteMeta.tagline,
     description: seoDescription,
     url: SITE_URL,
     knowsAbout: serviceNames,
+    areaServed: {
+      "@type": "Country",
+      name: "Philippines",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "PH",
+    },
     ...(!isPlaceholder(email) ? { email } : {}),
     ...(!isPlaceholder(telephone) ? { telephone } : {}),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "CIDUS integrated services",
-      itemListElement: serviceGroups.map((group, index) => ({
-        "@type": "OfferCatalog",
+      name: "CIDUS technology services",
+      itemListElement: expertisePillars.map((pillar, index) => ({
+        "@type": "Offer",
         position: index + 1,
-        name: group.name,
-        itemListElement: group.services.map((service, serviceIndex) => ({
-          "@type": "Offer",
-          position: serviceIndex + 1,
-          itemOffered: {
-            "@type": "Service",
-            name: service.name,
-            description: service.description,
-          },
-        })),
+        itemOffered: {
+          "@type": "Service",
+          name: pillar.name,
+          description: pillar.description,
+        },
       })),
     },
   };
@@ -77,7 +78,8 @@ export function buildWebPageJsonLd() {
     about: hero.headline,
     isPartOf: {
       "@type": "WebSite",
-      name: siteMeta.companyName,
+      name: siteMeta.legalName,
+      alternateName: siteMeta.shortName,
       url: SITE_URL,
     },
   };

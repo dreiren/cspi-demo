@@ -4,26 +4,27 @@ import { Container } from "../components/Container";
 import { FlowLine } from "../components/graphics/FlowLine";
 import { GlowNode } from "../components/graphics/GlowNode";
 import { ParallaxLayer } from "../components/ParallaxLayer";
-import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
+import { ProcessFlow } from "../components/ProcessFlow";
+import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
-import { about, coreValues, missionVision } from "../data/content";
+import { about, missionVision, siteMeta } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { STAGGER, STAGGER_FAST } from "../lib/motion";
 
 const structuredNodes = [
-  { x: 40, y: 180, tone: "secondary" as const, size: 4 },
-  { x: 40, y: 60, tone: "secondary" as const, size: 4 },
-  { x: 40, y: 300, tone: "secondary" as const, size: 4 },
-  { x: 180, y: 180, tone: "accent" as const, size: 6 },
-  { x: 320, y: 100, tone: "accent" as const, size: 4.5 },
-  { x: 320, y: 260, tone: "accent" as const, size: 4.5 },
+  { x: 48, y: 70, tone: "secondary" as const, size: 4 },
+  { x: 48, y: 150, tone: "secondary" as const, size: 4 },
+  { x: 48, y: 230, tone: "secondary" as const, size: 4 },
+  { x: 48, y: 310, tone: "secondary" as const, size: 4 },
+  { x: 190, y: 190, tone: "accent" as const, size: 6 },
+  { x: 320, y: 190, tone: "accent" as const, size: 4.5 },
 ];
 
 export function About() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <section id="about" aria-label="About us" className="relative overflow-hidden bg-(--color-surface) py-24 sm:py-32">
+    <section id="about" aria-label={`About ${siteMeta.legalName}`} className="relative overflow-hidden bg-(--color-surface) py-24 sm:py-32">
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(180deg,var(--color-surface)_0%,var(--color-surface-soft)_100%)]"
@@ -36,17 +37,19 @@ export function About() {
           <div className="mt-8 flex flex-col gap-5">
             {about.paragraphs.map((paragraph, i) => (
               <Reveal key={i} delay={0.08 + i * STAGGER_FAST} preset="fadeUp">
-                <p className="text-balance text-base leading-relaxed text-(--color-ink-soft) sm:text-lg">
-                  {paragraph}
-                </p>
+                <ParallaxLayer speed={8 - i * 3}>
+                  <p className="text-balance text-base leading-relaxed text-(--color-ink-soft) sm:text-lg">
+                    {paragraph}
+                  </p>
+                </ParallaxLayer>
               </Reveal>
             ))}
           </div>
 
-          <ul className="mt-10 grid list-none gap-3 p-0 sm:grid-cols-2" aria-label="Experience and capabilities">
+          <ul className="mt-10 grid list-none gap-3 p-0 sm:grid-cols-2" aria-label="What we commit to">
             {about.capabilities.map((capability, i) => (
               <Reveal key={capability} delay={0.12 + i * STAGGER_FAST} preset="fadeLeft" as="li">
-                <div className="flex items-start gap-2.5 text-sm text-(--color-ink-soft)">
+                <div className="flex items-start gap-2.5 rounded-[var(--radius-md)] border border-(--color-line) bg-(--color-surface-soft) px-3 py-2.5 text-sm text-(--color-ink-soft)">
                   <svg
                     width="16"
                     height="16"
@@ -64,7 +67,6 @@ export function About() {
           </ul>
         </div>
 
-        {/* Diverse capabilities resolving into one integrated structure */}
         <Reveal delay={0.12} preset="scaleIn" className="relative">
           <ParallaxLayer speed={16}>
             <div className="relative mx-auto aspect-[4/3] w-full max-w-md rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)]">
@@ -75,11 +77,11 @@ export function About() {
                 focusable="false"
               >
                 {[
-                  [0, 3],
-                  [1, 3],
-                  [2, 3],
+                  [0, 4],
+                  [1, 4],
+                  [2, 4],
                   [3, 4],
-                  [3, 5],
+                  [4, 5],
                 ].map(([a, b], i) => (
                   <FlowLine
                     key={i}
@@ -90,8 +92,7 @@ export function About() {
                     width={1.4}
                   />
                 ))}
-                {/* structured "rack" outlines housing the left-hand capability nodes */}
-                {[structuredNodes[1], structuredNodes[0], structuredNodes[2]].map((node) => (
+                {structuredNodes.slice(0, 4).map((node) => (
                   <rect
                     key={node.y}
                     x={node.x - 32}
@@ -112,12 +113,30 @@ export function About() {
             </div>
           </ParallaxLayer>
           <p className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.14em] text-(--color-ink-faint)">
-            Diverse Capabilities → One Integrated Approach
+            {about.diagramCaption}
           </p>
         </Reveal>
       </Container>
 
-      {/* Mission & Vision */}
+      <Container className="relative mt-16 sm:mt-20">
+        <Reveal preset="riseSoft">
+          <ParallaxLayer speed={-12}>
+            <blockquote className="rounded-[var(--radius-lg)] border border-(--color-accent)/30 bg-(--color-accent)/8 px-6 py-8 sm:px-10 sm:py-10">
+              <p className="text-balance text-xl font-semibold leading-snug text-(--color-primary) sm:text-2xl">
+                {about.quote}
+              </p>
+              <footer className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
+                {siteMeta.shortName} values, in one statement
+              </footer>
+            </blockquote>
+          </ParallaxLayer>
+        </Reveal>
+      </Container>
+
+      <Container className="relative mt-16 sm:mt-24">
+        <ProcessFlow caption={about.approachCaption} steps={about.approachSteps} tone="dark" />
+      </Container>
+
       <Container className="relative mt-20 sm:mt-28">
         <div className="grid gap-10 rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-8 sm:grid-cols-2 sm:p-12">
           {[missionVision.mission, missionVision.vision].map((block, i) => (
@@ -127,39 +146,17 @@ export function About() {
               preset={i === 0 ? "fadeLeft" : "fadeRight"}
               className={i === 1 ? "sm:border-l sm:border-(--color-line) sm:pl-10" : ""}
             >
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
-                {block.label}
-              </span>
-              <p className="mt-4 text-balance text-xl font-semibold leading-snug text-(--color-primary) sm:text-2xl">
-                {block.statement}
-              </p>
+              <ParallaxLayer speed={i === 0 ? 10 : -10}>
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
+                  {block.label}
+                </span>
+                <p className="mt-4 text-balance text-xl font-semibold leading-snug text-(--color-primary) sm:text-2xl">
+                  {block.statement}
+                </p>
+              </ParallaxLayer>
             </Reveal>
           ))}
         </div>
-      </Container>
-
-      {/* Core values — editorial list rather than a repeated card grid */}
-      <Container className="relative mt-20 sm:mt-28">
-        <Reveal preset="fadeIn">
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-(--color-secondary-dark)">
-            Core Values
-          </span>
-        </Reveal>
-        <RevealGroup stagger={STAGGER_FAST} delay={0.08} className="mt-6 divide-y divide-(--color-line) border-t border-(--color-line)">
-          {coreValues.map((value, i) => (
-            <RevealItem key={value.id} preset="fadeUp">
-              <div className="group grid gap-2 py-5 transition-colors sm:grid-cols-[1fr_2fr] sm:items-baseline sm:gap-8 sm:py-6">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-xs font-semibold text-(--color-ink-faint)">{`0${i + 1}`}</span>
-                  <h3 className="text-lg font-bold text-(--color-primary) transition-colors group-hover:text-(--color-secondary-dark)">
-                    {value.title}
-                  </h3>
-                </div>
-                <p className="text-sm leading-relaxed text-(--color-ink-soft) sm:text-base">{value.description}</p>
-              </div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
       </Container>
     </section>
   );

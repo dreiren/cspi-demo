@@ -1,7 +1,7 @@
 import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
 import { Reveal } from "../components/Reveal";
-import { contactSection, footer, navLinks, serviceGroups } from "../data/content";
+import { contactSection, expertisePillars, footer, navLinks, siteMeta } from "../data/content";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -17,7 +17,7 @@ export function Footer() {
         <Reveal preset="fadeUp">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
-            <LogoMark tone="light" />
+            <LogoMark tone="light" showLegalName />
             <p className="mt-5 text-sm leading-relaxed text-(--color-on-band-dim)">{footer.description}</p>
           </div>
 
@@ -34,13 +34,13 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Footer services">
+          <nav aria-label="Footer expertise">
             <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-(--color-on-band-faint)">{footer.servicesHeading}</h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {serviceGroups.map((group) => (
-                <li key={group.id}>
-                  <a href="#services" className="text-sm text-(--color-on-band-soft) transition-colors hover:text-(--color-accent)">
-                    {group.name}
+              {expertisePillars.map((pillar) => (
+                <li key={pillar.id}>
+                  <a href="#expertise" className="text-sm text-(--color-on-band-soft) transition-colors hover:text-(--color-accent)">
+                    {pillar.shortName}
                   </a>
                 </li>
               ))}
@@ -78,7 +78,7 @@ export function Footer() {
         <Reveal delay={0.12} preset="fadeIn">
         <div className="mt-16 flex flex-col-reverse items-center justify-between gap-4 border-t border-(--color-glass-border) pt-6 text-xs text-(--color-on-band-faint) sm:flex-row">
           <p>{footer.copyright(year)}</p>
-          <p className="text-(--color-on-band-faint)">Design system built for easy content replacement.</p>
+          <p className="text-(--color-on-band-faint)">{siteMeta.tagline}</p>
         </div>
         </Reveal>
       </Container>
