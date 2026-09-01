@@ -131,8 +131,12 @@ Tailwind's `bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
 
 ## Contact form
 
-The contact form validates on the client and again in `POST /api/contact`.
-Nothing is written to disk or `localStorage`.
+The contact form validates on the client (same rules as `POST /api/contact`).
+After validation, submit opens a `mailto:adras.freelance@gmail.com` draft
+with subject `CIDUS Contact Form Submission`. The submit button disables on
+the first valid click and shows a “Sending…” loader until the mail client is
+opened. Filled honeypot fields never open mailto. Nothing is written to disk
+or `localStorage`.
 
 | Field | Rules |
 | --- | --- |
@@ -143,9 +147,8 @@ Nothing is written to disk or `localStorage`.
 | Message | Required, 10–2000 characters |
 | Honeypot (`website`) | Must stay empty |
 
-To deliver inquiries in production, set the server-only env var
-`CONTACT_WEBHOOK_URL` to an HTTPS endpoint you control. Do not add mail
-provider API keys to client code or this repo.
+`POST /api/contact` still exists for server-side validation if something posts
+JSON directly. Do not add mail provider API keys to client code or this repo.
 
 ## Security baseline
 

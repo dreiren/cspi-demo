@@ -1,10 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
   CONTACT_LIMITS,
+  CONTACT_MAILTO_ADDRESS,
+  CONTACT_MAILTO_SUBJECT,
   MAX_CONTACT_JSON_BYTES,
+  buildContactMailtoBody,
+  buildContactMailtoUrl,
   isValidEmail,
   isValidPhone,
+  openMailtoUrl,
   payloadExceedsLimit,
+  planContactSubmit,
   readContactInput,
   validateContactPayload,
 } from "./contact";
@@ -217,5 +223,132 @@ describe("payload size guard", () => {
   it("flags bodies over the JSON byte cap", () => {
     expect(payloadExceedsLimit(MAX_CONTACT_JSON_BYTES)).toBe(false);
     expect(payloadExceedsLimit(MAX_CONTACT_JSON_BYTES + 1)).toBe(true);
+  });
+});
+
+describe("mailto draft", () => {
+  const inquiry = {
+    name: "Jane Doe",
+    company: "Acme PH",
+    email: "jane.doe@example.com",
+    phone: "+63 917 123 4567",
+    message: "We need structured cabling for a new office floor.",
+  };
+
+  it("builds a labeled body and skips empty optional fields", () => {
+    expect(buildContactMailtoBody(inquiry)).toBe(
+      [
+        "Name: Jane Doe",
+        "Company: Acme PH",
+        "Email: jane.doe@example.com",
+        "Contact Number: +63 917 123 4567",
+        "Message: We need structured cabling for a new office floor.",
+      ].join("\n"),
+    );
+
+    expect(buildContactMailtoBody({ ...inquiry, company: "", phone: "" })).toBe(
+      [
+        "Name: Jane Doe",
+        "Email: jane.doe@example.com",
+        "Message: We need structured cabling for a new office floor.",
+      ].join("\n"),
+    );
+  });
+
+  it("uses encodeURIComponent and the default CIDUS subject", () => {
+    expect(CONTACT_MAILTO_SUBJECT).toBe("CIDUS Contact Form Submission");
+    expect(CONTACT_MAILTO_ADDRESS).toBe("adras.freelance@gmail.com");
+
+    const url = buildContactMailtoUrl(inquiry);
+    const expected = `mailto:${CONTACT_MAILTO_ADDRESS}?subject=${encodeURIComponent(CONTACT_MAILTO_SUBJECT)}&body=${encodeURIComponent(buildContactMailtoBody(inquiry))}`;
+    expect(url).toBe(expected);
+    expect(url.startsWith("mailto:adras.freelance@gmail.com?")).toBe(true);
+    expect(url).toContain(`subject=${encodeURIComponent("CIDUS Contact Form Submission")}`);
+    expect(url).not.toContain(" ");
+  });
+});
+
+describe("planContactSubmit", () => {
+  it("returns field errors without a mailto URL", () => {
+    const plan = planContactSubmit({ ...validBase, email: "not-an-email" });
+    expect(plan.status).toBe("invalid");
+    if (plan.status === "invalid") {
+      expect(plan.errors.email).toMatch(/valid email/);
+    }
+  });
+
+  it("does not open mailto when the honeypot is filled", () => {
+    const plan = planContactSubmit({ ...validBase, website: "https://spam.example" });
+    expect(plan).toEqual({ status: "honeypot" });
+  });
+
+  it("plans a mailto draft after validation", () => {
+    const plan = planContactSubmit(validBase);
+    expect(plan.status).toBe("mailto");
+    if (plan.status === "mailto") {
+      expect(plan.url).toBe(buildContactMailtoUrl(plan.value));
+      expect(plan.value.email).toBe("jane.doe@example.com");
+    }
+  });
+});
+
+describe("openMailtoUrl", () => {
+  const url = buildContactMailtoUrl({
+    name: "Jane Doe",
+    company: "",
+    email: "jane.doe@example.com",
+    phone: "",
+    message: "Need a quote for network monitoring.",
+  });
+
+  it("prefers window.open and reports success", () => {
+    const host = {
+      open: () => ({}),
+      location: { href: "https://example.com/" },
+    };
+    expect(openMailtoUrl(url, host)).toBe(true);
+    expect(host.location.href).toBe("https://example.com/");
+  });
+
+  it("falls back to location.href when open is blocked", () => {
+    const host = {
+      open: () => null,
+      location: { href: "https://example.com/" },
+    };
+    expect(openMailtoUrl(url, host)).toBe(true);
+    expect(host.location.href).toBe(url);
+  });
+
+  it("returns false when mailto cannot be opened", () => {
+    const host = {
+      open: () => {
+        throw new Error("blocked");
+      },
+      location: {
+        set href(_value: string) {
+          throw new Error("no handler");
+        },
+        get href() {
+          return "https://example.com/";
+        },
+      },
+    };
+    expect(openMailtoUrl(url, host)).toBe(false);
+  });
+
+  it("rejects missing hosts and non-CIDUS mailto URLs", () => {
+    expect(openMailtoUrl(url, null)).toBe(false);
+    expect(
+      openMailtoUrl("mailto:other@example.com?subject=Hi", {
+        open: () => ({}),
+        location: { href: "" },
+      }),
+    ).toBe(false);
+    expect(
+      openMailtoUrl("javascript:alert(1)", {
+        open: () => ({}),
+        location: { href: "" },
+      }),
+    ).toBe(false);
   });
 });

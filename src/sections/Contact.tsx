@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { FormEvent, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Button } from "../components/Button";
 import { Container } from "../components/Container";
@@ -12,8 +12,10 @@ import { contactSection } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import {
   CONTACT_LIMITS,
+  CONTACT_MAILTO_ADDRESS,
   HONEYPOT_FIELD,
-  validateContactPayload,
+  openMailtoUrl,
+  planContactSubmit,
   type ContactField,
   type ContactFieldErrors,
 } from "../lib/contact";
@@ -32,17 +34,37 @@ function fieldClass(invalid: boolean): string {
   return `${inputClasses} ${invalid ? inputInvalidClasses : inputOkClasses}`;
 }
 
-function mapApiError(status: number, code?: string): string {
-  if (status === 429 || code === "rate_limited") {
-    return "Too many inquiries from this network. Please wait a few minutes and try again.";
-  }
-  if (status === 413 || code === "too_large") {
-    return "The inquiry is too large. Shorten the message and try again.";
-  }
-  if (status === 503 || code === "unavailable") {
-    return "The inquiry service is temporarily unavailable. Please try again later.";
-  }
-  return "We could not send your inquiry. Check the highlighted fields or try again.";
+const MAILTO_ERROR = `We could not open your email app. Email ${CONTACT_MAILTO_ADDRESS} directly, or try again.`;
+
+function SubmitSpinner() {
+  return (
+    <svg
+      className="h-4 w-4 shrink-0 animate-spin motion-reduce:animate-none"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.25" />
+      <path
+        d="M12 2a10 10 0 0 1 10 10"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function waitForLoaderPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    if (typeof requestAnimationFrame !== "function") {
+      resolve();
+      return;
+    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
 }
 
 type TextFieldProps = {
@@ -131,8 +153,8 @@ function AreaField({ id, name, label, error, required, className, ...rest }: Are
 
 export function Contact() {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const sendingLock = useRef(false);
   const [submitted, setSubmitted] = useState(false);
-  const [delivered, setDelivered] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<ContactFieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -144,9 +166,15 @@ export function Contact() {
     }
   };
 
+  const failSend = (message: string) => {
+    sendingLock.current = false;
+    setSubmitting(false);
+    setFormError(message);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (submitting) return;
+    if (sendingLock.current || submitting) return;
 
     const formData = new FormData(event.currentTarget);
     const payload = {
@@ -158,54 +186,33 @@ export function Contact() {
       website: String(formData.get(HONEYPOT_FIELD) ?? ""),
     };
 
-    const result = validateContactPayload(payload);
-    if (!result.ok) {
-      setErrors(result.errors);
+    const plan = planContactSubmit(payload);
+    if (plan.status === "invalid") {
+      setErrors(plan.errors);
       setFormError(null);
-      focusFirstError(result.errors);
+      focusFirstError(plan.errors);
       return;
     }
 
+    sendingLock.current = true;
     setErrors({});
     setFormError(null);
     setSubmitting(true);
 
+    if (plan.status === "honeypot") {
+      setSubmitted(true);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      let body: {
-        ok?: boolean;
-        delivered?: boolean;
-        error?: string;
-        fields?: ContactFieldErrors;
-      } = {};
-      try {
-        body = (await response.json()) as typeof body;
-      } catch {
-        body = {};
-      }
-
-      if (response.ok && body.ok) {
-        setDelivered(body.delivered === true);
-        setSubmitted(true);
+      await waitForLoaderPaint();
+      if (!openMailtoUrl(plan.url)) {
+        failSend(MAILTO_ERROR);
         return;
       }
-
-      if (response.status === 400 && body.fields) {
-        setErrors(body.fields);
-        focusFirstError(body.fields);
-        return;
-      }
-
-      setFormError(mapApiError(response.status, body.error));
+      setSubmitted(true);
     } catch {
-      setFormError("We could not send your inquiry. Check your connection and try again.");
-    } finally {
-      setSubmitting(false);
+      failSend(MAILTO_ERROR);
     }
   };
 
@@ -298,9 +305,8 @@ export function Contact() {
                 </span>
                 <h3 className="text-lg font-bold text-(--color-primary)">Thank you</h3>
                 <p className="max-w-xs text-sm text-(--color-ink-soft)">
-                  {delivered
-                    ? "Your inquiry has been sent. We will follow up using the contact details you provided."
-                    : "Your inquiry was validated and accepted. A production mailbox is not connected in this environment yet."}
+                  Your email app should open with this inquiry. Send that message and we will follow
+                  up using the contact details you provided.
                 </p>
               </div>
             ) : (
@@ -327,6 +333,7 @@ export function Contact() {
                   autoComplete="name"
                   minLength={CONTACT_LIMITS.name.min}
                   maxLength={CONTACT_LIMITS.name.max}
+                  disabled={submitting}
                   onChange={() => setErrors((current) => ({ ...current, name: undefined }))}
                 />
                 <TextField
@@ -338,6 +345,7 @@ export function Contact() {
                   type="text"
                   autoComplete="organization"
                   maxLength={CONTACT_LIMITS.company.max}
+                  disabled={submitting}
                   onChange={() => setErrors((current) => ({ ...current, company: undefined }))}
                 />
                 <TextField
@@ -350,6 +358,7 @@ export function Contact() {
                   autoComplete="email"
                   inputMode="email"
                   maxLength={CONTACT_LIMITS.email.max}
+                  disabled={submitting}
                   onChange={() => setErrors((current) => ({ ...current, email: undefined }))}
                 />
                 <TextField
@@ -362,6 +371,7 @@ export function Contact() {
                   autoComplete="tel"
                   inputMode="tel"
                   maxLength={CONTACT_LIMITS.phone.max}
+                  disabled={submitting}
                   onChange={() => setErrors((current) => ({ ...current, phone: undefined }))}
                 />
                 <AreaField
@@ -374,6 +384,7 @@ export function Contact() {
                   minLength={CONTACT_LIMITS.message.min}
                   maxLength={CONTACT_LIMITS.message.max}
                   autoComplete="off"
+                  disabled={submitting}
                   onChange={() => setErrors((current) => ({ ...current, message: undefined }))}
                 />
                 {formError ? (
@@ -382,8 +393,24 @@ export function Contact() {
                   </p>
                 ) : null}
                 <div className="sm:col-span-2">
-                  <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto" disabled={submitting} aria-busy={submitting}>
-                    {submitting ? "Sending…" : contactSection.cta}
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    disabled={submitting}
+                    aria-busy={submitting || undefined}
+                    aria-live="polite"
+                    aria-describedby={formError ? "contact-form-error" : undefined}
+                  >
+                    {submitting ? (
+                      <>
+                        <SubmitSpinner />
+                        Sending…
+                      </>
+                    ) : (
+                      contactSection.cta
+                    )}
                   </Button>
                 </div>
               </div>

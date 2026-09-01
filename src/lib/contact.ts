@@ -2,8 +2,10 @@
  * Shared contact-form validation. Used by the client form and POST /api/contact
  * so the same rules apply even if the browser is bypassed.
  *
- * Production delivery: set CONTACT_WEBHOOK_URL (server-only HTTPS endpoint).
- * This module never persists PII to disk or localStorage.
+ * Delivery path: after validation the client opens a mailto: draft
+ * (`CONTACT_MAILTO_ADDRESS`). POST /api/contact remains for server-side
+ * checks if something posts JSON directly. This module never persists PII
+ * to disk or localStorage.
  */
 
 export const HONEYPOT_FIELD = "website" as const;
@@ -160,4 +162,84 @@ export function validateContactPayload(input: ContactInput): ContactValidationRe
 
 export function payloadExceedsLimit(byteLength: number): boolean {
   return byteLength > MAX_CONTACT_JSON_BYTES;
+}
+
+export const CONTACT_MAILTO_ADDRESS = "adras.freelance@gmail.com";
+export const CONTACT_MAILTO_SUBJECT = "CIDUS Contact Form Submission";
+
+export type ContactSubmitPlan =
+  | { status: "invalid"; errors: ContactFieldErrors }
+  | { status: "honeypot" }
+  | { status: "mailto"; url: string; value: SanitizedContact };
+
+/** Labeled mailto body. Optional company / phone are omitted when empty. */
+export function buildContactMailtoBody(value: SanitizedContact): string {
+  const lines = [`Name: ${value.name}`];
+  if (value.company) lines.push(`Company: ${value.company}`);
+  lines.push(`Email: ${value.email}`);
+  if (value.phone) lines.push(`Contact Number: ${value.phone}`);
+  lines.push(`Message: ${value.message}`);
+  return lines.join("\n");
+}
+
+export function buildContactMailtoUrl(
+  value: SanitizedContact,
+  subject: string = CONTACT_MAILTO_SUBJECT,
+): string {
+  const encodedSubject = encodeURIComponent(subject);
+  const encodedBody = encodeURIComponent(buildContactMailtoBody(value));
+  return `mailto:${CONTACT_MAILTO_ADDRESS}?subject=${encodedSubject}&body=${encodedBody}`;
+}
+
+export function planContactSubmit(input: ContactInput): ContactSubmitPlan {
+  const result = validateContactPayload(input);
+  if (!result.ok) {
+    return { status: "invalid", errors: result.errors };
+  }
+  if (result.honeypot) {
+    return { status: "honeypot" };
+  }
+  return {
+    status: "mailto",
+    url: buildContactMailtoUrl(result.value),
+    value: result.value,
+  };
+}
+
+export type MailtoHost = {
+  open: (url: string, target?: string, features?: string) => unknown;
+  location: { href: string };
+};
+
+function defaultMailtoHost(): MailtoHost | null {
+  if (typeof globalThis === "undefined") return null;
+  const candidate = (globalThis as { window?: MailtoHost }).window;
+  return candidate ?? null;
+}
+
+function isContactMailtoUrl(url: string): boolean {
+  return url.startsWith(`mailto:${CONTACT_MAILTO_ADDRESS}?`);
+}
+
+/**
+ * Open a CIDUS mailto draft. Prefers `window.open`, then `location.href`.
+ * Returns false when neither path can run so the UI can show an error
+ * instead of a false thank-you.
+ */
+export function openMailtoUrl(url: string, host: MailtoHost | null = defaultMailtoHost()): boolean {
+  if (!host || !isContactMailtoUrl(url)) return false;
+
+  try {
+    const opened = host.open(url, "_blank");
+    if (opened) return true;
+  } catch {
+    // Popup blocked or disallowed — try same-tab navigation next.
+  }
+
+  try {
+    host.location.href = url;
+    return true;
+  } catch {
+    return false;
+  }
 }
