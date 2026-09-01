@@ -165,3 +165,18 @@ npm run start      # serve the production build
 npm run lint       # oxlint
 npm test           # unit tests (motion intervals, content structure, SEO)
 ```
+
+## Deploy (Vercel)
+
+Connecting a Vercel account requires **you** to authorize Vercel once in the
+browser. This repo has no deploy token, so production hosting is not created
+from CI/agent environments until that GitHub import is done.
+
+1. Import **`dreiren/cspi-demo`** at [vercel.com/new](https://vercel.com/new).
+2. Framework **Next.js**, root directory **`.`**.
+3. After the first production URL exists, set `NEXT_PUBLIC_SITE_URL` to that
+   origin and redeploy (canonical URLs, sitemap, Open Graph, JSON-LD).
+4. Set **Production Branch** to **`main`** so every push auto-deploys.
+
+Full steps: [`DEPLOY.md`](./DEPLOY.md). Env template: [`.env.example`](./.env.example).
+
