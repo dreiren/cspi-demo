@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 /**
  * Tracks the user's `prefers-reduced-motion` preference so components can
  * disable or simplify decorative animation without a page reload.
+ *
+ * Always starts `false` (matching SSR) and updates after mount so hydration
+ * does not diverge for visitors who prefer reduced motion.
  */
 export function usePrefersReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  });
+  const [prefersReduced, setPrefersReduced] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
