@@ -9,7 +9,7 @@ import { createSlidingWindowLimiter } from "../../../lib/rate-limit";
 export const dynamic = "force-dynamic";
 
 const limiter = createSlidingWindowLimiter({
-  limit: 5,
+  limit: 10,
   windowMs: 10 * 60 * 1000,
 });
 
