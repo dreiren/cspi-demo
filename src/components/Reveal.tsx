@@ -4,7 +4,7 @@ import { m } from "framer-motion";
 import type { ReactNode } from "react";
 import { useInViewState } from "../hooks/useInViewState";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import { STAGGER, createGroupVariants, revealVariants, viewportReplay, type MotionPreset } from "../lib/motion";
+import { STAGGER, createGroupVariants, revealVariants, viewportOnce, type MotionPreset } from "../lib/motion";
 
 type RevealProps = {
   children: ReactNode;
@@ -16,20 +16,20 @@ type RevealProps = {
 };
 
 /**
- * Fades content in when it enters the inset viewport and plays the reverse
- * (exit) when it leaves, so every scroll past a section feels like a
- * considered transition. Falls back to a static render under reduced motion.
+ * Fades content in when it enters the inset viewport, then stays visible.
+ * Exit is disabled by default (`once`) so scrolling away does not reverse
+ * the animation. Falls back to a static render under reduced motion.
  */
 export function Reveal({
   children,
   delay = 0,
   className,
   as = "div",
-  once = false,
+  once = true,
   preset = "fadeUp",
 }: RevealProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [ref, isInView] = useInViewState({ once, margin: viewportReplay.margin });
+  const [ref, isInView] = useInViewState({ once, margin: viewportOnce.margin });
   const MotionTag = m[as];
 
   if (prefersReducedMotion) {
@@ -59,12 +59,12 @@ type RevealGroupProps = {
 };
 
 /**
- * Parent stagger container. Pair with RevealItem so siblings enter and
- * leave the viewport as one connected sequence.
+ * Parent stagger container. Pair with RevealItem so siblings enter together
+ * and remain visible after they leave the viewport.
  */
-export function RevealGroup({ children, className, stagger = STAGGER, delay = 0.06, once = false }: RevealGroupProps) {
+export function RevealGroup({ children, className, stagger = STAGGER, delay = 0.06, once = true }: RevealGroupProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [ref, isInView] = useInViewState({ once, margin: viewportReplay.margin });
+  const [ref, isInView] = useInViewState({ once, margin: viewportOnce.margin });
 
   if (prefersReducedMotion) {
     return <div className={className}>{children}</div>;

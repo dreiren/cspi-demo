@@ -5,17 +5,18 @@ import { VIEWPORT_MARGIN, nextInViewState } from "../lib/motion";
 
 export type InViewStateOptions = {
   once?: boolean;
-  /** CSS rootMargin. Negative values shrink the active viewport so exit is visible. */
+  /** CSS rootMargin. Negative values shrink the observed viewport so enter fires while the element is still on screen. */
   margin?: string;
 };
 
 /**
- * Viewport presence for scroll enter/exit. Uses threshold 0 against an inset
- * root so `isIntersecting` flips while the element is still on screen —
- * unlike `whileInView` + a numeric `amount`, which often never reports leave.
+ * Viewport presence for scroll enter. Defaults to `once` so the first
+ * intersection latches visible and leaving the viewport does not reverse.
+ * Uses threshold 0 against an inset root so enter fires while the element
+ * is still on screen.
  */
 export function useInViewState(options: InViewStateOptions = {}): [RefCallback<Element>, boolean] {
-  const { once = false, margin = VIEWPORT_MARGIN } = options;
+  const { once = true, margin = VIEWPORT_MARGIN } = options;
   const [node, setNode] = useState<Element | null>(null);
   const [isInView, setIsInView] = useState(false);
 

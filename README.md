@@ -109,8 +109,8 @@ Tailwind's `bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
 ## Motion & accessibility
 
 - A shared motion system in `src/lib/motion.ts` defines stagger intervals
-  (0.06 / 0.10 / 0.14s) and entry/exit durations. `Reveal` / `RevealGroup`
-  play content in as it enters the viewport and reverse as it leaves.
+  (0.06 / 0.10 / 0.14s) and entry durations. `Reveal` / `RevealGroup`
+  play content in as it enters the viewport and keep it visible afterward.
 - Framer Motion is loaded through `LazyMotion` (`domAnimation` only) plus
   GPU-friendly `transform` / `opacity` parallax.
 - Below-the-fold sections are code-split with `next/dynamic` so the first
