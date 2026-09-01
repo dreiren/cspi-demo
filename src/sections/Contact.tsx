@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { FormEvent } from "react";
+import type { FormEvent, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 import { Button } from "../components/Button";
 import { Container } from "../components/Container";
 import { GlowNode } from "../components/graphics/GlowNode";
@@ -10,17 +10,203 @@ import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { contactSection } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import {
+  CONTACT_LIMITS,
+  HONEYPOT_FIELD,
+  validateContactPayload,
+  type ContactField,
+  type ContactFieldErrors,
+} from "../lib/contact";
+import { safeAnchorProps } from "../lib/links";
 
 const inputClasses =
-  "w-full rounded-[var(--radius-sm)] border border-(--color-line) bg-white px-4 py-3 text-sm text-(--color-ink) placeholder:text-(--color-ink-faint) transition-colors focus:border-(--color-accent) focus:outline-none focus:ring-2 focus:ring-(--color-accent)/30";
+  "scheme-light w-full rounded-[var(--radius-sm)] border bg-white px-4 py-3 text-sm text-(--color-ink) placeholder:text-(--color-ink-faint) transition-colors focus:outline-none focus:ring-2";
+const inputOkClasses =
+  "border-(--color-line) focus:border-(--color-accent) focus:ring-(--color-accent)/30";
+const inputInvalidClasses =
+  "border-(--color-danger) focus:border-(--color-danger) focus:ring-(--color-danger)/25";
+
+const FIELD_ORDER: ContactField[] = ["name", "company", "email", "phone", "message"];
+
+function fieldClass(invalid: boolean): string {
+  return `${inputClasses} ${invalid ? inputInvalidClasses : inputOkClasses}`;
+}
+
+function mapApiError(status: number, code?: string): string {
+  if (status === 429 || code === "rate_limited") {
+    return "Too many inquiries from this network. Please wait a few minutes and try again.";
+  }
+  if (status === 413 || code === "too_large") {
+    return "The inquiry is too large. Shorten the message and try again.";
+  }
+  if (status === 503 || code === "unavailable") {
+    return "The inquiry service is temporarily unavailable. Please try again later.";
+  }
+  return "We could not send your inquiry. Check the highlighted fields or try again.";
+}
+
+type TextFieldProps = {
+  id: string;
+  name: string;
+  label: string;
+  error?: string;
+  required?: boolean;
+  optional?: boolean;
+} & InputHTMLAttributes<HTMLInputElement>;
+
+function TextField({ id, name, label, error, required, optional, className, ...rest }: TextFieldProps) {
+  const errorId = `${id}-error`;
+  const invalid = Boolean(error);
+  return (
+    <div className="sm:col-span-1">
+      <label htmlFor={id} className="mb-2 block text-sm font-semibold text-(--color-primary)">
+        {label}
+        {required ? (
+          <span aria-hidden="true" className="text-(--color-danger)">
+            {" "}
+            *
+          </span>
+        ) : null}
+        {optional ? (
+          <span className="ml-1 font-normal text-(--color-ink-faint)">(optional)</span>
+        ) : null}
+      </label>
+      <input
+        id={id}
+        name={name}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
+        aria-required={required || undefined}
+        className={className ?? fieldClass(invalid)}
+        {...rest}
+      />
+      {error ? (
+        <p id={errorId} role="alert" className="mt-1.5 text-sm text-(--color-danger)">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+type AreaFieldProps = {
+  id: string;
+  name: string;
+  label: string;
+  error?: string;
+  required?: boolean;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+function AreaField({ id, name, label, error, required, className, ...rest }: AreaFieldProps) {
+  const errorId = `${id}-error`;
+  const invalid = Boolean(error);
+  return (
+    <div className="sm:col-span-2">
+      <label htmlFor={id} className="mb-2 block text-sm font-semibold text-(--color-primary)">
+        {label}
+        {required ? (
+          <span aria-hidden="true" className="text-(--color-danger)">
+            {" "}
+            *
+          </span>
+        ) : null}
+      </label>
+      <textarea
+        id={id}
+        name={name}
+        aria-invalid={invalid || undefined}
+        aria-describedby={invalid ? errorId : undefined}
+        aria-required={required || undefined}
+        className={className ?? `${fieldClass(invalid)} resize-none`}
+        {...rest}
+      />
+      {error ? (
+        <p id={errorId} role="alert" className="mt-1.5 text-sm text-(--color-danger)">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export function Contact() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [submitted, setSubmitted] = useState(false);
+  const [delivered, setDelivered] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState<ContactFieldErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const focusFirstError = (next: ContactFieldErrors) => {
+    const first = FIELD_ORDER.find((field) => next[field]);
+    if (first) {
+      document.getElementById(`contact-${first}`)?.focus();
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
+    if (submitting) return;
+
+    const formData = new FormData(event.currentTarget);
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      company: String(formData.get("company") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      website: String(formData.get(HONEYPOT_FIELD) ?? ""),
+    };
+
+    const result = validateContactPayload(payload);
+    if (!result.ok) {
+      setErrors(result.errors);
+      setFormError(null);
+      focusFirstError(result.errors);
+      return;
+    }
+
+    setErrors({});
+    setFormError(null);
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let body: {
+        ok?: boolean;
+        delivered?: boolean;
+        error?: string;
+        fields?: ContactFieldErrors;
+      } = {};
+      try {
+        body = (await response.json()) as typeof body;
+      } catch {
+        body = {};
+      }
+
+      if (response.ok && body.ok) {
+        setDelivered(body.delivered === true);
+        setSubmitted(true);
+        return;
+      }
+
+      if (response.status === 400 && body.fields) {
+        setErrors(body.fields);
+        focusFirstError(body.fields);
+        return;
+      }
+
+      setFormError(mapApiError(response.status, body.error));
+    } catch {
+      setFormError("We could not send your inquiry. Check your connection and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -84,7 +270,7 @@ export function Contact() {
                 {contactSection.socialLinks.map((social) => (
                   <a
                     key={social.label}
-                    href={social.href}
+                    {...safeAnchorProps(social.href)}
                     aria-label={social.label}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-(--color-line) text-(--color-ink-soft) transition-colors hover:border-(--color-accent) hover:text-(--color-secondary)"
                   >
@@ -100,11 +286,11 @@ export function Contact() {
           <ParallaxLayer speed={-12}>
           <form
             onSubmit={handleSubmit}
-            className="rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)] sm:p-8"
-            aria-live="polite"
+            noValidate
+            className="relative rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)] sm:p-8"
           >
             {submitted ? (
-              <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <div className="flex flex-col items-center gap-3 py-10 text-center" aria-live="polite">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-(--color-accent)/15 text-(--color-secondary-dark)">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -112,48 +298,96 @@ export function Contact() {
                 </span>
                 <h3 className="text-lg font-bold text-(--color-primary)">Thank you</h3>
                 <p className="max-w-xs text-sm text-(--color-ink-soft)">
-                  Your inquiry placeholder has been submitted. Replace this confirmation with a real submission
-                  handler when connecting the form.
+                  {delivered
+                    ? "Your inquiry has been sent. We will follow up using the contact details you provided."
+                    : "Your inquiry was validated and accepted. A production mailbox is not connected in this environment yet."}
                 </p>
               </div>
             ) : (
+              <>
+                <div className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+                  <label htmlFor="contact-website">Company website</label>
+                  <input
+                    id="contact-website"
+                    name={HONEYPOT_FIELD}
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    defaultValue=""
+                  />
+                </div>
               <div className="grid gap-5 sm:grid-cols-2">
-                <div className="sm:col-span-1">
-                  <label htmlFor="contact-name" className="mb-2 block text-sm font-semibold text-(--color-primary)">
-                    {contactSection.formFields.name}
-                  </label>
-                  <input id="contact-name" name="name" type="text" required autoComplete="name" className={inputClasses} />
-                </div>
-                <div className="sm:col-span-1">
-                  <label htmlFor="contact-company" className="mb-2 block text-sm font-semibold text-(--color-primary)">
-                    {contactSection.formFields.company}
-                  </label>
-                  <input id="contact-company" name="company" type="text" autoComplete="organization" className={inputClasses} />
-                </div>
-                <div className="sm:col-span-1">
-                  <label htmlFor="contact-email" className="mb-2 block text-sm font-semibold text-(--color-primary)">
-                    {contactSection.formFields.email}
-                  </label>
-                  <input id="contact-email" name="email" type="email" required autoComplete="email" className={inputClasses} />
-                </div>
-                <div className="sm:col-span-1">
-                  <label htmlFor="contact-phone" className="mb-2 block text-sm font-semibold text-(--color-primary)">
-                    {contactSection.formFields.phone}
-                  </label>
-                  <input id="contact-phone" name="phone" type="tel" autoComplete="tel" className={inputClasses} />
-                </div>
+                <TextField
+                  id="contact-name"
+                  name="name"
+                  label={contactSection.formFields.name}
+                  error={errors.name}
+                  required
+                  type="text"
+                  autoComplete="name"
+                  minLength={CONTACT_LIMITS.name.min}
+                  maxLength={CONTACT_LIMITS.name.max}
+                  onChange={() => setErrors((current) => ({ ...current, name: undefined }))}
+                />
+                <TextField
+                  id="contact-company"
+                  name="company"
+                  label={contactSection.formFields.company}
+                  error={errors.company}
+                  optional
+                  type="text"
+                  autoComplete="organization"
+                  maxLength={CONTACT_LIMITS.company.max}
+                  onChange={() => setErrors((current) => ({ ...current, company: undefined }))}
+                />
+                <TextField
+                  id="contact-email"
+                  name="email"
+                  label={contactSection.formFields.email}
+                  error={errors.email}
+                  required
+                  type="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  maxLength={CONTACT_LIMITS.email.max}
+                  onChange={() => setErrors((current) => ({ ...current, email: undefined }))}
+                />
+                <TextField
+                  id="contact-phone"
+                  name="phone"
+                  label={contactSection.formFields.phone}
+                  error={errors.phone}
+                  optional
+                  type="tel"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  maxLength={CONTACT_LIMITS.phone.max}
+                  onChange={() => setErrors((current) => ({ ...current, phone: undefined }))}
+                />
+                <AreaField
+                  id="contact-message"
+                  name="message"
+                  label={contactSection.formFields.message}
+                  error={errors.message}
+                  required
+                  rows={5}
+                  minLength={CONTACT_LIMITS.message.min}
+                  maxLength={CONTACT_LIMITS.message.max}
+                  autoComplete="off"
+                  onChange={() => setErrors((current) => ({ ...current, message: undefined }))}
+                />
+                {formError ? (
+                  <p id="contact-form-error" role="alert" className="sm:col-span-2 text-sm text-(--color-danger)">
+                    {formError}
+                  </p>
+                ) : null}
                 <div className="sm:col-span-2">
-                  <label htmlFor="contact-message" className="mb-2 block text-sm font-semibold text-(--color-primary)">
-                    {contactSection.formFields.message}
-                  </label>
-                  <textarea id="contact-message" name="message" required rows={5} className={`${inputClasses} resize-none`} />
-                </div>
-                <div className="sm:col-span-2">
-                  <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto">
-                    {contactSection.cta}
+                  <Button type="submit" variant="primary" size="lg" className="w-full sm:w-auto" disabled={submitting} aria-busy={submitting}>
+                    {submitting ? "Sending…" : contactSection.cta}
                   </Button>
                 </div>
               </div>
+              </>
             )}
           </form>
           </ParallaxLayer>

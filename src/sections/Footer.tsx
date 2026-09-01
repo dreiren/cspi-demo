@@ -2,6 +2,7 @@ import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
 import { Reveal } from "../components/Reveal";
 import { contactSection, expertisePillars, footer, navLinks, siteMeta } from "../data/content";
+import { safeAnchorProps } from "../lib/links";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -62,7 +63,7 @@ export function Footer() {
               {contactSection.socialLinks.map((social) => (
                 <li key={social.label}>
                   <a
-                    href={social.href}
+                    {...safeAnchorProps(social.href)}
                     aria-label={social.label}
                     className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-glass-border-mid) text-[10px] font-bold uppercase transition-colors hover:border-(--color-accent) hover:text-(--color-accent)"
                   >

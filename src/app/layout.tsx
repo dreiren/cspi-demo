@@ -2,8 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { MotionProvider } from "../components/MotionProvider";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { siteMeta } from "../data/content";
-import { buildOrganizationJsonLd, buildWebPageJsonLd, seoDescription, seoKeywords, seoTitle, SITE_URL } from "../lib/seo";
-import { themeBootstrapScript } from "../lib/theme";
+import {
+  buildOrganizationJsonLd,
+  buildWebPageJsonLd,
+  seoDescription,
+  seoKeywords,
+  seoTitle,
+  serializeJsonLd,
+  SITE_URL,
+} from "../lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -47,6 +54,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0c2d54",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -58,16 +66,15 @@ export default function RootLayout({
   const webPageJsonLd = buildWebPageJsonLd();
 
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(webPageJsonLd) }}
         />
       </head>
       <body>

@@ -7,7 +7,6 @@ import { useScrolled } from "../hooks/useScrolled";
 import { Button } from "./Button";
 import { Container } from "./Container";
 import { LogoMark } from "./LogoMark";
-import { ThemeToggle } from "./ThemeToggle";
 
 const sectionIds = navLinks.map((link) => link.id);
 
@@ -67,14 +66,12 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <ThemeToggle />
           <Button href="#contact" variant="primary" size="md">
             Contact CIDUS
           </Button>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <ThemeToggle showLabel={false} />
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-(--color-glass-border-strong) text-(--color-on-band)"
@@ -123,10 +120,6 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-(--color-glass-border) px-4 py-3">
-              <span className="text-sm font-medium text-(--color-on-band-muted)">Appearance</span>
-              <ThemeToggle />
-            </div>
             <Button href="#contact" variant="primary" size="md" className="mt-3 w-full" onClick={() => setMenuOpen(false)}>
               Contact CIDUS
             </Button>

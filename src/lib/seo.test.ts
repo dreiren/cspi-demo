@@ -9,7 +9,7 @@ import {
   siteMeta,
   whyUsSection,
 } from "../data/content";
-import { buildOrganizationJsonLd, buildWebPageJsonLd, seoDescription, seoKeywords, seoTitle } from "./seo";
+import { buildOrganizationJsonLd, buildWebPageJsonLd, resolveSiteUrl, seoDescription, seoKeywords, seoTitle, serializeJsonLd } from "./seo";
 
 describe("content structure for SEO and storytelling", () => {
   it("exposes a unique section id for every navigation item", () => {
@@ -110,5 +110,19 @@ describe("SEO metadata and structured data", () => {
     expect(jsonLd["@type"]).toBe("WebPage");
     expect(jsonLd.about).toBe(hero.headline);
     expect(jsonLd.isPartOf.name).toBe("CIDUS Solution Phils. Inc.");
+  });
+
+  it("serializes JSON-LD so script breakouts cannot land in the tag", () => {
+    const html = serializeJsonLd({ name: "</script><script>alert(1)</script>" });
+    expect(html).not.toContain("</script>");
+    expect(html).toContain("\\u003c/script>");
+    expect(JSON.parse(html)).toEqual({ name: "</script><script>alert(1)</script>" });
+  });
+
+  it("resolves SITE_URL to a safe http(s) origin only", () => {
+    expect(resolveSiteUrl(undefined)).toBe("https://www.cidus.example");
+    expect(resolveSiteUrl("https://cidus.ph/path?x=1")).toBe("https://cidus.ph");
+    expect(resolveSiteUrl("javascript:alert(1)")).toBe("https://www.cidus.example");
+    expect(resolveSiteUrl("https://user:pass@evil.example")).toBe("https://www.cidus.example");
   });
 });

@@ -129,6 +129,32 @@ Tailwind's `bg-(--color-x)` / `text-(--color-x)` arbitrary-value syntax:
 - `src/app/robots.ts` and `src/app/sitemap.ts` are generated at build time.
 - Set `NEXT_PUBLIC_SITE_URL` to the real production origin before launch.
 
+## Contact form
+
+The contact form validates on the client and again in `POST /api/contact`.
+Nothing is written to disk or `localStorage`.
+
+| Field | Rules |
+| --- | --- |
+| Name | Required, 2–100 characters after trim |
+| Company | Optional, max 120 |
+| Email | Required, valid email |
+| Contact number | Optional; if present, 7–15 digits (PH / international friendly) |
+| Message | Required, 10–2000 characters |
+| Honeypot (`website`) | Must stay empty |
+
+To deliver inquiries in production, set the server-only env var
+`CONTACT_WEBHOOK_URL` to an HTTPS endpoint you control. Do not add mail
+provider API keys to client code or this repo.
+
+## Security baseline
+
+`next.config.ts` sends marketing-site headers: CSP (self + required inline
+scripts/styles for Next.js and JSON-LD), `X-Content-Type-Options`,
+`Referrer-Policy`, `X-Frame-Options` / `frame-ancestors 'none'`, and a
+locked-down `Permissions-Policy`. JSON-LD is `JSON.stringify`'d from static
+content and `<`-escaped. External social links use `noopener noreferrer`.
+
 ## Development
 
 ```bash
