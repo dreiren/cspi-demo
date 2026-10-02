@@ -39,7 +39,7 @@ export function Navbar() {
       }`}
     >
       <Container className="flex h-20 items-center justify-between">
-        <LogoMark tone="light" />
+        <LogoMark tone="light" showMark={false} />
 
         <nav aria-label="Primary" className="hidden items-center gap-0 lg:flex">
           {navLinks.map((link) => {

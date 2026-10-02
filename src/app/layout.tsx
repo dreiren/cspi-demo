@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { MaintenancePage } from "../components/MaintenancePage";
 import { MotionProvider } from "../components/MotionProvider";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { siteMeta } from "../data/content";
+import { isMaintenanceMode } from "../lib/maintenance";
 import {
   buildOrganizationJsonLd,
   buildWebPageJsonLd,
@@ -13,7 +15,7 @@ import {
 } from "../lib/seo";
 import "./globals.css";
 
-export const metadata: Metadata = {
+const liveMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: seoTitle,
@@ -52,6 +54,24 @@ export const metadata: Metadata = {
   },
 };
 
+const maintenanceMetadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: "CIDUS — Site under maintenance",
+  description: "CIDUS is updating the website. We will be back shortly.",
+  applicationName: siteMeta.legalName,
+  robots: {
+    index: false,
+    follow: false,
+  },
+  icons: {
+    icon: "/favicon.svg",
+  },
+};
+
+export function generateMetadata(): Metadata {
+  return isMaintenanceMode() ? maintenanceMetadata : liveMetadata;
+}
+
 export const viewport: Viewport = {
   themeColor: "#0c2d54",
   colorScheme: "dark",
@@ -62,26 +82,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const maintenanceOn = isMaintenanceMode();
   const organizationJsonLd = buildOrganizationJsonLd();
   const webPageJsonLd = buildWebPageJsonLd();
 
   return (
-    <html lang="en">
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: serializeJsonLd(webPageJsonLd) }}
-        />
-      </head>
+    <html lang="en" className={maintenanceOn ? "maintenance-active" : undefined}>
+      {!maintenanceOn ? (
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationJsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(webPageJsonLd) }}
+          />
+        </head>
+      ) : null}
       <body>
-        <MotionProvider>
-          <ScrollProgress />
-          {children}
-        </MotionProvider>
+        {maintenanceOn ? (
+          <MaintenancePage />
+        ) : (
+          <MotionProvider>
+            <ScrollProgress />
+            {children}
+          </MotionProvider>
+        )}
       </body>
     </html>
   );

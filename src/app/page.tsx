@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { Navbar } from "../components/Navbar";
+import { isMaintenanceMode } from "../lib/maintenance";
 import { Hero } from "../sections/Hero";
 
 const sectionFallback = (
@@ -29,6 +30,10 @@ const Footer = dynamic(() => import("../sections/Footer").then((mod) => mod.Foot
 });
 
 export default function Home() {
+  if (isMaintenanceMode()) {
+    return null;
+  }
+
   return (
     <>
       <a href="#main-content" className="skip-link">

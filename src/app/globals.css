@@ -193,6 +193,14 @@
   }
 }
 
+html.maintenance-active,
+html.maintenance-active body {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
