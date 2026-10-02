@@ -4,7 +4,7 @@ type LogoMarkProps = {
   tone?: "dark" | "light";
   className?: string;
   showLegalName?: boolean;
-  /** Pass `null` to render a non-link lockup (e.g. maintenance screen). */
+  /** Pass `null` to render a non-link lockup. */
   href?: string | null;
   /** When false, render only the company name (no [Logo] mark box). */
   showMark?: boolean;

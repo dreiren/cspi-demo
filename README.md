@@ -31,12 +31,9 @@ replaced without a redesign. See `src/data/content.ts` for the full list.
 ```
 src/
   app/
-    layout.tsx            # <html>/<body> shell, metadata, globals.css import;
-                          # replaces children with MaintenancePage when the switch is on
-    page.tsx               # Assembles the sections into the one-page layout (returns null in maintenance)
+    layout.tsx            # <html>/<body> shell, metadata, globals.css import
+    page.tsx               # Assembles the sections into the one-page layout
     globals.css             # Design tokens (colors, radii, shadows) + base styles
-  proxy.ts                 # Next.js 16 network boundary — redirects deep links to / in maintenance
-  lib/maintenance.ts       # isMaintenanceMode() — reads NEXT_PUBLIC_MAINTENANCE_MODE
   data/content.ts          # ALL site copy lives here — edit this file first
   hooks/                    # usePrefersReducedMotion, useActiveSection, useScrolled
   components/               # Reusable UI: Button, Container, Navbar, LogoMark,
@@ -86,7 +83,7 @@ No component code needs to change for a copy update.
 ### Replacing the logo
 
 `src/components/LogoMark.tsx` renders the `[LOGO]` + company-name lockup.
-The navbar and maintenance header hide the mark (`showMark={false}`) and show
+The navbar hides the mark (`showMark={false}`) and shows
 the company name only. The footer still uses the full lockup. Swap the inline
 SVG glyph for an `<img>`/real logo asset when it's available.
 
@@ -161,29 +158,6 @@ scripts/styles for Next.js and JSON-LD), `X-Content-Type-Options`,
 `Referrer-Policy`, `X-Frame-Options` / `frame-ancestors 'none'`, and a
 locked-down `Permissions-Policy`. JSON-LD is `JSON.stringify`'d from static
 content and `<`-escaped. External social links use `noopener noreferrer`.
-
-## Maintenance mode
-
-A single public switch hides the marketing site and shows only a full-viewport
-maintenance screen (the Home / About / Services / Clients / Contact / nav /
-footer tree is not mounted). This is **not** a translucent overlay.
-
-```bash
-NEXT_PUBLIC_MAINTENANCE_MODE=true
-```
-
-| Value | Result |
-| --- | --- |
-| `true` | Only the maintenance page. Deep links are redirected to `/`. |
-| `false` or unset | The normal one-page site. Production code defaults to this. |
-
-Local/dev is enabled in `.env.development` (committed) and `.env.example`.
-Copy `.env.example` to `.env.local` on your machine. Restart `next dev`
-after changing the value. Production builds do **not** load `.env.development`;
-set the variable in the host (e.g. Vercel) only when you want maintenance live.
-
-Copy lives in `src/data/content.ts` → `maintenance`. Contact details are
-omitted while they remain bracketed placeholders.
 
 ## Development
 
