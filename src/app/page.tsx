@@ -1,4 +1,5 @@
 import { Navbar } from "../components/Navbar";
+import { isMaintenanceMode } from "../lib/maintenance";
 import { About } from "../sections/About";
 import { Clients } from "../sections/Clients";
 import { Contact } from "../sections/Contact";
@@ -8,6 +9,10 @@ import { Services } from "../sections/Services";
 import { WhyUs } from "../sections/WhyUs";
 
 export default function Home() {
+  if (isMaintenanceMode()) {
+    return null;
+  }
+
   return (
     <>
       <a href="#main-content" className="skip-link">

@@ -17,6 +17,13 @@ export const siteMeta = {
   tagline: "Integrated Solutions. Trusted Service. Reliable Results.",
 };
 
+export const maintenance = {
+  eyebrow: "Site under maintenance",
+  heading: "CIDUS is updating the website.",
+  headingLines: ["CIDUS is updating", "the website."],
+  message: "We will be back shortly.",
+};
+
 export const navLinks = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },

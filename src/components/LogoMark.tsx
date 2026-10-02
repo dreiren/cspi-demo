@@ -3,6 +3,8 @@ import { siteMeta } from "../data/content";
 type LogoMarkProps = {
   tone?: "dark" | "light";
   className?: string;
+  /** Pass `null` to render a non-link lockup (e.g. maintenance screen). */
+  href?: string | null;
 };
 
 /**
@@ -11,15 +13,11 @@ type LogoMarkProps = {
  * available; the company name itself is set via `siteMeta.companyName`
  * in `src/data/content.ts`.
  */
-export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
+export function LogoMark({ tone = "light", className = "", href = "#hero" }: LogoMarkProps) {
   const isLight = tone === "light";
 
-  return (
-    <a
-      href="#hero"
-      className={`group flex items-center gap-3 ${className}`}
-      aria-label={`${siteMeta.companyName} — home`}
-    >
+  const lockup = (
+    <>
       <span
         className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-(--color-accent)/40 bg-(--color-primary-dark) text-(--color-accent)"
         aria-hidden="true"
@@ -53,6 +51,22 @@ export function LogoMark({ tone = "light", className = "" }: LogoMarkProps) {
           {siteMeta.companyName}
         </span>
       </span>
+    </>
+  );
+
+  const classes = `group flex items-center gap-3 ${className}`;
+
+  if (!href) {
+    return (
+      <div className={classes} aria-label={siteMeta.companyName}>
+        {lockup}
+      </div>
+    );
+  }
+
+  return (
+    <a href={href} className={classes} aria-label={`${siteMeta.companyName} — home`}>
+      {lockup}
     </a>
   );
 }
