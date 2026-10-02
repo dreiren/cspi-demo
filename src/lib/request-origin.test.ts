@@ -32,6 +32,14 @@ describe("isSameOriginRequest", () => {
     expect(isSameOriginRequest(headers, localUrl, [site])).toBe(false);
   });
 
+  it("treats localhost and 127.0.0.1 as the same loopback origin", () => {
+    const headers = new Headers({ origin: "http://127.0.0.1:3000" });
+    expect(isSameOriginRequest(headers, localUrl, [site])).toBe(true);
+    expect(
+      isSameOriginRequest(new Headers({ origin: "http://127.0.0.1:3001" }), localUrl, [site]),
+    ).toBe(false);
+  });
+
   it("rejects Origin null and prefix-lookalike hosts", () => {
     expect(isSameOriginRequest(new Headers({ origin: "null" }), localUrl, [site])).toBe(false);
     expect(

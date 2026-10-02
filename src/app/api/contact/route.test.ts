@@ -81,6 +81,16 @@ describe("POST /api/contact", () => {
     expect(response.status).toBe(200);
   });
 
+  it("accepts a 127.0.0.1 Origin for a localhost request URL", async () => {
+    const response = await POST(
+      postRequest({
+        origin: "http://127.0.0.1:3000",
+        ip: "203.0.113.21",
+      }),
+    );
+    expect(response.status).toBe(200);
+  });
+
   it("returns field errors for invalid input and does not reflect markup", async () => {
     const response = await POST(
       postRequest({

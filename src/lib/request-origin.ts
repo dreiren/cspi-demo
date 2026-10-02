@@ -4,6 +4,8 @@
  * Referer when Origin is absent) is rejected so other sites cannot drive the API.
  */
 
+const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
+
 function parseHttpOrigin(value: string): string | null {
   const trimmed = value.trim();
   if (!trimmed || trimmed === "null") return null;
@@ -14,6 +16,32 @@ function parseHttpOrigin(value: string): string | null {
     return url.origin;
   } catch {
     return null;
+  }
+}
+
+function effectivePort(url: URL): string {
+  if (url.port) return url.port;
+  return url.protocol === "https:" ? "443" : "80";
+}
+
+function hostnameOf(origin: string): string {
+  return new URL(origin).hostname.replace(/^\[|\]$/g, "");
+}
+
+/** Loopback hosts on the same scheme+port are the same browser origin for local dev. */
+export function originsEquivalent(left: string, right: string): boolean {
+  if (left === right) return true;
+  try {
+    const a = new URL(left);
+    const b = new URL(right);
+    if (a.protocol !== b.protocol) return false;
+    if (effectivePort(a) !== effectivePort(b)) return false;
+    const hostA = hostnameOf(left);
+    const hostB = hostnameOf(right);
+    if (hostA === hostB) return true;
+    return LOOPBACK_HOSTS.has(hostA) && LOOPBACK_HOSTS.has(hostB);
+  } catch {
+    return false;
   }
 }
 
@@ -31,6 +59,13 @@ export function collectAllowedOrigins(
   return allowed;
 }
 
+function originIsAllowed(candidate: string, allowed: Set<string>): boolean {
+  for (const origin of allowed) {
+    if (originsEquivalent(candidate, origin)) return true;
+  }
+  return false;
+}
+
 export function isSameOriginRequest(
   headers: Headers,
   requestUrl: string,
@@ -42,11 +77,11 @@ export function isSameOriginRequest(
   const originHeader = headers.get("origin");
   if (originHeader != null && originHeader !== "") {
     const origin = parseHttpOrigin(originHeader);
-    return origin != null && allowed.has(origin);
+    return origin != null && originIsAllowed(origin, allowed);
   }
 
   const referer = headers.get("referer");
   if (!referer) return false;
   const refererOrigin = parseHttpOrigin(referer);
-  return refererOrigin != null && allowed.has(refererOrigin);
+  return refererOrigin != null && originIsAllowed(refererOrigin, allowed);
 }
