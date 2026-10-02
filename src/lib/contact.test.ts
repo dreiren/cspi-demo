@@ -184,6 +184,35 @@ describe("validateContactPayload", () => {
     }
   });
 
+  it("strips HTML and script tags from accepted fields", () => {
+    const result = validateContactPayload({
+      ...validBase,
+      name: "Jane <script>alert(1)</script> Doe",
+      company: "Acme <b>PH</b>",
+      message: "We need structured cabling.<script>alert(1)</script> Please call.",
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok && !result.honeypot) {
+      expect(result.value.name).toBe("Jane Doe");
+      expect(result.value.company).toBe("Acme PH");
+      expect(result.value.message).toBe("We need structured cabling. Please call.");
+      expect(result.value.name.toLowerCase()).not.toContain("script");
+      expect(result.value.message).not.toContain("<");
+    }
+  });
+
+  it("rejects markup-only messages after sanitization", () => {
+    const result = validateContactPayload({
+      ...validBase,
+      message: "<script>alert(1)</script>",
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.errors.message).toMatch(/at least 10/);
+      expect(JSON.stringify(result.errors)).not.toContain("<script");
+    }
+  });
+
   it("does not echo HTML from the message into errors", () => {
     const result = validateContactPayload({
       ...validBase,
@@ -196,6 +225,7 @@ describe("validateContactPayload", () => {
     }
   });
 });
+
 
 describe("readContactInput", () => {
   it("reads known fields and ignores extras", () => {
@@ -290,7 +320,21 @@ describe("planContactSubmit", () => {
       expect(plan.value.email).toBe("jane.doe@example.com");
     }
   });
+
+  it("keeps markup out of the mailto URL after sanitization", () => {
+    const plan = planContactSubmit({
+      ...validBase,
+      name: "Jane <script>alert(1)</script> Doe",
+      message: "We need structured cabling for a new office floor.",
+    });
+    expect(plan.status).toBe("mailto");
+    if (plan.status === "mailto") {
+      expect(plan.url.toLowerCase()).not.toContain("%3cscript");
+      expect(plan.value.name).toBe("Jane Doe");
+    }
+  });
 });
+
 
 describe("openMailtoUrl", () => {
   const url = buildContactMailtoUrl({

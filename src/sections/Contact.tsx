@@ -292,6 +292,7 @@ export function Contact() {
         <Reveal delay={0.08} preset="fadeRight">
           <ParallaxLayer speed={-12}>
           <form
+            id="contact-form"
             onSubmit={handleSubmit}
             noValidate
             className="relative rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) p-6 shadow-[var(--shadow-soft)] sm:p-8"
@@ -319,6 +320,8 @@ export function Contact() {
                     type="text"
                     tabIndex={-1}
                     autoComplete="off"
+                    autoCorrect="off"
+                    spellCheck={false}
                     defaultValue=""
                   />
                 </div>

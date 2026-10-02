@@ -5,6 +5,8 @@ import {
   type SanitizedContact,
 } from "../../../lib/contact";
 import { createSlidingWindowLimiter } from "../../../lib/rate-limit";
+import { isSameOriginRequest } from "../../../lib/request-origin";
+import { SITE_URL } from "../../../lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -76,6 +78,11 @@ async function deliver(payload: SanitizedContact): Promise<"skipped" | "delivere
 }
 
 export async function POST(request: Request) {
+  if (!isSameOriginRequest(request.headers, request.url, [SITE_URL])) {
+    logContactEvent("forbidden_origin");
+    return json(403, { ok: false, error: "forbidden" });
+  }
+
   const ip = clientIp(request);
   const limit = limiter.check(ip);
   if (!limit.allowed) {

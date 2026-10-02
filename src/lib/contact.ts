@@ -5,8 +5,11 @@
  * Delivery path: after validation the client opens a mailto: draft
  * (`CONTACT_MAILTO_ADDRESS`). POST /api/contact remains for server-side
  * checks if something posts JSON directly. This module never persists PII
- * to disk or localStorage.
+ * to disk or localStorage. Submitted strings are sanitized (controls + HTML)
+ * before length/format checks so markup cannot ride through to mailto or JSON.
  */
+
+import { sanitizeMultiline, sanitizeSingleLine } from "./sanitize";
 
 export const HONEYPOT_FIELD = "website" as const;
 
@@ -68,27 +71,12 @@ export function isValidPhone(value: string): boolean {
   return PHONE_COMPACT.test(compact);
 }
 
-function stripControls(value: string): string {
-  let result = "";
-  for (const char of value) {
-    const code = char.charCodeAt(0);
-    const allowWhitespace = code === 9 || code === 10 || code === 13;
-    if (!allowWhitespace && (code < 32 || code === 127)) continue;
-    result += char;
-  }
-  return result;
-}
-
-function asString(value: unknown): string {
-  return typeof value === "string" ? value : "";
-}
-
 function normalizeLine(value: unknown): string {
-  return stripControls(asString(value)).replace(/\s+/g, " ").trim();
+  return sanitizeSingleLine(value);
 }
 
 function normalizeMessage(value: unknown): string {
-  return stripControls(asString(value).replace(/\r\n/g, "\n")).trim();
+  return sanitizeMultiline(value);
 }
 
 export function readContactInput(body: unknown): ContactInput | null {
