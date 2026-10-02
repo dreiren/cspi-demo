@@ -210,3 +210,6 @@ from CI/agent environments until that GitHub import is done.
 
 Full steps: [`DEPLOY.md`](./DEPLOY.md). Env template: [`.env.example`](./.env.example).
 
+## Deploy update lists
+
+
