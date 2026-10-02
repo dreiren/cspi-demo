@@ -74,7 +74,7 @@ export function MaintenancePage() {
 
       <header className="relative z-10">
         <Container className="flex h-20 items-center">
-          <LogoMark tone="light" href={null} />
+          <LogoMark tone="light" href={null} showMark={false} />
         </Container>
       </header>
 
