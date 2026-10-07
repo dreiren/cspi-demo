@@ -27,7 +27,7 @@ export const maintenance = {
 export const navLinks = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },
-  { id: "expertise", label: "Expertise" },
+  { id: "services", label: "Services" },
   { id: "values", label: "Values" },
   { id: "why-us", label: "Why CIDUS" },
   { id: "clients", label: "Clients" },
@@ -42,7 +42,7 @@ export const hero = {
     "CIDUS Solution Phils. Inc. is an IT company. We help organizations with day-to-day technology, the equipment it runs on, the information they depend on, and the networks that keep people connected.",
   intro:
     "For more than half a decade we have planned, built, and supported practical technology — so operations, connectivity, and data stay reliable as the organization grows.",
-  primaryCta: { label: "Explore our expertise", href: "#expertise" },
+  primaryCta: { label: "Explore our services", href: "#services" },
   secondaryCta: { label: "Contact CIDUS", href: "#contact" },
   journeyCaption: "What we do",
   journey: ["IT Solutions", "Data Solutions", "IT Infrastructure", "Network Solutions"],
@@ -66,18 +66,18 @@ export const hero = {
   ],
 };
 
-export type ExpertiseIcon = "solutions" | "data" | "infrastructure" | "network";
+export type ServiceIconName = "solutions" | "data" | "infrastructure" | "network";
 
-export type ExpertisePillar = {
+export type ServicePillar = {
   id: string;
   name: string;
   shortName: string;
   plain: string;
   description: string;
-  icon: ExpertiseIcon;
+  icon: ServiceIconName;
 };
 
-export const expertisePillars: ExpertisePillar[] = [
+export const servicePillars: ServicePillar[] = [
   {
     id: "information-technology-solutions",
     name: "Information Technology Solutions",
@@ -117,7 +117,7 @@ export const expertisePillars: ExpertisePillar[] = [
 ];
 
 /** Hero chips reuse the four official pillars. */
-export const capabilityPreview = expertisePillars;
+export const capabilityPreview = servicePillars;
 
 export const about = {
   eyebrow: "About Us",
@@ -263,8 +263,8 @@ export const valuesSection = {
   quote: about.quote,
 };
 
-export const expertiseSection = {
-  eyebrow: "Expertise",
+export const servicesSection = {
+  eyebrow: "Services",
   heading: "Four ways we support your IT environment",
   description:
     "We focus on four connected areas. Each one is listed in professional terms, then in everyday language so anyone in the organization can follow along.",
@@ -405,7 +405,7 @@ export const footer = {
   description:
     "CIDUS Solution Phils. Inc. is a Philippines IT company specializing in information technology solutions, data solutions, IT infrastructure, and network solutions.",
   navHeading: "Navigation",
-  servicesHeading: "Expertise",
+  servicesHeading: "Services",
   contactHeading: "Contact",
   socialHeading: "Socials",
   copyright: (year: number) => `© ${year} CIDUS Solution Phils. Inc. All rights reserved.`,

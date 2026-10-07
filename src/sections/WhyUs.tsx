@@ -38,12 +38,49 @@ export function WhyUs() {
           tone="light"
           align="center"
           className="mx-auto"
+          headingClassName="text-[1.65rem] sm:text-4xl lg:text-[2.75rem]"
+          descriptionClassName="text-sm sm:text-lg"
         />
 
         {/* Four IT pillars converge into Integrated Solutions, then Trusted Service and Reliable Results. */}
         <Reveal delay={0.12} preset="scaleIn">
           <ParallaxLayer speed={18}>
-          <div className="relative mx-auto mt-16 aspect-[500/280] w-full max-w-3xl">
+          {/* Mobile: stacked flow so labels stay readable instead of 9px overlays. */}
+          <div className="mt-12 flex flex-col items-center gap-3 sm:hidden">
+            <div className="grid w-full grid-cols-2 gap-2">
+              {whyUsSection.convergence.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-3 py-2.5 text-center text-xs font-semibold uppercase leading-snug tracking-[0.04em] text-white"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+            <span aria-hidden="true" className="h-6 w-px bg-gradient-to-b from-(--color-accent)/70 to-(--color-accent)/30" />
+            <span className="rounded-full border border-(--color-accent)/50 bg-(--color-accent)/10 px-4 py-2 text-center text-sm font-bold uppercase tracking-[0.08em] text-(--color-accent) shadow-[var(--shadow-glow)]">
+              {hubLabel}
+            </span>
+            {chainLabels.map((label, i) => {
+              const isLast = i === chainLabels.length - 1;
+              return (
+                <div key={label} className="flex flex-col items-center gap-3">
+                  <span aria-hidden="true" className="h-6 w-px bg-gradient-to-b from-(--color-accent)/60 to-(--color-accent)/20" />
+                  <span
+                    className={`text-center text-xs font-semibold uppercase tracking-[0.12em] ${
+                      isLast
+                        ? "rounded-full border border-(--color-glass-border-strong) bg-(--color-glass-strong) px-4 py-2 text-(--color-on-band)"
+                        : "text-(--color-on-band-muted)"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="relative mx-auto mt-16 hidden aspect-[500/280] w-full max-w-3xl sm:block">
             <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
               {topXs.map((x, i) => (
                 <FlowLine
@@ -75,7 +112,7 @@ export function WhyUs() {
               <span
                 key={label}
                 style={{ left: `${(topXs[i] / VIEW_W) * 100}%`, top: `${(TOP_Y / VIEW_H) * 100}%` }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[74px] rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-1.5 py-1.5 text-center text-[9px] font-semibold uppercase leading-tight tracking-[0.02em] text-white sm:max-w-[120px] sm:px-3 sm:text-[10px]"
+                className="absolute -translate-x-1/2 -translate-y-1/2 max-w-[120px] rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-3 py-1.5 text-center text-[11px] font-semibold uppercase leading-tight tracking-[0.02em] text-white md:text-xs"
               >
                 {label}
               </span>
@@ -83,7 +120,7 @@ export function WhyUs() {
 
             <span
               style={{ left: `${(HUB_X / VIEW_W) * 100}%`, top: `${(HUB_Y / VIEW_H) * 100}%` }}
-              className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-(--color-accent)/50 bg-(--color-accent)/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] text-(--color-accent) shadow-[var(--shadow-glow)] sm:text-sm"
+              className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full border border-(--color-accent)/50 bg-(--color-accent)/10 px-4 py-2 text-sm font-bold uppercase tracking-[0.08em] text-(--color-accent) shadow-[var(--shadow-glow)]"
             >
               {hubLabel}
             </span>
@@ -95,7 +132,7 @@ export function WhyUs() {
                 <span
                   key={label}
                   style={{ left: `${(HUB_X / VIEW_W) * 100}%`, top: `${(y / VIEW_H) * 100}%` }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.14em] sm:text-xs ${
+                  className={`absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-xs font-semibold uppercase tracking-[0.14em] ${
                     isLast
                       ? "rounded-full border border-(--color-glass-border-strong) bg-(--color-glass-strong) px-4 py-2 text-(--color-on-band)"
                       : "text-(--color-on-band-muted)"
@@ -120,8 +157,8 @@ export function WhyUs() {
                   >
                     {i + 1}
                   </span>
-                  <h3 className="text-base font-bold text-(--color-on-band)">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-(--color-on-band-soft)">{item.description}</p>
+                  <h3 className="text-lg font-bold leading-snug text-(--color-on-band)">{item.title}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-(--color-on-band-soft) sm:text-sm">{item.description}</p>
                 </div>
               </ParallaxLayer>
             </Reveal>

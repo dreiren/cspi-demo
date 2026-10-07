@@ -10,7 +10,7 @@ import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { ProcessFlow } from "../components/ProcessFlow";
 import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
-import { contactInquiryEnabled, expertisePillars, hero, siteMeta } from "../data/content";
+import { contactInquiryEnabled, servicePillars, hero, siteMeta } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { STAGGER, STAGGER_FAST } from "../lib/motion";
 
@@ -37,8 +37,6 @@ const links: [number, number][] = [
   [1, 5],
   [3, 6],
 ];
-
-const chipParallax = [10, -14, 16, -10];
 
 export function Hero() {
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -144,21 +142,19 @@ export function Hero() {
             </Reveal>
           </div>
 
-          <RevealGroup stagger={STAGGER} delay={0.2} className="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-            {expertisePillars.map((pillar, i) => (
-              <RevealItem key={pillar.id} preset="scaleIn">
-                <ParallaxLayer speed={chipParallax[i] ?? 10}>
-                  <a
-                    href="#expertise"
-                    className="group flex h-full flex-col gap-3 rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-4 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:p-5"
-                  >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
-                      <ServiceIcon name={pillar.icon} className="h-5 w-5" />
-                    </span>
-                    <span className="text-sm font-bold text-(--color-on-band)">{pillar.shortName}</span>
-                    <span className="text-xs leading-relaxed text-(--color-on-band-dim)">{pillar.plain}</span>
-                  </a>
-                </ParallaxLayer>
+          <RevealGroup stagger={STAGGER} delay={0.2} className="mt-14 grid grid-cols-2 auto-rows-fr items-stretch gap-3 sm:gap-4 lg:grid-cols-4">
+            {servicePillars.map((pillar) => (
+              <RevealItem key={pillar.id} preset="scaleIn" className="h-full min-w-0">
+                <a
+                  href="#services"
+                  className="group grid h-full grid-rows-[auto_auto_1fr] gap-2 rounded-[var(--radius-lg)] border border-(--color-glass-border) bg-(--color-glass) p-3 backdrop-blur-sm transition-colors duration-300 hover:border-(--color-accent)/40 sm:gap-3 sm:p-5"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-accent)/30 text-(--color-accent) transition-colors group-hover:border-(--color-accent)/70">
+                    <ServiceIcon name={pillar.icon} className="h-5 w-5" />
+                  </span>
+                  <span className="min-h-[2.5rem] text-sm font-bold leading-snug text-(--color-on-band)">{pillar.shortName}</span>
+                  <span className="text-xs leading-relaxed text-(--color-on-band-dim)">{pillar.plain}</span>
+                </a>
               </RevealItem>
             ))}
           </RevealGroup>
