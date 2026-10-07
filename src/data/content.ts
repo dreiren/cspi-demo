@@ -35,16 +35,16 @@ export const navLinks = [
 ];
 
 export const hero = {
-  eyebrow: "Information Technology Company · Philippines",
+  eyebrow: "Information Technology Company Philippines",
   headline: "Integrated Solutions. Trusted Service. Reliable Results.",
   headlineParts: ["Integrated Solutions.", "Trusted Service.", "Reliable Results."],
   subheadline:
     "CIDUS Solution Phils. Inc. is an IT company. We help organizations with day-to-day technology, the equipment it runs on, the information they depend on, and the networks that keep people connected.",
   intro:
-    "For more than five years we have planned, built, and supported practical technology — so operations, connectivity, and data stay reliable as the organization grows.",
+    "For more than half a decade we have planned, built, and supported practical technology — so operations, connectivity, and data stay reliable as the organization grows.",
   primaryCta: { label: "Explore our expertise", href: "#expertise" },
   secondaryCta: { label: "Contact CIDUS", href: "#contact" },
-  journeyCaption: "What we do, in plain language",
+  journeyCaption: "What we do",
   journey: ["IT Solutions", "Data Solutions", "IT Infrastructure", "Network Solutions"],
   journeySteps: [
     {
@@ -121,9 +121,9 @@ export const capabilityPreview = expertisePillars;
 
 export const about = {
   eyebrow: "About Us",
-  heading: "More than a five-years-old IT company built around practical technology",
+  heading: "More than half a decade IT company built around practical technology",
   paragraphs: [
-    "CIDUS Solution Phils. Inc. more than a five-years-old  information technology company specializing in IT infrastructure, data solutions, and network solutions.",
+    "CIDUS Solution Phils. Inc. is more than half a decade information technology company specializing in IT infrastructure, data solutions, and network solutions.",
     "We were established to provide reliable, scalable, and practical technology that helps organizations improve operations, connectivity, data management, and their overall IT environment.",
     "We design, deploy, and support technology infrastructure. We work closely with clients to understand operational requirements and deliver solutions aligned with business objectives — not a catalog of products looking for a problem.",
   ],
@@ -283,7 +283,7 @@ export type ClientOrganization = {
 
 export const clientsSection = {
   eyebrow: "Clients",
-  heading: "Selected clients",
+  heading: "Our clients",
   description: "Organizations we support with practical IT, data, infrastructure, and network solutions.",
   organizations: [
     {
@@ -314,9 +314,9 @@ export type WhyUsItem = {
 export const whyUsItems: WhyUsItem[] = [
   {
     id: "five-years",
-    title: "More than five years of experience",
+    title: "More Than Half a Decade of experience",
     description:
-      "We have spent more than five years designing, deploying, and supporting technology infrastructure for organizations that need it to work every day.",
+      "We have spent more than half a decade designing, deploying, and supporting technology infrastructure for organizations that need it to work every day.",
   },
   {
     id: "growing-capability",
@@ -354,7 +354,7 @@ export const whyUsSection = {
   eyebrow: "Why CIDUS",
   heading: "More than a technology provider",
   description:
-    "With more than five years of experience, CIDUS continues to build capabilities, partnerships, and technical expertise. We aim to be a long-term IT partner that understands your challenges, provides practical solutions, and supports continued growth.",
+    "With more than half a decade of experience, CIDUS continues to build capabilities, partnerships, and technical expertise. We aim to be a long-term IT partner that understands your challenges, provides practical solutions, and supports continued growth.",
   convergence: ["IT Solutions", "Data Solutions", "IT Infrastructure", "Network Solutions"],
   outcomeChain: ["Integrated Solutions", "Trusted Service", "Reliable Results"],
 };
@@ -390,10 +390,10 @@ export const contactSection = {
   },
   details: [
     { label: "Email", value: "info@cidussolution.com" },
-    { label: "Phone", value: "(+63) 977-124-4688 / (+63) 047-222-5230" },
+    { label: "Phone", value: "+63 915 806 8000 / +63 927 943 9027" },
     { label: "Office", value: "Address: 12/F, Unit 1206, The Trade and Financial Tower, 7th Avenue Cor. 32nd Street, BGC, Fort Bonifacio, Taguig City, Philippines 1634" },
   ],
-  socialHeading: "Social",
+  socialHeading: "Socials",
   socialLinks: [
     { id: "linkedin", label: "LinkedIn", href: "#" },
     { id: "x", label: "X (Twitter)", href: "#" },
@@ -407,6 +407,6 @@ export const footer = {
   navHeading: "Navigation",
   servicesHeading: "Expertise",
   contactHeading: "Contact",
-  socialHeading: "Social",
+  socialHeading: "Socials",
   copyright: (year: number) => `© ${year} CIDUS Solution Phils. Inc. All rights reserved.`,
 };

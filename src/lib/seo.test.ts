@@ -51,7 +51,7 @@ describe("content structure for SEO and storytelling", () => {
     expect(blob).not.toContain("nationwide");
   });
 
-  it("explains the four pillars in plain language for non-technical readers", () => {
+  it("explains the four pillars for non-technical readers", () => {
     expect(hero.journeySteps).toHaveLength(hero.journey.length);
     expect(hero.journeySteps.every((step) => step.plain.length > 12)).toBe(true);
     expect(hero.journeySteps.map((step) => step.label)).toEqual(hero.journey);
