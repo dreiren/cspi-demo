@@ -85,10 +85,11 @@ No component code needs to change for a copy update.
 
 ### Replacing the logo
 
-`src/components/LogoMark.tsx` renders the `[LOGO]` + company-name lockup.
+`src/components/LogoMark.tsx` renders the company mark plus the short name.
 The navbar and maintenance header hide the mark (`showMark={false}`) and show
-the company name only. The footer still uses the full lockup. Swap the inline
-SVG glyph for an `<img>`/real logo asset when it's available.
+the company name only. The footer uses the full lockup with `public/logo.png`.
+Browser icons are `public/favicon.ico`, `public/favicon.png`, and
+`public/apple-touch-icon.png`.
 
 ### Replacing client logos
 

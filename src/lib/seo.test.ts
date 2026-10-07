@@ -9,7 +9,7 @@ import {
   siteMeta,
   whyUsSection,
 } from "../data/content";
-import { buildOrganizationJsonLd, buildWebPageJsonLd, resolveSiteUrl, seoDescription, seoKeywords, seoTitle, serializeJsonLd } from "./seo";
+import { SITE_URL, buildOrganizationJsonLd, buildWebPageJsonLd, resolveSiteUrl, seoDescription, seoKeywords, seoTitle, serializeJsonLd } from "./seo";
 
 describe("content structure for SEO and storytelling", () => {
   it("exposes a unique section id for every navigation item", () => {
@@ -96,6 +96,7 @@ describe("SEO metadata and structured data", () => {
     expect(jsonLd["@type"]).toEqual(["Organization", "ProfessionalService"]);
     expect(jsonLd.name).toBe("CIDUS Solution Phils. Inc.");
     expect(jsonLd.alternateName).toBe("CIDUS");
+    expect(jsonLd.logo).toBe(`${SITE_URL}/logo.png`);
     expect(jsonLd.knowsAbout).toContain("IT Infrastructure");
     expect(jsonLd.knowsAbout).toContain("Network Solutions");
     expect(jsonLd.knowsAbout).not.toContain("Logistics");
