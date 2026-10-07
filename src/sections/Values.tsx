@@ -66,7 +66,7 @@ export function Values() {
               <div
                 role="tablist"
                 aria-label={`${siteMeta.shortName} core values`}
-                className="mt-5 flex flex-wrap items-end gap-2 sm:gap-3"
+                className="mt-5 flex flex-wrap items-end gap-x-2 gap-y-8 pb-8 sm:gap-x-3"
               >
                 {coreValues.map((value, i) => {
                   const isActive = value.id === activeId;
@@ -86,23 +86,17 @@ export function Values() {
                       onClick={() => setActiveId(value.id)}
                       onMouseEnter={() => setActiveId(value.id)}
                       onKeyDown={(event) => onLetterKeyDown(event, i)}
-                      className={`group relative flex h-20 w-16 flex-col items-center justify-center overflow-hidden rounded-[var(--radius-md)] border px-1 transition-[color,background-color,border-color,box-shadow,transform] duration-300 sm:h-28 sm:w-24 ${
+                      className={`group relative flex h-20 w-16 flex-col items-center justify-center rounded-[var(--radius-md)] border transition-[color,background-color,border-color,box-shadow,transform] duration-300 sm:h-28 sm:w-24 ${
                         isActive
                           ? "-translate-y-1 border-(--color-accent) bg-(--color-primary) text-(--color-accent) shadow-[var(--shadow-glow)]"
                           : "border-(--color-line) bg-white text-(--color-primary) hover:-translate-y-1 hover:border-(--color-accent)/70 hover:shadow-[var(--shadow-soft)]"
                       }`}
                     >
-                      <span
-                        className={`text-4xl font-bold tracking-tight transition-transform duration-300 sm:text-5xl ${
-                          isActive ? "-translate-y-2" : "group-hover:-translate-y-2"
-                        }`}
-                      >
-                        {value.letter}
-                      </span>
+                      <span className="text-4xl font-bold tracking-tight sm:text-5xl">{value.letter}</span>
                       <span
                         aria-hidden="true"
-                        className={`absolute bottom-2 left-1 right-1 truncate text-center text-[9px] font-semibold uppercase tracking-[0.08em] transition-opacity duration-300 sm:bottom-2.5 sm:text-[10px] ${
-                          isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                        className={`pointer-events-none absolute left-1/2 top-[calc(100%+0.55rem)] -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.14em] transition-opacity duration-300 sm:text-[11px] ${
+                          isActive ? "text-(--color-secondary-dark) opacity-100" : "text-(--color-ink-faint) opacity-0 group-hover:opacity-100"
                         }`}
                       >
                         {spellWord}
