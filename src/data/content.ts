@@ -343,11 +343,19 @@ export const whyUsSection = {
   outcomeChain: ["Integrated Solutions", "Trusted Service", "Reliable Results"],
 };
 
+/**
+ * Temporary. While false, Contact CIDUS buttons and the inquiry form stay
+ * off the page. Set to true to restore them.
+ */
+export const contactInquiryEnabled = false;
+
 export const contactSection = {
   eyebrow: "Contact",
   heading: "Talk with us about your IT environment",
   description:
     "Share an infrastructure, data, or network question. We will look at how CIDUS Solution Phils. Inc. can help with a practical next step.",
+  directoryDescription:
+    "Reach CIDUS Solution Phils. Inc. about infrastructure, data, or network needs. The details below are how to get in touch.",
   cta: "Send an inquiry",
   formFields: {
     name: "Name",

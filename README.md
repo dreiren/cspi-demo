@@ -86,8 +86,13 @@ No component code needs to change for a copy update.
 ### Replacing the logo
 
 `src/components/LogoMark.tsx` renders the company mark plus the short name.
-The navbar and maintenance header hide the mark (`showMark={false}`) and show
-the company name only. The footer uses the full lockup with `public/logo.png`.
+The navbar and footer use the full lockup with `public/logo.png`. The
+maintenance header hides the mark (`showMark={false}`) and shows the company
+name only.
+
+`contactInquiryEnabled` in `src/data/content.ts` is temporarily `false`. That
+hides the Contact CIDUS buttons and the inquiry form, and shows a centered
+contact directory instead. Set it to `true` to bring the form and buttons back.
 Browser icons are `public/favicon.ico`, `public/favicon.png`, and
 `public/apple-touch-icon.png`.
 
