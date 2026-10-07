@@ -1,4 +1,4 @@
-import { siteMeta, expertisePillars, hero, contactSection } from "../data/content";
+import { siteMeta, servicePillars, hero, contactSection } from "../data/content";
 
 export const PLACEHOLDER_SITE_URL = "https://www.cidus.example";
 
@@ -52,7 +52,7 @@ export const seoDescription =
   "CIDUS Solution Phils. Inc. is a Philippines IT company for infrastructure, data, and network solutions that keep operations reliable and connected.";
 
 export function buildOrganizationJsonLd() {
-  const serviceNames = expertisePillars.map((pillar) => pillar.name);
+  const serviceNames = servicePillars.map((pillar) => pillar.name);
   const email = contactSection.details.find((item) => item.label === "Email")?.value;
   const telephone = contactSection.details.find((item) => item.label === "Phone")?.value;
   const isPlaceholder = (value?: string) => !value || value.startsWith("[");
@@ -80,7 +80,7 @@ export function buildOrganizationJsonLd() {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "CIDUS technology services",
-      itemListElement: expertisePillars.map((pillar, index) => ({
+      itemListElement: servicePillars.map((pillar, index) => ({
         "@type": "Offer",
         position: index + 1,
         itemOffered: {

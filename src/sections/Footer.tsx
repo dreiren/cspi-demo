@@ -2,7 +2,7 @@ import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
 import { Reveal } from "../components/Reveal";
 import { SocialLinks } from "../components/SocialLinks";
-import { contactSection, expertisePillars, footer, navLinks, siteMeta } from "../data/content";
+import { contactSection, servicePillars, footer, navLinks, siteMeta } from "../data/content";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -35,12 +35,12 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Footer expertise">
+          <nav aria-label="Footer services">
             <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-(--color-on-band-faint)">{footer.servicesHeading}</h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {expertisePillars.map((pillar) => (
+              {servicePillars.map((pillar) => (
                 <li key={pillar.id}>
-                  <a href="#expertise" className="text-sm text-(--color-on-band-soft) transition-colors hover:text-(--color-accent)">
+                  <a href="#services" className="text-sm text-(--color-on-band-soft) transition-colors hover:text-(--color-accent)">
                     {pillar.shortName}
                   </a>
                 </li>

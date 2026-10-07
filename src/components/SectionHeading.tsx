@@ -8,6 +8,8 @@ type SectionHeadingProps = {
   tone?: "dark" | "light";
   align?: "left" | "center";
   className?: string;
+  headingClassName?: string;
+  descriptionClassName?: string;
 };
 
 export function SectionHeading({
@@ -17,6 +19,8 @@ export function SectionHeading({
   tone = "dark",
   align = "left",
   className = "",
+  headingClassName = "",
+  descriptionClassName = "",
 }: SectionHeadingProps) {
   const isLight = tone === "light";
   const alignClasses = align === "center" ? "items-center text-center mx-auto" : "items-start text-left";
@@ -37,9 +41,9 @@ export function SectionHeading({
       </Reveal>
       <Reveal delay={0.08} preset="fadeUp">
         <h2
-          className={`text-balance text-3xl sm:text-4xl lg:text-[2.75rem] ${
-            isLight ? "text-(--color-on-band)" : "text-(--color-primary)"
-          }`}
+          className={`text-balance ${
+            headingClassName || "text-3xl sm:text-4xl lg:text-[2.75rem]"
+          } ${isLight ? "text-(--color-on-band)" : "text-(--color-primary)"}`}
         >
           {heading}
         </h2>
@@ -47,9 +51,9 @@ export function SectionHeading({
       {description ? (
         <Reveal delay={0.16} preset="fadeUp">
           <p
-            className={`text-balance text-base sm:text-lg leading-relaxed ${
-              isLight ? "text-(--color-on-band-muted)" : "text-(--color-ink-soft)"
-            }`}
+            className={`text-balance leading-relaxed ${
+              descriptionClassName || "text-base sm:text-lg"
+            } ${isLight ? "text-(--color-on-band-muted)" : "text-(--color-ink-soft)"}`}
           >
             {description}
           </p>

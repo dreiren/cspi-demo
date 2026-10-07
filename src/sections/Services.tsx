@@ -4,7 +4,7 @@ import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
-import { expertisePillars, expertiseSection } from "../data/content";
+import { servicePillars, servicesSection } from "../data/content";
 import { STAGGER_SLOW } from "../lib/motion";
 
 const cardParallax = [12, -10, 14, -8];
@@ -12,8 +12,8 @@ const cardParallax = [12, -10, 14, -8];
 export function Services() {
   return (
     <section
-      id="expertise"
-      aria-label="Expertise"
+      id="services"
+      aria-label="Services"
       className="relative overflow-hidden bg-(--color-band) py-24 sm:py-32"
     >
       <div aria-hidden="true" className="theme-services-wash absolute inset-0" />
@@ -23,9 +23,9 @@ export function Services() {
 
       <Container className="relative">
         <SectionHeading
-          eyebrow={expertiseSection.eyebrow}
-          heading={expertiseSection.heading}
-          description={expertiseSection.description}
+          eyebrow={servicesSection.eyebrow}
+          heading={servicesSection.heading}
+          description={servicesSection.description}
           tone="light"
         />
 
@@ -35,7 +35,7 @@ export function Services() {
             className="absolute left-7 top-10 bottom-24 hidden w-px bg-gradient-to-b from-(--color-accent)/60 via-(--color-secondary)/40 to-(--color-accent)/60 sm:block"
           />
 
-          {expertisePillars.map((pillar, i) => (
+          {servicePillars.map((pillar, i) => (
             <Reveal
               key={pillar.id}
               delay={i * STAGGER_SLOW}
@@ -83,10 +83,10 @@ export function Services() {
                 <path d="M10 0V22M10 22L4 16M10 22L16 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-(--color-accent)">
-                {expertiseSection.outcome}
+                {servicesSection.outcome}
               </p>
               <p className="max-w-md text-sm leading-relaxed text-(--color-on-band-dim)">
-                {expertiseSection.outcomePlain}
+                {servicesSection.outcomePlain}
               </p>
             </div>
           </ParallaxLayer>

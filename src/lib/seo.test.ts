@@ -4,7 +4,7 @@ import {
   clientsSection,
   contactSection,
   coreValues,
-  expertisePillars,
+  servicePillars,
   guidingPrinciples,
   hero,
   navLinks,
@@ -17,18 +17,19 @@ describe("content structure for SEO and storytelling", () => {
   it("exposes a unique section id for every navigation item", () => {
     const ids = navLinks.map((link) => link.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids).toEqual(["hero", "about", "expertise", "values", "why-us", "clients", "contact"]);
+    expect(ids).toEqual(["hero", "about", "services", "values", "why-us", "clients", "contact"]);
+    expect(navLinks.find((link) => link.id === "services")?.label).toBe("Services");
   });
 
-  it("keeps the four official expertise pillars", () => {
-    expect(expertisePillars).toHaveLength(4);
-    expect(expertisePillars.map((pillar) => pillar.name)).toEqual([
+  it("keeps the four official service pillars", () => {
+    expect(servicePillars).toHaveLength(4);
+    expect(servicePillars.map((pillar) => pillar.name)).toEqual([
       "Information Technology Solutions",
       "Data Solutions",
       "IT Infrastructure",
       "Network Solutions",
     ]);
-    expect(expertisePillars.every((pillar) => pillar.plain.length > 12)).toBe(true);
+    expect(servicePillars.every((pillar) => pillar.plain.length > 12)).toBe(true);
   });
 
   it("does not position CIDUS as logistics, warehousing, or general trading", () => {
@@ -37,7 +38,7 @@ describe("content structure for SEO and storytelling", () => {
       hero.subheadline,
       hero.intro,
       ...about.paragraphs,
-      ...expertisePillars.map((pillar) => `${pillar.name} ${pillar.description}`),
+      ...servicePillars.map((pillar) => `${pillar.name} ${pillar.description}`),
       whyUsSection.heading,
       whyUsSection.description,
     ]
@@ -118,7 +119,7 @@ describe("SEO metadata and structured data", () => {
     expect(jsonLd.knowsAbout).not.toContain("Logistics");
     expect(jsonLd.areaServed).toEqual({ "@type": "Country", name: "Philippines" });
     expect(jsonLd.email).toBe("info@cidussolution.com");
-    expect(jsonLd.telephone).toBe("(+63) 977-124-4688 / (+63) 047-222-5230");
+    expect(jsonLd.telephone).toBe("+63 915 806 8000 / +63 927 943 9027");
     expect(jsonLd.hasOfferCatalog.itemListElement).toHaveLength(4);
   });
 
