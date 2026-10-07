@@ -8,6 +8,7 @@ import { GlowNode } from "../components/graphics/GlowNode";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
+import { SocialLinks } from "../components/SocialLinks";
 import { contactInquiryEnabled, contactSection } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import {
@@ -19,7 +20,6 @@ import {
   type ContactField,
   type ContactFieldErrors,
 } from "../lib/contact";
-import { safeAnchorProps } from "../lib/links";
 
 const inputClasses =
   "scheme-light w-full rounded-[var(--radius-sm)] border bg-white px-4 py-3 text-sm text-(--color-ink) placeholder:text-(--color-ink-faint) transition-colors focus:outline-none focus:ring-2";
@@ -242,20 +242,9 @@ function ContactDirectory() {
         <Reveal delay={0.2} preset="fadeUp">
           <div className="mt-10 flex flex-col items-center">
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-ink-faint)">
-              [Social Links]
+              {contactSection.socialHeading}
             </p>
-            <div className="mt-3 flex gap-3">
-              {contactSection.socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  {...safeAnchorProps(social.href)}
-                  aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-(--color-line) bg-white text-(--color-ink-soft) transition-colors hover:border-(--color-accent) hover:text-(--color-secondary)"
-                >
-                  <span className="text-[10px] font-bold uppercase">{social.label.slice(0, 2)}</span>
-                </a>
-              ))}
-            </div>
+            <SocialLinks className="mt-3" />
           </div>
         </Reveal>
       </Container>
@@ -383,20 +372,9 @@ function ContactInquiry() {
           <Reveal delay={0.22} preset="fadeUp">
             <div className="mt-10">
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-ink-faint)">
-                [Social Links]
+                {contactSection.socialHeading}
               </p>
-              <div className="mt-3 flex gap-3">
-                {contactSection.socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    {...safeAnchorProps(social.href)}
-                    aria-label={social.label}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-(--color-line) text-(--color-ink-soft) transition-colors hover:border-(--color-accent) hover:text-(--color-secondary)"
-                  >
-                    <span className="text-[10px] font-bold uppercase">{social.label.slice(0, 2)}</span>
-                  </a>
-                ))}
-              </div>
+              <SocialLinks className="mt-3" />
             </div>
           </Reveal>
         </div>

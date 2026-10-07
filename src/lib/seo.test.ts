@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   about,
+  clientsSection,
+  contactSection,
   coreValues,
   expertisePillars,
   guidingPrinciples,
@@ -60,6 +62,20 @@ describe("content structure for SEO and storytelling", () => {
     expect(guidingPrinciples).toHaveLength(5);
   });
 
+  it("lists selected clients with logo artwork", () => {
+    expect(clientsSection.organizations).toHaveLength(3);
+    expect(clientsSection.organizations.map((org) => org.name)).toEqual([
+      "U.S. Embassy Manila",
+      "Universal Corporation",
+      "Phelps Dodge",
+    ]);
+    expect(clientsSection.organizations.every((org) => org.logoSrc.startsWith("/clients/"))).toBe(true);
+  });
+
+  it("exposes named social networks for icon rendering", () => {
+    expect(contactSection.socialLinks.map((link) => link.id)).toEqual(["linkedin", "x", "facebook"]);
+  });
+
   it("ends the Why CIDUS story on the brand tagline chain", () => {
     expect(whyUsSection.outcomeChain).toEqual([
       "Integrated Solutions",
@@ -91,7 +107,7 @@ describe("SEO metadata and structured data", () => {
     expect(seoTitle).toContain(siteMeta.companyName);
   });
 
-  it("builds valid Organization JSON-LD without placeholder contact fields", () => {
+  it("builds valid Organization JSON-LD with live contact fields", () => {
     const jsonLd = buildOrganizationJsonLd();
     expect(jsonLd["@type"]).toEqual(["Organization", "ProfessionalService"]);
     expect(jsonLd.name).toBe("CIDUS Solution Phils. Inc.");
@@ -101,8 +117,8 @@ describe("SEO metadata and structured data", () => {
     expect(jsonLd.knowsAbout).toContain("Network Solutions");
     expect(jsonLd.knowsAbout).not.toContain("Logistics");
     expect(jsonLd.areaServed).toEqual({ "@type": "Country", name: "Philippines" });
-    expect(jsonLd).not.toHaveProperty("email");
-    expect(jsonLd).not.toHaveProperty("telephone");
+    expect(jsonLd.email).toBe("info@cidussolution.com");
+    expect(jsonLd.telephone).toBe("(+63) 977-124-4688 / (+63) 047-222-5230");
     expect(jsonLd.hasOfferCatalog.itemListElement).toHaveLength(4);
   });
 

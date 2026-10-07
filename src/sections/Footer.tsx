@@ -1,8 +1,8 @@
 import { Container } from "../components/Container";
 import { LogoMark } from "../components/LogoMark";
 import { Reveal } from "../components/Reveal";
+import { SocialLinks } from "../components/SocialLinks";
 import { contactSection, expertisePillars, footer, navLinks, siteMeta } from "../data/content";
-import { safeAnchorProps } from "../lib/links";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -59,19 +59,7 @@ export function Footer() {
             <h3 className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-(--color-on-band-faint)">
               {footer.socialHeading}
             </h3>
-            <ul className="mt-4 flex gap-3">
-              {contactSection.socialLinks.map((social) => (
-                <li key={social.label}>
-                  <a
-                    {...safeAnchorProps(social.href)}
-                    aria-label={social.label}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-(--color-glass-border-mid) text-[10px] font-bold uppercase transition-colors hover:border-(--color-accent) hover:text-(--color-accent)"
-                  >
-                    {social.label.slice(0, 2)}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <SocialLinks tone="light" className="mt-4" />
           </div>
         </div>
         </Reveal>

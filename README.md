@@ -8,10 +8,9 @@ Tailwind CSS v4, and Framer Motion**.
 
 Tagline: **"Integrated Solutions. Trusted Service. Reliable Results."**
 
-Copy that hasn't been officially confirmed by the client (contact details,
-client logo artwork, etc.) is kept as an explicit bracketed placeholder
-(`[Email Address]`, `[U.S. Embassy in the Philippines Logo]`, ...) so it can be
-replaced without a redesign. See `src/data/content.ts` for the full list.
+Copy that hasn't been officially confirmed by the client (social profile URLs,
+etc.) is kept as an explicit placeholder so it can be replaced without a
+redesign. See `src/data/content.ts` for the full list.
 
 ## Tech stack
 
@@ -41,7 +40,7 @@ src/
   hooks/                    # usePrefersReducedMotion, useActiveSection, useScrolled
   components/               # Reusable UI: Button, Container, Navbar, LogoMark,
                              # SectionHeading, Reveal (scroll fade-in), ParallaxLayer,
-                             # ClientLogoPlaceholder, graphics/ (Node, FlowLine, Grid, icons)
+                             # ClientLogo, SocialLinks, graphics/ (Node, FlowLine, Grid, icons)
   sections/                  # One file per page section: Hero, About, Services,
                              # Clients, WhyUs, Contact, Footer
 ```
@@ -65,8 +64,8 @@ Home/Hero → About Us → Our Services → Our Clients → Why CIDUS → Contac
 - **Services** organizes CIDUS's nine official service areas into four
   connected groups (`src/data/content.ts` → `serviceGroups`), visualized as a
   vertical spine converging on "Integrated Solutions."
-- **Clients** presents named organizations as clearly labeled logo
-  placeholders pending approved artwork (`clientsSection.organizations`).
+- **Clients** presents named organizations with their logos
+  (`clientsSection.organizations`).
 - **Why CIDUS** is the visual and narrative climax: four capability groups
   converge into "Integrated Solutions," chaining down to "Trusted Service"
   and "Reliable Results" — directly echoing the site tagline.
@@ -98,10 +97,9 @@ Browser icons are `public/favicon.ico`, `public/favicon.png`, and
 
 ### Replacing client logos
 
-`src/components/ClientLogoPlaceholder.tsx` renders a fixed-size tile designed
-so a real, approved logo image can be dropped in without touching the layout
-in `src/sections/Clients.tsx`. Organization names live in
-`clientsSection.organizations` in `src/data/content.ts`.
+`src/components/ClientLogo.tsx` renders a fixed-size tile. Artwork lives in
+`public/clients/`; names and paths live in `clientsSection.organizations` in
+`src/data/content.ts`. Use `logoShape: "circle"` for round seals.
 
 ## Design system
 
