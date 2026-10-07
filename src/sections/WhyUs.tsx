@@ -47,11 +47,11 @@ export function WhyUs() {
           <ParallaxLayer speed={18}>
           {/* Mobile: stacked flow so labels stay readable instead of 9px overlays. */}
           <div className="mt-12 flex flex-col items-center gap-3 sm:hidden">
-            <div className="grid w-full grid-cols-2 gap-2">
+            <div className="grid w-full grid-cols-2 auto-rows-fr gap-2">
               {whyUsSection.convergence.map((label) => (
                 <span
                   key={label}
-                  className="rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-3 py-2.5 text-center text-xs font-semibold uppercase leading-snug tracking-[0.04em] text-white"
+                  className="flex h-full items-center justify-center rounded-2xl border border-(--color-glass-border-mid) bg-(--color-primary) px-3 py-2.5 text-center text-xs font-semibold uppercase leading-snug tracking-[0.04em] text-white"
                 >
                   {label}
                 </span>
