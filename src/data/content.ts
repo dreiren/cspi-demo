@@ -365,9 +365,9 @@ export const contactSection = {
     message: "How can we help?",
   },
   details: [
-    { label: "Email", value: "[Email Address]" },
-    { label: "Phone", value: "[Phone Number]" },
-    { label: "Office", value: "[Office Address]" },
+    { label: "Email", value: "info@cidussolution.com" },
+    { label: "Phone", value: "(+63) 977-124-4688 / (+63) 047-222-5230" },
+    { label: "Office", value: "Address: 12/F, Unit 1206, The Trade and Financial Tower, 7th Avenue Cor. 32nd Street, BGC, Fort Bonifacio, Taguig City, Philippines 1634" },
   ],
   socialLinks: [
     { label: "LinkedIn", href: "#" },
