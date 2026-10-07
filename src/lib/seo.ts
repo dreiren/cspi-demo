@@ -65,6 +65,7 @@ export function buildOrganizationJsonLd() {
     slogan: siteMeta.tagline,
     description: seoDescription,
     url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
     knowsAbout: serviceNames,
     areaServed: {
       "@type": "Country",

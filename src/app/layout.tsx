@@ -15,6 +15,14 @@ import {
 } from "../lib/seo";
 import "./globals.css";
 
+const icons: Metadata["icons"] = {
+  icon: [
+    { url: "/favicon.ico", sizes: "any" },
+    { url: "/favicon.png", type: "image/png", sizes: "32x32" },
+  ],
+  apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+};
+
 const liveMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -49,9 +57,7 @@ const liveMetadata: Metadata = {
     title: seoTitle,
     description: seoDescription,
   },
-  icons: {
-    icon: "/favicon.svg",
-  },
+  icons,
 };
 
 const maintenanceMetadata: Metadata = {
@@ -63,9 +69,7 @@ const maintenanceMetadata: Metadata = {
     index: false,
     follow: false,
   },
-  icons: {
-    icon: "/favicon.svg",
-  },
+  icons,
 };
 
 export function generateMetadata(): Metadata {

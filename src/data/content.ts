@@ -121,9 +121,9 @@ export const capabilityPreview = expertisePillars;
 
 export const about = {
   eyebrow: "About Us",
-  heading: "A five-year-old IT company built around practical technology",
+  heading: "More than a five-years-old IT company built around practical technology",
   paragraphs: [
-    "CIDUS Solution Phils. Inc. is a five-year-old information technology company specializing in IT infrastructure, data solutions, and network solutions.",
+    "CIDUS Solution Phils. Inc. more than a five-years-old  information technology company specializing in IT infrastructure, data solutions, and network solutions.",
     "We were established to provide reliable, scalable, and practical technology that helps organizations improve operations, connectivity, data management, and their overall IT environment.",
     "We design, deploy, and support technology infrastructure. We work closely with clients to understand operational requirements and deliver solutions aligned with business objectives — not a catalog of products looking for a problem.",
   ],
@@ -343,11 +343,19 @@ export const whyUsSection = {
   outcomeChain: ["Integrated Solutions", "Trusted Service", "Reliable Results"],
 };
 
+/**
+ * Temporary. While false, Contact CIDUS buttons and the inquiry form stay
+ * off the page. Set to true to restore them.
+ */
+export const contactInquiryEnabled = false;
+
 export const contactSection = {
   eyebrow: "Contact",
   heading: "Talk with us about your IT environment",
   description:
     "Share an infrastructure, data, or network question. We will look at how CIDUS Solution Phils. Inc. can help with a practical next step.",
+  directoryDescription:
+    "Reach CIDUS Solution Phils. Inc. about infrastructure, data, or network needs. The details below are how to get in touch.",
   cta: "Send an inquiry",
   formFields: {
     name: "Name",

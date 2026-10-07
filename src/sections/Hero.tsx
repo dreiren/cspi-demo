@@ -10,7 +10,7 @@ import { ServiceIcon } from "../components/graphics/ServiceIcon";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { ProcessFlow } from "../components/ProcessFlow";
 import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
-import { expertisePillars, hero, siteMeta } from "../data/content";
+import { contactInquiryEnabled, expertisePillars, hero, siteMeta } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import { STAGGER, STAGGER_FAST } from "../lib/motion";
 
@@ -135,9 +135,11 @@ export function Hero() {
                     <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </Button>
-                <Button href={hero.secondaryCta.href} variant="ghost" size="lg">
-                  {hero.secondaryCta.label}
-                </Button>
+                {contactInquiryEnabled ? (
+                  <Button href={hero.secondaryCta.href} variant="ghost" size="lg">
+                    {hero.secondaryCta.label}
+                  </Button>
+                ) : null}
               </div>
             </Reveal>
           </div>

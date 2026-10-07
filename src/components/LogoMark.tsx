@@ -6,12 +6,12 @@ type LogoMarkProps = {
   showLegalName?: boolean;
   /** Pass `null` to render a non-link lockup (e.g. maintenance screen). */
   href?: string | null;
-  /** When false, render only the company name (no [Logo] mark box). */
+  /** When false, render only the company name (no mark). */
   showMark?: boolean;
 };
 
 /**
- * Brand lockup: optional [LOGO] mark + CIDUS short name.
+ * Brand lockup: company mark (`public/logo.png`) + CIDUS short name.
  * The legal name sits nearby in the footer and about copy.
  */
 export function LogoMark({
@@ -26,36 +26,17 @@ export function LogoMark({
   const lockup = (
     <>
       {showMark ? (
-        <span
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius-sm)] border border-(--color-accent)/40 bg-(--color-primary-dark) text-(--color-accent)"
-          aria-hidden="true"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <circle cx="6" cy="6" r="2.4" fill="currentColor" />
-            <circle cx="18" cy="6" r="2.4" fill="currentColor" />
-            <circle cx="12" cy="18" r="2.4" fill="currentColor" />
-            <path
-              d="M6 6L18 6M6 6L12 18M18 6L12 18"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              opacity="0.6"
-            />
-          </svg>
-        </span>
+        <img
+          src="/logo.png"
+          alt=""
+          width={44}
+          height={44}
+          className="h-11 w-11 shrink-0 object-contain"
+        />
       ) : null}
       <span className="flex min-w-0 flex-col leading-none">
-        {showMark ? (
-          <span
-            className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${
-              isLight ? "text-(--color-on-band-faint)" : "text-(--color-ink-faint)"
-            }`}
-          >
-            [Logo]
-          </span>
-        ) : null}
         <span
-          className={`${showMark ? "mt-1" : ""} text-base font-bold tracking-tight ${
+          className={`text-base font-bold tracking-tight ${
             isLight ? "text-(--color-on-band)" : "text-(--color-primary)"
           }`}
         >

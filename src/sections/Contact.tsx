@@ -8,7 +8,7 @@ import { GlowNode } from "../components/graphics/GlowNode";
 import { ParallaxLayer } from "../components/ParallaxLayer";
 import { Reveal } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
-import { contactSection } from "../data/content";
+import { contactInquiryEnabled, contactSection } from "../data/content";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import {
   CONTACT_LIMITS,
@@ -151,7 +151,119 @@ function AreaField({ id, name, label, error, required, className, ...rest }: Are
   );
 }
 
-export function Contact() {
+function DetailMark({ label }: { label: string }) {
+  const common = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", "aria-hidden": true as const };
+  if (label === "Email") {
+    return (
+      <svg {...common}>
+        <rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M4 7L12 12.5L20 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (label === "Phone") {
+    return (
+      <svg {...common}>
+        <path
+          d="M8 4.5H10.2L11.4 8.2L9.7 9.4C10.6 11.4 12.2 13 14.2 13.9L15.4 12.2L19.1 13.4V15.6C19.1 16.7 18.2 17.6 17.1 17.5C11.2 17.1 6.5 12.4 6.1 6.5C6 5.4 6.9 4.5 8 4.5Z"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common}>
+      <path
+        d="M12 20.5C12 20.5 5.5 14.8 5.5 10.2C5.5 6.8 8.4 4.2 12 4.2C15.6 4.2 18.5 6.8 18.5 10.2C18.5 14.8 12 20.5 12 20.5Z"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="10" r="2" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  );
+}
+
+function ContactDirectory() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  return (
+    <section id="contact" aria-label="Contact us" className="relative overflow-hidden bg-(--color-surface) pt-20 pb-24 sm:pt-28 sm:pb-32">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_100%,rgba(105,205,223,0.08),transparent_70%)]"
+      />
+      <svg className="pointer-events-none absolute inset-x-0 bottom-0 h-28 w-full opacity-60" viewBox="0 0 800 100" aria-hidden="true" focusable="false">
+        <path
+          d="M0 70 C 200 20, 400 90, 800 40"
+          fill="none"
+          stroke="#46a0b9"
+          strokeWidth="1"
+          strokeDasharray="4 10"
+          opacity="0.35"
+          style={!prefersReducedMotion ? { animation: "dash-flow 22s linear infinite" } : undefined}
+        />
+        <GlowNode x={400} y={60} tone="accent" size={3.5} animate={!prefersReducedMotion} />
+      </svg>
+
+      <Container className="relative z-10 flex flex-col items-center">
+        <SectionHeading
+          eyebrow={contactSection.eyebrow}
+          heading={contactSection.heading}
+          description={contactSection.directoryDescription}
+          tone="dark"
+          align="center"
+        />
+
+        <Reveal delay={0.12} preset="fadeUp" className="mt-12 w-full max-w-4xl">
+          <ul className="grid gap-4 sm:grid-cols-3">
+            {contactSection.details.map((detail) => (
+              <li
+                key={detail.label}
+                className="flex flex-col items-center rounded-[var(--radius-lg)] border border-(--color-line) bg-(--color-surface-soft) px-5 py-7 text-center shadow-[var(--shadow-soft)]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-(--color-line) bg-white text-(--color-secondary)"
+                >
+                  <DetailMark label={detail.label} />
+                </span>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-(--color-ink-faint)">
+                  {detail.label}
+                </p>
+                <p className="mt-1.5 text-sm font-medium text-(--color-ink)">{detail.value}</p>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={0.2} preset="fadeUp">
+          <div className="mt-10 flex flex-col items-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-(--color-ink-faint)">
+              [Social Links]
+            </p>
+            <div className="mt-3 flex gap-3">
+              {contactSection.socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  {...safeAnchorProps(social.href)}
+                  aria-label={social.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-(--color-line) bg-white text-(--color-ink-soft) transition-colors hover:border-(--color-accent) hover:text-(--color-secondary)"
+                >
+                  <span className="text-[10px] font-bold uppercase">{social.label.slice(0, 2)}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </Container>
+    </section>
+  );
+}
+
+function ContactInquiry() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const sendingLock = useRef(false);
   const [submitted, setSubmitted] = useState(false);
@@ -422,4 +534,8 @@ export function Contact() {
       </Container>
     </section>
   );
+}
+
+export function Contact() {
+  return contactInquiryEnabled ? <ContactInquiry /> : <ContactDirectory />;
 }

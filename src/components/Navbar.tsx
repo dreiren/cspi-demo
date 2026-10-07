@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { navLinks } from "../data/content";
+import { contactInquiryEnabled, navLinks } from "../data/content";
 import { useActiveSection } from "../hooks/useActiveSection";
 import { useScrolled } from "../hooks/useScrolled";
 import { Button } from "./Button";
@@ -38,10 +38,10 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <Container className="flex h-20 items-center justify-between">
-        <LogoMark tone="light" showMark={false} />
+      <Container className="grid h-20 grid-cols-[auto_1fr] items-center lg:grid-cols-[1fr_auto_1fr]">
+        <LogoMark tone="light" className="justify-self-start" />
 
-        <nav aria-label="Primary" className="hidden items-center gap-0 lg:flex">
+        <nav aria-label="Primary" className="col-start-2 hidden items-center justify-self-center lg:flex">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -65,13 +65,15 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <Button href="#contact" variant="primary" size="md">
-            Contact CIDUS
-          </Button>
-        </div>
+        {contactInquiryEnabled ? (
+          <div className="col-start-3 hidden items-center justify-self-end lg:flex">
+            <Button href="#contact" variant="primary" size="md">
+              Contact CIDUS
+            </Button>
+          </div>
+        ) : null}
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="col-start-2 flex items-center justify-self-end lg:col-start-3 lg:hidden">
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-full border border-(--color-glass-border-strong) text-(--color-on-band)"
@@ -120,9 +122,11 @@ export function Navbar() {
                 {link.label}
               </a>
             ))}
-            <Button href="#contact" variant="primary" size="md" className="mt-3 w-full" onClick={() => setMenuOpen(false)}>
-              Contact CIDUS
-            </Button>
+            {contactInquiryEnabled ? (
+              <Button href="#contact" variant="primary" size="md" className="mt-3 w-full" onClick={() => setMenuOpen(false)}>
+                Contact CIDUS
+              </Button>
+            ) : null}
           </Container>
         </div>
       </div>
