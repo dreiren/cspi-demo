@@ -3,8 +3,8 @@
  * CENTRALIZED SITE CONTENT — CIDUS Solution Phils. Inc.
  * ---------------------------------------------------------------------------
  * Every piece of copy, label, and placeholder rendered on the site is
- * declared here. Replace contact details and client logo artwork when
- * official materials are supplied — no component code needs to change.
+ * declared here. Replace social profile URLs when official accounts are
+ * supplied — no component code needs to change.
  *
  * Anything wrapped in [ ] / [Brackets] is an intentional placeholder.
  * ---------------------------------------------------------------------------
@@ -256,7 +256,7 @@ export const valuesSection = {
   eyebrow: "Our Values",
   heading: "CIDUS, spelled out",
   description:
-    "Our name is also how we work. Select a letter to read the value behind it — then the principles that guide every project.",
+    "Our name is also how we work. Hover a letter to spell out the value behind it — then the principles that guide every project.",
   acronymCaption: "What CIDUS stands for",
   principlesEyebrow: "Guiding principles",
   principlesHeading: "How we show up on every engagement",
@@ -272,20 +272,36 @@ export const expertiseSection = {
   outcomePlain: "The goal is not merely products, but technology that keeps working as the organization grows.",
 };
 
+export type ClientLogoShape = "default" | "circle";
+
 export type ClientOrganization = {
   id: string;
   name: string;
+  logoSrc: string;
+  logoShape?: ClientLogoShape;
 };
 
 export const clientsSection = {
   eyebrow: "Clients",
   heading: "Selected clients",
-  description:
-    "Organizations we support. Names below are shown with logo placeholders until approved artwork is supplied.",
+  description: "Organizations we support with practical IT, data, infrastructure, and network solutions.",
   organizations: [
-    { id: "us-embassy-ph", name: "U.S. Embassy in the Philippines" },
-    { id: "un-agencies", name: "United Nations Agencies" },
-    { id: "vectrus", name: "Vectrus Systems Corporation" },
+    {
+      id: "us-embassy-manila",
+      name: "U.S. Embassy Manila",
+      logoSrc: "/clients/us-embassy-manila.jpg",
+      logoShape: "circle",
+    },
+    {
+      id: "universal-corporation",
+      name: "Universal Corporation",
+      logoSrc: "/clients/universal-corporation.png",
+    },
+    {
+      id: "phelps-dodge",
+      name: "Phelps Dodge",
+      logoSrc: "/clients/phelps-dodge.png",
+    },
   ] as ClientOrganization[],
 };
 
@@ -349,6 +365,14 @@ export const whyUsSection = {
  */
 export const contactInquiryEnabled = false;
 
+export type SocialNetwork = "linkedin" | "x" | "facebook";
+
+export type SocialLink = {
+  id: SocialNetwork;
+  label: string;
+  href: string;
+};
+
 export const contactSection = {
   eyebrow: "Contact",
   heading: "Talk with us about your IT environment",
@@ -369,11 +393,12 @@ export const contactSection = {
     { label: "Phone", value: "(+63) 977-124-4688 / (+63) 047-222-5230" },
     { label: "Office", value: "Address: 12/F, Unit 1206, The Trade and Financial Tower, 7th Avenue Cor. 32nd Street, BGC, Fort Bonifacio, Taguig City, Philippines 1634" },
   ],
+  socialHeading: "Social",
   socialLinks: [
-    { label: "LinkedIn", href: "#" },
-    { label: "X (Twitter)", href: "#" },
-    { label: "Facebook", href: "#" },
-  ],
+    { id: "linkedin", label: "LinkedIn", href: "#" },
+    { id: "x", label: "X (Twitter)", href: "#" },
+    { id: "facebook", label: "Facebook", href: "#" },
+  ] as SocialLink[],
 };
 
 export const footer = {

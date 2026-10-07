@@ -1,7 +1,7 @@
-import { ClientLogoPlaceholder } from "../components/ClientLogoPlaceholder";
+import { ClientLogo } from "../components/ClientLogo";
 import { Container } from "../components/Container";
 import { ParallaxLayer } from "../components/ParallaxLayer";
-import { Reveal, RevealGroup, RevealItem } from "../components/Reveal";
+import { RevealGroup, RevealItem } from "../components/Reveal";
 import { SectionHeading } from "../components/SectionHeading";
 import { clientsSection } from "../data/content";
 import { STAGGER } from "../lib/motion";
@@ -31,20 +31,14 @@ export function Clients() {
         </div>
 
         <RevealGroup stagger={STAGGER} delay={0.1} className="mx-auto mt-8 grid max-w-3xl gap-4 sm:mt-4 sm:grid-cols-3">
-          {organizations.map((org) => (
+          {organizations.map((org, index) => (
             <RevealItem key={org.id} preset="scaleIn">
-              <ParallaxLayer speed={org.id === "un-agencies" ? -12 : 10}>
-                <ClientLogoPlaceholder name={org.name} />
+              <ParallaxLayer speed={index === 1 ? -12 : 10}>
+                <ClientLogo name={org.name} src={org.logoSrc} shape={org.logoShape} />
               </ParallaxLayer>
             </RevealItem>
           ))}
         </RevealGroup>
-
-        <Reveal delay={0.2} preset="fadeIn">
-          <p className="mx-auto mt-8 max-w-xl text-center text-xs leading-relaxed text-(--color-ink-faint)">
-            Logos shown as placeholders pending approved artwork and usage guidelines from each organization.
-          </p>
-        </Reveal>
       </Container>
     </section>
   );

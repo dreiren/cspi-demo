@@ -70,6 +70,7 @@ export function Values() {
               >
                 {coreValues.map((value, i) => {
                   const isActive = value.id === activeId;
+                  const spellWord = value.title.split(" ")[0];
                   return (
                     <button
                       key={value.id}
@@ -83,14 +84,29 @@ export function Values() {
                         tabRefs.current[value.id] = node;
                       }}
                       onClick={() => setActiveId(value.id)}
+                      onMouseEnter={() => setActiveId(value.id)}
                       onKeyDown={(event) => onLetterKeyDown(event, i)}
-                      className={`flex h-20 w-16 flex-col items-center justify-center rounded-[var(--radius-md)] border transition-colors duration-300 sm:h-28 sm:w-24 ${
+                      className={`group relative flex h-20 w-16 flex-col items-center justify-center overflow-hidden rounded-[var(--radius-md)] border px-1 transition-[color,background-color,border-color,box-shadow,transform] duration-300 sm:h-28 sm:w-24 ${
                         isActive
-                          ? "border-(--color-accent) bg-(--color-primary) text-(--color-accent) shadow-[var(--shadow-glow)]"
-                          : "border-(--color-line) bg-white text-(--color-primary) hover:border-(--color-secondary)/50"
+                          ? "-translate-y-1 border-(--color-accent) bg-(--color-primary) text-(--color-accent) shadow-[var(--shadow-glow)]"
+                          : "border-(--color-line) bg-white text-(--color-primary) hover:-translate-y-1 hover:border-(--color-accent)/70 hover:shadow-[var(--shadow-soft)]"
                       }`}
                     >
-                      <span className="text-4xl font-bold tracking-tight sm:text-5xl">{value.letter}</span>
+                      <span
+                        className={`text-4xl font-bold tracking-tight transition-transform duration-300 sm:text-5xl ${
+                          isActive ? "-translate-y-2" : "group-hover:-translate-y-2"
+                        }`}
+                      >
+                        {value.letter}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className={`absolute bottom-2 left-1 right-1 truncate text-center text-[9px] font-semibold uppercase tracking-[0.08em] transition-opacity duration-300 sm:bottom-2.5 sm:text-[10px] ${
+                          isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                        }`}
+                      >
+                        {spellWord}
+                      </span>
                       <span className="sr-only">{value.title}</span>
                     </button>
                   );
