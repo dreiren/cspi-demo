@@ -121,9 +121,9 @@ export const capabilityPreview = expertisePillars;
 
 export const about = {
   eyebrow: "About Us",
-  heading: "A five-year-old IT company built around practical technology",
+  heading: "More than a five-years-old IT company built around practical technology",
   paragraphs: [
-    "CIDUS Solution Phils. Inc. is a five-year-old information technology company specializing in IT infrastructure, data solutions, and network solutions.",
+    "CIDUS Solution Phils. Inc. more than a five-years-old  information technology company specializing in IT infrastructure, data solutions, and network solutions.",
     "We were established to provide reliable, scalable, and practical technology that helps organizations improve operations, connectivity, data management, and their overall IT environment.",
     "We design, deploy, and support technology infrastructure. We work closely with clients to understand operational requirements and deliver solutions aligned with business objectives — not a catalog of products looking for a problem.",
   ],
