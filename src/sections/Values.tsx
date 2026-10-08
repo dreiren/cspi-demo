@@ -124,7 +124,7 @@ export function Values() {
                   {active.letter}
                 </span>
                 <p
-                  className="relative flex select-none items-baseline font-bold leading-none tracking-[0.14em]"
+                  className="relative flex select-none items-baseline text-[1rem] font-bold leading-none tracking-[0.14em]"
                   aria-label={siteMeta.shortName}
                 >
                   {coreValues.map((value) => {
@@ -133,11 +133,11 @@ export function Values() {
                       <span
                         key={value.id}
                         aria-hidden="true"
-                        className={`inline-block text-[1rem] transition-[color,transform,filter] duration-300 ${`}
+                        className={
                           isActive
-                            ? "-translate-y-0.5 text-(--color-accent) drop-shadow-[0_0_16px_rgba(105,205,223,0.45)]"
-                            : "text-(--color-primary)/22"
-                        }`}
+                            ? "inline-block -translate-y-0.5 text-(--color-accent) drop-shadow-[0_0_16px_rgba(105,205,223,0.45)] transition-[color,transform,filter] duration-300"
+                            : "inline-block text-(--color-primary)/22 transition-[color,transform,filter] duration-300"
+                        }
                       >
                         {value.letter}
                       </span>
