@@ -287,12 +287,6 @@ export const clientsSection = {
   description: "Organizations we support with practical IT, data, infrastructure, and network solutions.",
   organizations: [
     {
-      id: "us-embassy-manila",
-      name: "U.S. Embassy Manila",
-      logoSrc: "/clients/us-embassy-manila.jpg",
-      logoShape: "circle",
-    },
-    {
       id: "universal-corporation",
       name: "Universal Corporation",
       logoSrc: "/clients/universal-corporation.png",
@@ -301,6 +295,17 @@ export const clientsSection = {
       id: "phelps-dodge",
       name: "Phelps Dodge",
       logoSrc: "/clients/phelps-dodge.png",
+    },
+    {
+      id: "wilcon-depot",
+      name: "Wilcon Depot",
+      logoSrc: "/clients/wilcon-depot.jpg",
+    },
+    {
+      id: "university-of-the-assumption",
+      name: "University of the Assumption",
+      logoSrc: "/clients/university-of-the-assumption.png",
+      logoShape: "circle",
     },
   ] as ClientOrganization[],
 };

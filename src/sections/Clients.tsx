@@ -21,7 +21,7 @@ export function Clients() {
           className="mx-auto"
         />
 
-        <div aria-hidden="true" className="relative mx-auto mt-14 hidden max-w-3xl sm:block">
+        <div aria-hidden="true" className="relative mx-auto mt-14 hidden max-w-5xl lg:block">
           <div className="absolute left-0 right-0 top-[11px] h-px bg-gradient-to-r from-transparent via-(--color-secondary)/40 to-transparent" />
           <div className="flex justify-between px-16">
             {organizations.map((org) => (
@@ -30,10 +30,10 @@ export function Clients() {
           </div>
         </div>
 
-        <RevealGroup stagger={STAGGER} delay={0.1} className="mx-auto mt-8 grid max-w-3xl gap-4 sm:mt-4 sm:grid-cols-3">
+        <RevealGroup stagger={STAGGER} delay={0.1} className="mx-auto mt-8 grid max-w-5xl gap-4 sm:mt-4 sm:grid-cols-2 lg:grid-cols-4">
           {organizations.map((org, index) => (
             <RevealItem key={org.id} preset="scaleIn">
-              <ParallaxLayer speed={index === 1 ? -12 : 10}>
+              <ParallaxLayer speed={index % 2 === 1 ? -12 : 10}>
                 <ClientLogo name={org.name} src={org.logoSrc} shape={org.logoShape} />
               </ParallaxLayer>
             </RevealItem>

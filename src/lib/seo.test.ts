@@ -64,11 +64,12 @@ describe("content structure for SEO and storytelling", () => {
   });
 
   it("lists selected clients with logo artwork", () => {
-    expect(clientsSection.organizations).toHaveLength(3);
+    expect(clientsSection.organizations).toHaveLength(4);
     expect(clientsSection.organizations.map((org) => org.name)).toEqual([
-      "U.S. Embassy Manila",
       "Universal Corporation",
       "Phelps Dodge",
+      "Wilcon Depot",
+      "University of the Assumption",
     ]);
     expect(clientsSection.organizations.every((org) => org.logoSrc.startsWith("/clients/"))).toBe(true);
   });
