@@ -254,9 +254,9 @@ export const guidingPrinciples: GuidingPrinciple[] = [
 
 export const valuesSection = {
   eyebrow: "Our Values",
-  heading: "CIDUS, spelled out",
+  heading: "The Values Behind CIDUS",
   description:
-    "Our name is also how we work. Hover a letter to spell out the value behind it — then the principles that guide every project.",
+    "Every letter represents a value that shapes how we work, collaborate, and deliver. Hover over each letter to explore the principles behind every project.",
   acronymCaption: "What CIDUS stands for",
   principlesEyebrow: "Guiding principles",
   principlesHeading: "How we show up on every engagement",
@@ -314,7 +314,7 @@ export type WhyUsItem = {
 export const whyUsItems: WhyUsItem[] = [
   {
     id: "five-years",
-    title: "More Than Half a Decade of experience",
+    title: "More than half a decade of experience",
     description:
       "We have spent more than half a decade designing, deploying, and supporting technology infrastructure for organizations that need it to work every day.",
   },
@@ -390,7 +390,7 @@ export const contactSection = {
   },
   details: [
     { label: "Email", value: "info@cidussolution.com" },
-    { label: "Phone", value: "+63 915 806 8000 / +63 927 943 9027" },
+    { label: "Phone", value: "+63 9158068000 / +63 9279439027" },
     { label: "Office", value: "Address: 12/F, Unit 1206, The Trade and Financial Tower, 7th Avenue Cor. 32nd Street, BGC, Fort Bonifacio, Taguig City, Philippines 1634" },
   ],
   socialHeading: "Socials",
