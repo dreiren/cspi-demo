@@ -123,10 +123,28 @@ export function Values() {
                 >
                   {active.letter}
                 </span>
-                <p className="relative text-xs font-semibold uppercase tracking-[0.18em] text-(--color-secondary-dark)">
-                  {active.letter} — {siteMeta.shortName}
+                <p
+                  className="relative flex select-none items-baseline font-bold leading-none tracking-[0.14em]"
+                  aria-label={siteMeta.shortName}
+                >
+                  {coreValues.map((value) => {
+                    const isActive = value.id === activeId;
+                    return (
+                      <span
+                        key={value.id}
+                        aria-hidden="true"
+                        className={`inline-block text-[2rem] transition-[color,transform,filter] duration-300 sm:text-[2.5rem] ${
+                          isActive
+                            ? "-translate-y-0.5 text-(--color-accent) drop-shadow-[0_0_16px_rgba(105,205,223,0.45)]"
+                            : "text-(--color-primary)/22"
+                        }`}
+                      >
+                        {value.letter}
+                      </span>
+                    );
+                  })}
                 </p>
-                <h3 className="relative mt-3 text-2xl font-bold text-(--color-primary) sm:text-3xl">{active.title}</h3>
+                <h3 className="relative mt-5 text-2xl font-bold text-(--color-primary) sm:text-3xl">{active.title}</h3>
                 <p className="relative mt-4 text-base leading-relaxed text-(--color-ink-soft) sm:text-lg">{active.description}</p>
               </div>
             </ParallaxLayer>
